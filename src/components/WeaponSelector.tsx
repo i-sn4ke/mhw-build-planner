@@ -7,6 +7,23 @@ interface WeaponSelectorProps {
   onClose: () => void
 }
 
+const weaponTypeNames: Record<Weapon['type'], string> = {
+  'great-sword': 'Great Sword',
+  'long-sword': 'Long Sword',
+  'sword-and-shield': 'Sword & Shield',
+  'dual-blades': 'Dual Blades',
+  hammer: 'Hammer',
+  'hunting-horn': 'Hunting Horn',
+  lance: 'Lance',
+  gunlance: 'Gunlance',
+  'switch-axe': 'Switch Axe',
+  'charge-blade': 'Charge Blade',
+  'insect-glaive': 'Insect Glaive',
+  'light-bowgun': 'Light Bowgun',
+  'heavy-bowgun': 'Heavy Bowgun',
+  bow: 'Bow',
+}
+
 function WeaponSelector({
   weapons,
   onSelect,
@@ -14,12 +31,23 @@ function WeaponSelector({
 }: WeaponSelectorProps) {
   const [search, setSearch] = useState('')
   const [typeFilter, setTypeFilter] = useState('all')
+  const [rarityFilter, setRarityFilter] = useState('all')
 
   const weaponTypes = useMemo(
     () =>
       Array.from(
         new Set(weapons.map((weapon) => weapon.type)),
-      ).sort(),
+      ).sort((a, b) =>
+        weaponTypeNames[a].localeCompare(weaponTypeNames[b]),
+      ),
+    [weapons],
+  )
+
+  const rarities = useMemo(
+    () =>
+      Array.from(
+        new Set(weapons.map((weapon) => weapon.rarity)),
+      ).sort((a, b) => a - b),
     [weapons],
   )
 
@@ -40,12 +68,36 @@ function WeaponSelector({
           typeFilter === 'all' ||
           weapon.type === typeFilter
 
-        return matchesSearch && matchesType
+        const matchesRarity =
+          rarityFilter === 'all' ||
+          weapon.rarity === Number(rarityFilter)
+
+        return (
+          matchesSearch &&
+          matchesType &&
+          matchesRarity
+        )
       })
       .sort((a, b) =>
         a.name.localeCompare(b.name),
       )
-  }, [weapons, search, typeFilter])
+  }, [
+    weapons,
+    search,
+    typeFilter,
+    rarityFilter,
+  ])
+
+  const hasActiveFilters =
+    search.trim() !== '' ||
+    typeFilter !== 'all' ||
+    rarityFilter !== 'all'
+
+  const clearFilters = () => {
+    setSearch('')
+    setTypeFilter('all')
+    setRarityFilter('all')
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
@@ -82,21 +134,56 @@ function WeaponSelector({
             className="w-full rounded-md border border-[#30343a] bg-[#111214] px-3 py-2 text-sm text-[#e7e4da] outline-none placeholder:text-[#666a70] focus:border-[#c99a45]"
           />
 
-          <select
-            value={typeFilter}
-            onChange={(event) =>
-              setTypeFilter(event.target.value)
-            }
-            className="w-full rounded-md border border-[#30343a] bg-[#111214] px-3 py-2 text-sm text-[#e7e4da] outline-none focus:border-[#c99a45]"
-          >
-            <option value="all">All weapon types</option>
-
-            {weaponTypes.map((type) => (
-              <option key={type} value={type}>
-                {type}
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <select
+              value={typeFilter}
+              onChange={(event) =>
+                setTypeFilter(event.target.value)
+              }
+              className="w-full rounded-md border border-[#30343a] bg-[#111214] px-3 py-2 text-sm text-[#e7e4da] outline-none focus:border-[#c99a45]"
+            >
+              <option value="all">
+                All weapon types
               </option>
-            ))}
-          </select>
+
+              {weaponTypes.map((type) => (
+                <option key={type} value={type}>
+                  {weaponTypeNames[type]}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={rarityFilter}
+              onChange={(event) =>
+                setRarityFilter(event.target.value)
+              }
+              className="w-full rounded-md border border-[#30343a] bg-[#111214] px-3 py-2 text-sm text-[#e7e4da] outline-none focus:border-[#c99a45]"
+            >
+              <option value="all">
+                All rarities
+              </option>
+
+              {rarities.map((rarity) => (
+                <option
+                  key={rarity}
+                  value={rarity}
+                >
+                  Rarity {rarity}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {hasActiveFilters && (
+            <button
+              type="button"
+              onClick={clearFilters}
+              className="text-left text-sm text-[#c99a45] transition hover:text-[#e7e4da]"
+            >
+              Clear filters
+            </button>
+          )}
         </div>
 
         <div className="min-h-0 overflow-y-auto p-4">
@@ -108,10 +195,7 @@ function WeaponSelector({
 
               <button
                 type="button"
-                onClick={() => {
-                  setSearch('')
-                  setTypeFilter('all')
-                }}
+                onClick={clearFilters}
                 className="mt-3 text-sm text-[#c99a45] transition hover:text-[#e7e4da]"
               >
                 Clear filters
@@ -133,7 +217,8 @@ function WeaponSelector({
                       </div>
 
                       <div className="mt-1 text-sm text-[#9b9b95]">
-                        {weapon.type}
+                        {weaponTypeNames[weapon.type]} · Rarity{' '}
+                        {weapon.rarity}
                       </div>
                     </div>
 

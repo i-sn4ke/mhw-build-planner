@@ -12,6 +12,12 @@ interface BuildState {
   selectedWeapon: Weapon | null
   decorations: EquippedDecoration[]
   selectedCharm: Charm | null
+  loadBuild: (build: {
+    selectedArmor: Partial<Record<ArmorSlot, ArmorPiece>>
+    selectedWeapon: Weapon | null
+    decorations: EquippedDecoration[]
+    selectedCharm: Charm | null
+    }) => void
 
   setArmor: (armor: ArmorPiece) => void
   setWeapon: (weapon: Weapon | null) => void
@@ -33,6 +39,13 @@ export const useBuildStore = create<BuildState>(
     selectedWeapon: null,
     decorations: [],
     selectedCharm: null,
+    loadBuild: (build) =>
+      set({
+        selectedArmor: build.selectedArmor,
+        selectedWeapon: build.selectedWeapon,
+        decorations: build.decorations,
+        selectedCharm: build.selectedCharm,
+      }),
 
     setArmor: (armor) =>
       set((state) => ({

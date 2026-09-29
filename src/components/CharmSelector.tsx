@@ -1,18 +1,36 @@
 import { useMemo, useState } from 'react'
 import type { Charm } from '../types/charm'
+import type { SkillDefinition } from '../types/skillDefinition'
 
 interface CharmSelectorProps {
   charms: Charm[]
+  skills: SkillDefinition[]
   onSelect: (charm: Charm) => void
   onClose: () => void
 }
 
 function CharmSelector({
   charms,
+  skills,
   onSelect,
   onClose,
 }: CharmSelectorProps) {
   const [search, setSearch] = useState('')
+
+  const skillNames = useMemo(
+    () =>
+      new Map(
+        skills.map((skill) => [
+          skill.id,
+          skill.name,
+        ]),
+      ),
+    [skills],
+  )
+
+  const getSkillName = (skillId: string) => {
+    return skillNames.get(skillId) ?? skillId
+  }
 
   const filteredCharms = useMemo(() => {
     const normalizedSearch = search
@@ -21,17 +39,30 @@ function CharmSelector({
 
     return charms
       .filter((charm) => {
-        return (
-          normalizedSearch === '' ||
-          charm.name
-            .toLowerCase()
-            .includes(normalizedSearch)
+        if (normalizedSearch === '') {
+          return true
+        }
+
+        const matchesName = charm.name
+          .toLowerCase()
+          .includes(normalizedSearch)
+
+        const matchesSkill = charm.skills.some(
+          (skill) =>
+            (
+              skillNames.get(skill.skillId) ??
+              skill.skillId
+            )
+              .toLowerCase()
+              .includes(normalizedSearch),
         )
+
+        return matchesName || matchesSkill
       })
       .sort((a, b) =>
         a.name.localeCompare(b.name),
       )
-  }, [charms, search])
+  }, [charms, search, skillNames])
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
@@ -64,7 +95,7 @@ function CharmSelector({
             onChange={(event) =>
               setSearch(event.target.value)
             }
-            placeholder="Search charms..."
+            placeholder="Search charms or skills..."
             className="w-full rounded-md border border-[#30343a] bg-[#111214] px-3 py-2 text-sm text-[#e7e4da] outline-none placeholder:text-[#666a70] focus:border-[#c99a45]"
           />
         </div>
@@ -98,9 +129,25 @@ function CharmSelector({
                       <div className="font-medium text-[#e7e4da]">
                         {charm.name}
                       </div>
-                    </div>
 
+                      <div className="mt-1 text-sm text-[#9b9b95]">
+                        Rarity {charm.rarity}
+                      </div>
+                    </div>
                   </div>
+
+                  {charm.skills.length > 0 && (
+                    <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
+                      {charm.skills.map((skill) => (
+                        <span
+                          key={skill.skillId}
+                          className="text-sm text-[#c99a45]"
+                        >
+                          {getSkillName(skill.skillId)} +{skill.level}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </button>
               ))}
             </div>

@@ -1,6 +1,6 @@
 import type { Decoration } from './types/decoration'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useBuildStore } from './store/buildStore'
 
 import ArmorSelector from './components/ArmorSelector'
@@ -24,6 +24,15 @@ import { setBonuses as setBonusDefinitions } from './data/setBonuses'
 import { charms as charmDefinitions } from './data/charms'
 
 import { calculateSetBonuses } from './engine/setBonuses'
+import {
+  createShareUrl,
+  getBuildFromShareUrl,
+} from './engine/buildShare'
+import {
+  deserializeBuild,
+  serializeBuild,
+} from './engine/buildSerializer'
+import { generateBuildFingerprint } from './engine/buildFingerprint'
 
 
 import type {
@@ -68,6 +77,10 @@ function App() {
     (state) => state.clearCharm,
   )
 
+  const loadBuild = useBuildStore(
+    (state) => state.loadBuild,
+  )
+
   const [selectorSlot, setSelectorSlot] =
     useState<ArmorSlotType | null>(null)
 
@@ -93,6 +106,11 @@ const [decorationTarget, setDecorationTarget] = useState<
   const [isCharmSelectorOpen, setIsCharmSelectorOpen] =
     useState(false)
 
+  const [buildFingerprint, setBuildFingerprint] = useState<string | null>(null)
+  const [shareStatus, setShareStatus] = useState<'idle' | 'copied' | 'error'>('idle')
+
+  const hasLoadedSharedBuild = useRef(false)
+
   const addDecoration = useBuildStore(
     (state) => state.addDecoration,
   )
@@ -104,6 +122,58 @@ const [decorationTarget, setDecorationTarget] = useState<
   const removeDecoration = useBuildStore(
   (state) => state.removeDecoration,
 )
+
+  useEffect(() => {
+    if (hasLoadedSharedBuild.current) {
+      return
+    }
+
+    hasLoadedSharedBuild.current = true
+
+    try {
+      const savedBuild = getBuildFromShareUrl()
+
+      if (!savedBuild) {
+        return
+      }
+
+      const build = deserializeBuild(savedBuild, {
+        armors: armorDefinitions,
+        weapons: weaponDefinitions,
+        charms: charmDefinitions,
+        decorations: decorationDefinitions,
+      })
+
+      loadBuild(build)
+    } catch (error) {
+      console.error(
+        'Failed to load shared build:',
+        error,
+      )
+    }
+  }, [loadBuild])
+
+  const handleShareBuild = async () => {
+    try {
+      const savedBuild = serializeBuild({
+        selectedArmor,
+        selectedWeapon,
+        selectedCharm,
+        decorations,
+      })
+
+      const fingerprint = await generateBuildFingerprint(savedBuild)
+      const shareUrl = createShareUrl(savedBuild)
+
+      await navigator.clipboard.writeText(shareUrl)
+
+      setBuildFingerprint(fingerprint)
+      setShareStatus('copied')
+    } catch (error) {
+      console.error('Failed to share build:', error)
+      setShareStatus('error')
+    }
+  }
 
   const handleSelectArmor = (armor: ArmorPiece) => {
     setArmor(armor)
@@ -161,14 +231,44 @@ const buildStats = calculateBuildStats(
       </header>
 
       <main className="p-8">
-        <div className="mb-8">
-          <h2 className="text-2xl font-semibold">
-            Build Editor
-          </h2>
+        <div className="mb-8 flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <h2 className="text-2xl font-semibold">
+              Build Editor
+            </h2>
 
-          <p className="mt-2 text-[#9b9b95]">
-            Create your armor set.
-          </p>
+            <p className="mt-2 text-[#9b9b95]">
+              Create your armor set.
+            </p>
+
+            {buildFingerprint && (
+              <p className="mt-2 font-mono text-xs text-[#666a70]">
+                Build ID: {buildFingerprint.slice(0, 12)}
+              </p>
+            )}
+          </div>
+
+          <div className="flex items-center gap-3">
+            {shareStatus === 'copied' && (
+              <span className="text-sm text-[#9b9b95]">
+                Link copied!
+              </span>
+            )}
+
+            {shareStatus === 'error' && (
+              <span className="text-sm text-red-400">
+                Could not copy link.
+              </span>
+            )}
+
+            <button
+              type="button"
+              onClick={handleShareBuild}
+              className="rounded-md border border-[#c99a45] px-4 py-2 text-sm font-semibold text-[#c99a45] transition hover:bg-[#c99a45] hover:text-[#111214]"
+            >
+              Share Build
+            </button>
+          </div>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
@@ -386,6 +486,7 @@ const buildStats = calculateBuildStats(
 {isCharmSelectorOpen && (
   <CharmSelector
     charms={charmDefinitions}
+    skills={skills}
     onSelect={(charm) => {
       setCharm(charm)
       setIsCharmSelectorOpen(false)
@@ -420,8 +521,17 @@ const buildStats = calculateBuildStats(
     </p>
   ) : (
     <div className="space-y-2">
-{decorations.map((equipped) => (
-  <div className="flex items-center justify-between rounded-md bg-[#15171a] px-3 py-2">
+{decorations.map((equipped) => {
+  const locationKey =
+    equipped.location.type === 'armor'
+      ? `armor-${equipped.location.slot}-${equipped.location.slotIndex}`
+      : `weapon-${equipped.location.slotIndex}`
+
+  return (
+  <div
+    key={locationKey}
+    className="flex items-center justify-between rounded-md bg-[#15171a] px-3 py-2"
+  >
     <div>
       <p className="text-sm font-medium text-[#e7e4da]">
         {equipped.decoration.name}
@@ -438,7 +548,8 @@ const buildStats = calculateBuildStats(
       Size {equipped.decoration.slotSize}
     </span>
   </div>
-))}
+  )
+})}
     </div>
   )}
 </div>
