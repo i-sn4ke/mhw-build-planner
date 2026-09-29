@@ -1,10 +1,9 @@
 import type { ArmorSkill } from './skill'
-import type { EquipmentSlot } from './slot'
 
 export interface Charm {
   id: string
   name: string
-
+  rarity: number
   skills: ArmorSkill[]
-  slots: EquipmentSlot[]
+  previousCharmId?: string
 }

@@ -1,28 +1,16 @@
 import type { Charm } from '../types/charm'
-import type { EquippedDecoration } from '../types/equipment'
 
 interface CharmStatsPanelProps {
   charm: Charm | null
-  decorations: EquippedDecoration[]
-  onDecorationSlotSelect: (slotIndex: number) => void
   onSelectCharm: () => void
   onClearCharm: () => void
 }
 
 function CharmStatsPanel({
   charm,
-  decorations,
-  onDecorationSlotSelect,
   onSelectCharm,
   onClearCharm,
 }: CharmStatsPanelProps) {
-  const getDecoration = (slotIndex: number) =>
-    decorations.find(
-      (equipped) =>
-        equipped.location.type === 'charm' &&
-        equipped.location.slotIndex === slotIndex,
-    )
-
   return (
     <div className="rounded-lg border border-[#30343a] bg-[#191b1f] p-5">
       <div className="flex items-center justify-between">
@@ -62,6 +50,10 @@ function CharmStatsPanel({
             <p className="font-medium text-[#e7e4da]">
               {charm.name}
             </p>
+
+            <p className="mt-1 text-xs text-[#666a70]">
+              Rarity {charm.rarity}
+            </p>
           </div>
 
           {charm.skills.length > 0 && (
@@ -82,45 +74,6 @@ function CharmStatsPanel({
               </div>
             </div>
           )}
-
-          <div>
-            <p className="mb-2 text-sm text-[#9b9b95]">
-              Slots
-            </p>
-
-            {charm.slots.length === 0 ? (
-              <span className="text-sm text-[#666a70]">
-                No slots
-              </span>
-            ) : (
-              <div className="flex gap-1">
-                {charm.slots.map((size, index) => {
-                  const equippedDecoration =
-                    getDecoration(index)
-
-                  return (
-                    <button
-                      key={`${charm.id}-${index}`}
-                      type="button"
-                      onClick={() =>
-                        onDecorationSlotSelect(index)
-                      }
-                      className="flex min-h-7 min-w-7 items-center justify-center rounded border border-[#454950] px-2 text-xs transition hover:border-[#c99a45] hover:bg-[#25282d] hover:text-[#c99a45]"
-                      title={
-                        equippedDecoration
-                          ? `Change ${equippedDecoration.decoration.name}`
-                          : `Add decoration · Slot size ${size.size}`
-                      }
-                    >
-                      {equippedDecoration
-                        ? equippedDecoration.decoration.name
-                        : size.size}
-                    </button>
-                  )
-                })}
-              </div>
-            )}
-          </div>
         </div>
       )}
     </div>

@@ -98,35 +98,8 @@ function CharmSelector({
                       <div className="font-medium text-[#e7e4da]">
                         {charm.name}
                       </div>
-
-                      {charm.skills.length > 0 && (
-                        <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
-                          {charm.skills.map((skill) => (
-                            <span
-                              key={skill.skillId}
-                              className="text-sm text-[#c99a45]"
-                            >
-                              {skill.skillId} +{skill.level}
-                            </span>
-                          ))}
-                        </div>
-                      )}
                     </div>
 
-                    {charm.slots.length > 0 && (
-                      <div className="flex shrink-0 gap-1">
-                        {charm.slots.map(
-                          (slot, index) => (
-                            <span
-                              key={`${charm.id}-slot-${index}`}
-                              className="flex h-6 w-6 items-center justify-center rounded border border-[#454950] text-xs text-[#c99a45]"
-                            >
-                              {slot.size}
-                            </span>
-                          ),
-                        )}
-                      </div>
-                    )}
                   </div>
                 </button>
               ))}

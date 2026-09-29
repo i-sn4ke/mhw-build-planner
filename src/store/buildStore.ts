@@ -1,6 +1,9 @@
 import { create } from 'zustand'
-import type { ArmorPiece, ArmorSlot } from '../types/armor'
-import type { Weapon } from '../types/armor'
+import type {
+  ArmorPiece,
+  ArmorSlot,
+  Weapon,
+} from '../types/armor'
 import type { EquippedDecoration } from '../types/equipment'
 import type { Charm } from '../types/charm'
 
@@ -37,13 +40,15 @@ export const useBuildStore = create<BuildState>(
           ...state.selectedArmor,
           [armor.slot]: armor,
         },
-        decorations: state.decorations.filter((equipped) => {
-          if (equipped.location.type !== 'armor') {
-            return true
-          }
+        decorations: state.decorations.filter(
+          (equipped) => {
+            if (equipped.location.type !== 'armor') {
+              return true
+            }
 
-          return equipped.location.slot !== armor.slot
-        }),
+            return equipped.location.slot !== armor.slot
+          },
+        ),
       })),
 
     setWeapon: (weapon) =>
@@ -53,7 +58,7 @@ export const useBuildStore = create<BuildState>(
           (equipped) =>
             equipped.location.type !== 'weapon',
         ),
-    })),
+      })),
 
     addDecoration: (decoration) =>
       set((state) => {
@@ -88,16 +93,6 @@ export const useBuildStore = create<BuildState>(
               )
             }
 
-            if (
-              equipped.location.type === 'charm' &&
-              decoration.location.type === 'charm'
-            ) {
-              return (
-                equipped.location.slotIndex !==
-                decoration.location.slotIndex
-              )
-            }
-
             return true
           })
 
@@ -110,22 +105,14 @@ export const useBuildStore = create<BuildState>(
       }),
 
     setCharm: (charm) =>
-      set((state) => ({
+      set({
         selectedCharm: charm,
-        decorations: state.decorations.filter(
-          (equipped) =>
-            equipped.location.type !== 'charm',
-        ),
-    })),
+      }),
 
     clearCharm: () =>
-      set((state) => ({
+      set({
         selectedCharm: null,
-        decorations: state.decorations.filter(
-          (equipped) =>
-            equipped.location.type !== 'charm',
-        ),
-    })),
+      }),
 
     removeDecoration: (location) =>
       set((state) => ({
@@ -159,16 +146,6 @@ export const useBuildStore = create<BuildState>(
               )
             }
 
-            if (
-              equipped.location.type === 'charm' &&
-              location.type === 'charm'
-            ) {
-              return (
-                equipped.location.slotIndex !==
-                location.slotIndex
-              )
-            }
-
             return true
           },
         ),
@@ -184,6 +161,11 @@ export const useBuildStore = create<BuildState>(
 
         return {
           selectedArmor: updatedArmor,
+          decorations: state.decorations.filter(
+            (equipped) =>
+              equipped.location.type !== 'armor' ||
+              equipped.location.slot !== slot,
+          ),
         }
       }),
 
@@ -194,6 +176,6 @@ export const useBuildStore = create<BuildState>(
           (equipped) =>
             equipped.location.type !== 'weapon',
         ),
-    })),
+      })),
   }),
 )

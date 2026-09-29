@@ -11,10 +11,6 @@ export type DecorationLocation =
       type: 'weapon'
       slotIndex: number
     }
-  | {
-      type: 'charm'
-      slotIndex: number
-    }
 
 export interface EquippedDecoration {
   decoration: Decoration

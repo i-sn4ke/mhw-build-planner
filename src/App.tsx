@@ -87,10 +87,6 @@ const [decorationTarget, setDecorationTarget] = useState<
       type: 'weapon'
       slotIndex: number
     }
-  | {
-      type: 'charm'
-      slotIndex: number
-    }
   | null
 >(null)
 
@@ -288,15 +284,6 @@ const buildStats = calculateBuildStats(
               
 <CharmStatsPanel
   charm={selectedCharm}
-  decorations={decorations}
-  onDecorationSlotSelect={(slotIndex) => {
-    setDecorationTarget({
-      type: 'charm',
-      slotIndex,
-    })
-
-    setDecorationSelectorOpen(true)
-  }}
   onSelectCharm={() => {
     setIsCharmSelectorOpen(true)
   }}
@@ -341,14 +328,10 @@ const buildStats = calculateBuildStats(
       ? selectedArmor[decorationTarget.slot]?.slots[
           decorationTarget.slotIndex
         ]?.size ?? 0
-      : decorationTarget.type === 'weapon'
-        ? selectedWeapon?.slots[
-            decorationTarget.slotIndex
-          ]?.size ?? 0
-        : selectedCharm?.slots[
-            decorationTarget.slotIndex
-          ]?.size ?? 0
-  }
+      : selectedWeapon?.slots[
+          decorationTarget.slotIndex
+        ]?.size ?? 0
+    }
   hasDecoration={
     decorationTarget !== null &&
     decorations.some((equipped) => {
@@ -376,17 +359,6 @@ const buildStats = calculateBuildStats(
           decorationTarget.slotIndex
         )
       }
-
-      if (
-        decorationTarget.type === 'charm' &&
-        equipped.location.type === 'charm'
-      ) {
-        return (
-          equipped.location.slotIndex ===
-          decorationTarget.slotIndex
-        )
-      }
-
       return false
     })
   }
@@ -452,9 +424,7 @@ const buildStats = calculateBuildStats(
       <p className="mt-1 text-xs text-[#666a70]">
         {equipped.location.type === 'armor'
           ? `${equipped.location.slot} slot ${equipped.location.slotIndex + 1}`
-          : equipped.location.type === 'charm'
-            ? `Charm slot ${equipped.location.slotIndex + 1}`
-            : `Weapon slot ${equipped.location.slotIndex + 1}`}
+          : `Weapon slot ${equipped.location.slotIndex + 1}`}
       </p>
     </div>
 

@@ -4,33 +4,29 @@ export const testCharms: Charm[] = [
   {
     id: 'attack-charm-v',
     name: 'Attack Charm V',
+    rarity: 12,
     skills: [
       {
         skillId: 'attack-boost',
         level: 3,
       },
-    ],
-    slots: [
-      { size: 4 },
     ],
   },
   {
     id: 'critical-eye-charm-v',
     name: 'Critical Eye Charm V',
+    rarity: 12,
     skills: [
       {
         skillId: 'critical-eye',
         level: 3,
       },
     ],
-    slots: [
-      { size: 2 },
-      { size: 1 },
-    ],
   },
   {
     id: 'test-charm',
     name: 'Test Charm',
+    rarity: 10,
     skills: [
       {
         skillId: 'attack-boost',
@@ -40,10 +36,6 @@ export const testCharms: Charm[] = [
         skillId: 'critical-eye',
         level: 1,
       },
-    ],
-    slots: [
-      { size: 4 },
-      { size: 2 },
     ],
   },
 ]
