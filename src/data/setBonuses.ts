@@ -7,11 +7,11 @@ export const testSetBonuses: SetBonusDefinition[] = [
     thresholds: [
       {
         pieces: 2,
-        name: 'Inheritance',
+        skillId: 'Inheritance',
       },
       {
         pieces: 4,
-        name: 'Transcendence',
+        skillId: 'Transcendence',
       },
     ],
   },
@@ -21,11 +21,11 @@ export const testSetBonuses: SetBonusDefinition[] = [
     thresholds: [
       {
         pieces: 2,
-        name: "Master's Touch",
+        skillId: "Master's Touch",
       },
       {
         pieces: 4,
-        name: 'True Mastery',
+        skillId: 'True Mastery',
       },
     ],
   },

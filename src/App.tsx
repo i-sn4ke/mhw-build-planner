@@ -299,7 +299,10 @@ const buildStats = calculateBuildStats(
 
             <SkillPanel skills={buildStats.skills} />
 
-            <SetBonusPanel setBonuses={activeSetBonuses} />
+            <SetBonusPanel
+              setBonuses={activeSetBonuses}
+              skills={testSkills}
+            />
 
             <StatsPanel
               defense={buildStats.defense}

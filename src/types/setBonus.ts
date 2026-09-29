@@ -1,6 +1,6 @@
 export interface SetBonusThreshold {
   pieces: number
-  name: string
+  skillId: string
 }
 
 export interface SetBonusDefinition {

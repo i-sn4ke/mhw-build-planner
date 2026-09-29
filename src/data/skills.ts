@@ -11,4 +11,24 @@ export const testSkills: SkillDefinition[] = [
     name: 'Attack Boost',
     maxLevel: 7,
   },
+  {
+  id: 'inheritance',
+  name: 'Inheritance',
+  maxLevel: 1,
+},
+{
+  id: 'transcendance',
+  name: 'Transcendance',
+  maxLevel: 1,
+},
+{
+  id: 'masters-touch',
+  name: "Master's Touch",
+  maxLevel: 1,
+},
+{
+  id: 'true-mastery',
+  name: 'True Mastery',
+  maxLevel: 1,
+},
 ]

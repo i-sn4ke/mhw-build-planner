@@ -1,14 +1,14 @@
 import type { ArmorPiece } from '../types/armor'
-import type { SetBonusDefinition } from '../types/setBonus'
+import type {
+  SetBonusDefinition,
+  SetBonusThreshold,
+} from '../types/setBonus'
 
 export interface ActiveSetBonus {
   id: string
   name: string
   pieces: number
-  thresholds: {
-    pieces: number
-    name: string
-  }[]
+  thresholds: SetBonusThreshold[]
 }
 
 export function calculateSetBonuses(
