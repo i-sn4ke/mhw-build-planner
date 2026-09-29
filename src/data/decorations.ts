@@ -5,6 +5,7 @@ export const testDecorations: Decoration[] = [
     id: 'attack-jewel-1',
     name: 'Attack Jewel 1',
     slotSize: 1,
+    rarity: 7,
     skills: [
       {
         skillId: 'attack-boost',
@@ -17,6 +18,7 @@ export const testDecorations: Decoration[] = [
     id: 'expert-jewel-1',
     name: 'Expert Jewel 1',
     slotSize: 1,
+    rarity: 6,
     skills: [
       {
         skillId: 'critical-eye',
@@ -29,6 +31,7 @@ export const testDecorations: Decoration[] = [
     id: 'attack-jewel-4',
     name: 'Attack Jewel 4',
     slotSize: 4,
+    rarity: 12,
     skills: [
       {
         skillId: 'attack-boost',

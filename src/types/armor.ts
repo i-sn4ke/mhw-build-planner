@@ -74,6 +74,8 @@ export interface Weapon {
   slots: EquipmentSlot[]
   skills: ArmorSkill[]
 
+  setBonusId?: string
+
   previousWeaponId?: string
 
   kinsectBonus?: string

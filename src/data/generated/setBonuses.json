@@ -1,0 +1,800 @@
+[
+  {
+    "id": "anjanath-power",
+    "name": "Anjanath Power",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "adrenaline"
+      }
+    ]
+  },
+  {
+    "id": "legiana-blessing",
+    "name": "Legiana Blessing",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "good-luck"
+      }
+    ]
+  },
+  {
+    "id": "odogaron-power",
+    "name": "Odogaron Power",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "punishing-draw"
+      }
+    ]
+  },
+  {
+    "id": "rathalos-power",
+    "name": "Rathalos Power",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "critical-element"
+      }
+    ]
+  },
+  {
+    "id": "diablos-power",
+    "name": "Diablos Power",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "bludgeoner"
+      }
+    ]
+  },
+  {
+    "id": "kirin-blessing",
+    "name": "Kirin Blessing",
+    "thresholds": [
+      {
+        "pieces": 4,
+        "skillId": "capture-master"
+      }
+    ]
+  },
+  {
+    "id": "anjanath-will",
+    "name": "Anjanath Will",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "adrenaline"
+      },
+      {
+        "pieces": 4,
+        "skillId": "stamina-cap-up"
+      }
+    ]
+  },
+  {
+    "id": "pink-rathian-mastery",
+    "name": "Pink Rathian Mastery",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "poison-duration-up"
+      }
+    ]
+  },
+  {
+    "id": "zorah-magdaros-mastery",
+    "name": "Zorah Magdaros Mastery",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "critical-status"
+      }
+    ]
+  },
+  {
+    "id": "legiana-favor",
+    "name": "Legiana Favor",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "good-luck"
+      },
+      {
+        "pieces": 4,
+        "skillId": "bow-charge-plus"
+      }
+    ]
+  },
+  {
+    "id": "odogaron-mastery",
+    "name": "Odogaron Mastery",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "punishing-draw"
+      },
+      {
+        "pieces": 4,
+        "skillId": "protective-polish"
+      }
+    ]
+  },
+  {
+    "id": "rathalos-mastery",
+    "name": "Rathalos Mastery",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "critical-element"
+      },
+      {
+        "pieces": 4,
+        "skillId": "minds-eye-ballistics"
+      }
+    ]
+  },
+  {
+    "id": "diablos-mastery",
+    "name": "Diablos Mastery",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "bludgeoner"
+      },
+      {
+        "pieces": 4,
+        "skillId": "non-elemental-boost"
+      }
+    ]
+  },
+  {
+    "id": "uragaan-protection",
+    "name": "Uragaan Protection",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "guard-up"
+      }
+    ]
+  },
+  {
+    "id": "bazelgeuse-protection",
+    "name": "Bazelgeuse Protection",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "guts"
+      }
+    ]
+  },
+  {
+    "id": "nergigante-hunger",
+    "name": "Nergigante Hunger",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "hasten-recovery"
+      }
+    ]
+  },
+  {
+    "id": "teostra-technique",
+    "name": "Teostra Technique",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "masters-touch"
+      }
+    ]
+  },
+  {
+    "id": "kushala-daora-flight",
+    "name": "Kushala Daora Flight",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "nullify-wind-pressure"
+      }
+    ]
+  },
+  {
+    "id": "vaal-hazak-vitality",
+    "name": "Vaal Hazak Vitality",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "super-recovery"
+      }
+    ]
+  },
+  {
+    "id": "kirin-favor",
+    "name": "Kirin Favor",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "capture-master"
+      }
+    ]
+  },
+  {
+    "id": "xenojiiva-divinity",
+    "name": "Xeno'jiiva Divinity",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "razor-sharp-spare-shot"
+      }
+    ]
+  },
+  {
+    "id": "guild-guidance",
+    "name": "Guild Guidance",
+    "thresholds": [
+      {
+        "pieces": 4,
+        "skillId": "great-luck"
+      }
+    ]
+  },
+  {
+    "id": "commission-guidance",
+    "name": "Commission Guidance",
+    "thresholds": [
+      {
+        "pieces": 4,
+        "skillId": "carving-master"
+      }
+    ]
+  },
+  {
+    "id": "lunastra-favor",
+    "name": "Lunastra Favor",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "stamina-cap-up"
+      },
+      {
+        "pieces": 4,
+        "skillId": "minds-eye-ballistics"
+      }
+    ]
+  },
+  {
+    "id": "astera-blessing",
+    "name": "Astera Blessing",
+    "thresholds": [
+      {
+        "pieces": 5,
+        "skillId": "great-luck"
+      }
+    ]
+  },
+  {
+    "id": "soul-of-the-dragoon",
+    "name": "Soul of the Dragoon",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "elemental-airborne"
+      },
+      {
+        "pieces": 4,
+        "skillId": "masters-touch"
+      }
+    ]
+  },
+  {
+    "id": "anjanath-dominance",
+    "name": "Anjanath Dominance",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "stamina-cap-up"
+      }
+    ]
+  },
+  {
+    "id": "rathian-essence",
+    "name": "Rathian Essence",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "poison-duration-up"
+      }
+    ]
+  },
+  {
+    "id": "ancient-divinity",
+    "name": "Ancient Divinity",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "critical-status"
+      }
+    ]
+  },
+  {
+    "id": "commission-alchemy",
+    "name": "Commission Alchemy",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "bombardier-secret"
+      }
+    ]
+  },
+  {
+    "id": "barioth-hidden-art",
+    "name": "Barioth Hidden Art",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "punishing-draw"
+      }
+    ]
+  },
+  {
+    "id": "rathalos-essence",
+    "name": "Rathalos Essence",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "minds-eye-ballistics"
+      }
+    ]
+  },
+  {
+    "id": "diablos-ambition",
+    "name": "Diablos Ambition",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "slugger-secret"
+      }
+    ]
+  },
+  {
+    "id": "legiana-ambition",
+    "name": "Legiana Ambition",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "bow-charge-plus"
+      }
+    ]
+  },
+  {
+    "id": "odogaron-essence",
+    "name": "Odogaron Essence",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "protective-polish"
+      }
+    ]
+  },
+  {
+    "id": "uragaan-ambition",
+    "name": "Uragaan Ambition",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "guard-up"
+      }
+    ]
+  },
+  {
+    "id": "nargacuga-essence",
+    "name": "Nargacuga Essence",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "true-razor-sharp-spare-shot"
+      }
+    ]
+  },
+  {
+    "id": "glavenus-essence",
+    "name": "Glavenus Essence",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "maximum-might-secret"
+      }
+    ]
+  },
+  {
+    "id": "brachydios-essence",
+    "name": "Brachydios Essence",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "agitator-secret"
+      }
+    ]
+  },
+  {
+    "id": "tigrex-essence",
+    "name": "Tigrex Essence",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "free-meal-secret"
+      }
+    ]
+  },
+  {
+    "id": "instructors-guidance",
+    "name": "Instructor's Guidance",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "capture-master"
+      }
+    ]
+  },
+  {
+    "id": "bazelgeuse-ambition",
+    "name": "Bazelgeuse Ambition",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "guts"
+      }
+    ]
+  },
+  {
+    "id": "deviljho-essence",
+    "name": "Deviljho Essence",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "stamina-thief-secret"
+      }
+    ]
+  },
+  {
+    "id": "velkhana-divinity",
+    "name": "Velkhana Divinity",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "critical-element"
+      },
+      {
+        "pieces": 4,
+        "skillId": "frostcraft"
+      }
+    ]
+  },
+  {
+    "id": "vaal-soulvein",
+    "name": "Vaal Soulvein",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "super-recovery"
+      }
+    ]
+  },
+  {
+    "id": "kirin-divinity",
+    "name": "Kirin Divinity",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "great-luck"
+      }
+    ]
+  },
+  {
+    "id": "namielle-divinity",
+    "name": "Namielle Divinity",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "element-acceleration"
+      },
+      {
+        "pieces": 4,
+        "skillId": "true-element-acceleration"
+      }
+    ]
+  },
+  {
+    "id": "guild-pride",
+    "name": "Guild Pride",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "good-luck"
+      },
+      {
+        "pieces": 4,
+        "skillId": "carving-master"
+      }
+    ]
+  },
+  {
+    "id": "shara-ishvalda-divinity",
+    "name": "Shara Ishvalda Divinity",
+    "thresholds": [
+      {
+        "pieces": 4,
+        "skillId": "gaias-veil"
+      },
+      {
+        "pieces": 5,
+        "skillId": "true-gaias-veil"
+      }
+    ]
+  },
+  {
+    "id": "zorah-magdaros-essence",
+    "name": "Zorah Magdaros Essence",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "artillery-secret"
+      }
+    ]
+  },
+  {
+    "id": "zinogre-essence",
+    "name": "Zinogre Essence",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "latent-power-secret"
+      }
+    ]
+  },
+  {
+    "id": "gold-rathian-essence",
+    "name": "Gold Rathian Essence",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "divine-blessing-secret"
+      },
+      {
+        "pieces": 4,
+        "skillId": "true-critical-status"
+      }
+    ]
+  },
+  {
+    "id": "silver-rathalos-essence",
+    "name": "Silver Rathalos Essence",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "slinger-ammo-secret"
+      },
+      {
+        "pieces": 4,
+        "skillId": "true-critical-element"
+      }
+    ]
+  },
+  {
+    "id": "lunastra-essence",
+    "name": "Lunastra Essence",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "tool-specialist-secret"
+      }
+    ]
+  },
+  {
+    "id": "nergigante-ambition",
+    "name": "Nergigante Ambition",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "hasten-recovery"
+      }
+    ]
+  },
+  {
+    "id": "joyful-blessing",
+    "name": "Joyful Blessing",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "joys-gift"
+      },
+      {
+        "pieces": 5,
+        "skillId": "joys-gratitude"
+      }
+    ]
+  },
+  {
+    "id": "appreciation-blessing",
+    "name": "Appreciation Blessing",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "gratitudes-gift"
+      },
+      {
+        "pieces": 5,
+        "skillId": "gratitudes-blessing"
+      }
+    ]
+  },
+  {
+    "id": "rajangs-rage",
+    "name": "Rajang's Rage",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "minds-eye-ballistics"
+      },
+      {
+        "pieces": 4,
+        "skillId": "protective-polish"
+      }
+    ]
+  },
+  {
+    "id": "rajang-will",
+    "name": "Rajang Will",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "maximum-might-secret"
+      },
+      {
+        "pieces": 4,
+        "skillId": "heroics-secret"
+      }
+    ]
+  },
+  {
+    "id": "safijiiva-seal",
+    "name": "Safi'jiiva Seal",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "dragonvein-awakening"
+      },
+      {
+        "pieces": 5,
+        "skillId": "true-dragonvein-awakening"
+      }
+    ]
+  },
+  {
+    "id": "brachydios-will",
+    "name": "Brachydios Will",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "agitator-secret"
+      },
+      {
+        "pieces": 4,
+        "skillId": "artillery-secret"
+      }
+    ]
+  },
+  {
+    "id": "full-bloom-blessing",
+    "name": "Full Bloom Blessing",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "full-blooms-gift"
+      },
+      {
+        "pieces": 5,
+        "skillId": "full-bloom-gratitude"
+      }
+    ]
+  },
+  {
+    "id": "alatreon-divinity",
+    "name": "Alatreon Divinity",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "element-conversion"
+      },
+      {
+        "pieces": 3,
+        "skillId": "all-elemental-resistance"
+      }
+    ]
+  },
+  {
+    "id": "kulve-taroth-essence",
+    "name": "Kulve Taroth Essence",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "guts"
+      },
+      {
+        "pieces": 4,
+        "skillId": "free-meal-secret"
+      }
+    ]
+  },
+  {
+    "id": "frostfang-absolute-art",
+    "name": "Frostfang Absolute Art",
+    "thresholds": [
+      {
+        "pieces": 1,
+        "skillId": "punishing-draw"
+      },
+      {
+        "pieces": 3,
+        "skillId": "slugger-secret"
+      }
+    ]
+  },
+  {
+    "id": "new-world",
+    "name": "New World",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "hasten-recovery"
+      },
+      {
+        "pieces": 4,
+        "skillId": "great-luck"
+      }
+    ]
+  },
+  {
+    "id": "fatalis-legend",
+    "name": "Fatalis Legend",
+    "thresholds": [
+      {
+        "pieces": 2,
+        "skillId": "inheritance"
+      },
+      {
+        "pieces": 4,
+        "skillId": "transcendance"
+      }
+    ]
+  },
+  {
+    "id": "fun-fright-blessing",
+    "name": "Fun Fright Blessing",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "fun-frights-gift"
+      },
+      {
+        "pieces": 5,
+        "skillId": "fun-frights-gratitude"
+      }
+    ]
+  },
+  {
+    "id": "sizzling-blessing",
+    "name": "Sizzling Blessing",
+    "thresholds": [
+      {
+        "pieces": 3,
+        "skillId": "sizzling-gift"
+      },
+      {
+        "pieces": 5,
+        "skillId": "sizzling-gratitude"
+      }
+    ]
+  }
+]
