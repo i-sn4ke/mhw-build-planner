@@ -19,7 +19,7 @@ export function calculateArmorStats(
 ): BuildStats {
   return armorPieces.reduce(
     (stats, armor) => ({
-      defense: stats.defense + armor.defense,
+      defense: stats.defense + armor.defense.base,
 
       resistances: {
         fire:

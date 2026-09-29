@@ -7,7 +7,11 @@ export const testArmors: ArmorPiece[] = [
     slot: 'head',
     rank: 'master',
     rarity: 12,
-    defense: 114,
+    defense: {
+      base: 114,
+      max: 114,
+      augmentMax: 114,
+    },
 
     resistances: {
       fire: 3,
@@ -37,7 +41,11 @@ export const testArmors: ArmorPiece[] = [
     slot: 'head',
     rank: 'master',
     rarity: 12,
-    defense: 150,
+    defense: {
+      base: 150,
+      max: 150,
+      augmentMax: 150,
+    },
 
     resistances: {
       fire: -1,
@@ -66,7 +74,11 @@ export const testArmors: ArmorPiece[] = [
     slot: 'head',
     rank: 'master',
     rarity: 12,
-    defense: 150,
+    defense: {
+      base: 150,
+      max: 150,
+      augmentMax: 150,
+    },
 
     resistances: {
       fire: -2,
@@ -96,7 +108,11 @@ export const testArmors: ArmorPiece[] = [
     slot: 'chest',
     rank: 'master',
     rarity: 12,
-    defense: 120,
+    defense: {
+      base: 120,
+      max: 120,
+      augmentMax: 120,
+    },
     resistances: {
       fire: 2,
       water: 0,
@@ -123,7 +139,11 @@ export const testArmors: ArmorPiece[] = [
     slot: 'arms',
     rank: 'master',
     rarity: 12,
-    defense: 118,
+    defense: {
+      base: 118,
+      max: 118,
+      augmentMax: 118,
+    },
     resistances: {
       fire: 1,
       water: -1,
@@ -149,7 +169,11 @@ export const testArmors: ArmorPiece[] = [
     slot: 'waist',
     rank: 'master',
     rarity: 12,
-    defense: 116,
+    defense: {
+      base: 116,
+      max: 116,
+      augmentMax: 116,
+    },
     resistances: {
       fire: 0,
       water: 2,
@@ -170,7 +194,11 @@ export const testArmors: ArmorPiece[] = [
     slot: 'legs',
     rank: 'master',
     rarity: 12,
-    defense: 122,
+    defense: {
+      base: 122,
+      max: 122,
+      augmentMax: 122,
+    },
     resistances: {
       fire: -1,
       water: 1,

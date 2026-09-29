@@ -8,7 +8,6 @@ export type ArmorSlot =
   | 'waist'
   | 'legs'
 
-
 export interface ArmorPiece {
   id: string
   name: string
@@ -18,7 +17,11 @@ export interface ArmorPiece {
   rank: 'low' | 'high' | 'master'
   rarity: number
 
-  defense: number
+  defense: {
+    base: number
+    max: number
+    augmentMax: number
+  }
 
   resistances: {
     fire: number
@@ -33,15 +36,51 @@ export interface ArmorPiece {
   slots: EquipmentSlot[]
 }
 
+export type WeaponType =
+  | 'great-sword'
+  | 'long-sword'
+  | 'sword-and-shield'
+  | 'dual-blades'
+  | 'hammer'
+  | 'hunting-horn'
+  | 'lance'
+  | 'gunlance'
+  | 'switch-axe'
+  | 'charge-blade'
+  | 'insect-glaive'
+  | 'light-bowgun'
+  | 'heavy-bowgun'
+  | 'bow'
+
+export interface WeaponElement {
+  type: string
+  damage: number
+  hidden: boolean
+}
+
 export interface Weapon {
   id: string
   name: string
-  type: string
+  type: WeaponType
+
+  rarity: number
 
   attack: number
   affinity: number
+  defenseBonus?: number
+
+  elements: WeaponElement[]
 
   slots: EquipmentSlot[]
-
   skills: ArmorSkill[]
+
+  previousWeaponId?: string
+
+  kinsectBonus?: string
+  phial?: string
+  phialPower?: number
+  shelling?: string
+  shellingLevel?: number
+
+  notes?: string
 }

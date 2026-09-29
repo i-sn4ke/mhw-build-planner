@@ -134,7 +134,7 @@ function ArmorSelector({
                       <div className="mt-1 text-sm text-[#9b9b95]">
                         Rarity {armor.rarity} ·{' '}
                         {armor.rank} rank ·{' '}
-                        {armor.defense} Defense
+                        {armor.defense.base} Defense
                       </div>
                     </div>
 
