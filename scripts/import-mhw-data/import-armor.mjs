@@ -136,7 +136,7 @@ const armor = baseArmor.map((basePiece) => {
 
   return {
     id: createId(basePiece.id),
-    name: basePiece.id,
+    name: basePiece.name_en,
 
     ...(setInfo.bonus
       ? {

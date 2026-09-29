@@ -1,4 +1,4 @@
-import type { ArmorPiece } from '../types/armor'
+import type { ArmorPiece, Weapon } from '../types/armor'
 import type {
   SetBonusDefinition,
   SetBonusThreshold,
@@ -13,13 +13,20 @@ export interface ActiveSetBonus {
 
 export function calculateSetBonuses(
   armorPieces: ArmorPiece[],
+  weapon: Weapon | null,
   setBonuses: SetBonusDefinition[],
 ): ActiveSetBonus[] {
   return setBonuses
     .map((setBonus) => {
-      const pieces = armorPieces.filter(
+      const armorPiecesCount = armorPieces.filter(
         (armor) => armor.setBonusId === setBonus.id,
       ).length
+
+      const weaponPiecesCount =
+        weapon?.setBonusId === setBonus.id ? 1 : 0
+
+      const pieces =
+        armorPiecesCount + weaponPiecesCount
 
       if (pieces === 0) {
         return null

@@ -16,12 +16,12 @@ import WeaponSelector from './components/WeaponSelector'
 
 import {calculateBuildStats,} from './engine/buildCalculator'
 
-import { testArmors } from './data/armor'
-import { testWeapons } from './data/weapons'
-import { testDecorations } from './data/decorations'
-import { testSkills } from './data/skills'
-import { testSetBonuses } from './data/setBonuses'
-import { testCharms } from './data/charms'
+import { armors as armorDefinitions } from './data/armor'
+import { weapons as weaponDefinitions } from './data/weapons'
+import { decorations as decorationDefinitions } from './data/decorations'
+import { skills } from './data/skills'
+import { setBonuses as setBonusDefinitions } from './data/setBonuses'
+import { charms as charmDefinitions } from './data/charms'
 
 import { calculateSetBonuses } from './engine/setBonuses'
 
@@ -130,7 +130,8 @@ const armorPieces = Object.values(selectedArmor).filter(
 
 const activeSetBonuses = calculateSetBonuses(
   armorPieces,
-  testSetBonuses,
+  selectedWeapon,
+  setBonusDefinitions,
 )
 
 const buildStats = calculateBuildStats(
@@ -144,7 +145,7 @@ const buildStats = calculateBuildStats(
       (equipped) => equipped.decoration.skills,
     ),
   ],
-  testSkills,
+  skills,
 )
 
   return (
@@ -301,7 +302,7 @@ const buildStats = calculateBuildStats(
 
             <SetBonusPanel
               setBonuses={activeSetBonuses}
-              skills={testSkills}
+              skills={skills}
             />
 
             <StatsPanel
@@ -316,16 +317,18 @@ const buildStats = calculateBuildStats(
       {selectorSlot && (
         <ArmorSelector
           slot={selectorSlot}
-          armors={testArmors.filter(
+          armors={armorDefinitions.filter(
             (armor) => armor.slot === selectorSlot,
           )}
+          skills={skills}
           onSelect={handleSelectArmor}
           onClose={() => setSelectorSlot(null)}
         />
       )}
       {decorationSelectorOpen && decorationTarget && (
   <DecorationSelector
-  decorations={testDecorations}
+  decorations={decorationDefinitions}
+  skills={skills}
   slotSize={
     decorationTarget.type === 'armor'
       ? selectedArmor[decorationTarget.slot]?.slots[
@@ -382,7 +385,7 @@ const buildStats = calculateBuildStats(
 
 {isCharmSelectorOpen && (
   <CharmSelector
-    charms={testCharms}
+    charms={charmDefinitions}
     onSelect={(charm) => {
       setCharm(charm)
       setIsCharmSelectorOpen(false)
@@ -393,7 +396,7 @@ const buildStats = calculateBuildStats(
 
 {isWeaponSelectorOpen && (
   <WeaponSelector
-    weapons={testWeapons}
+    weapons={weaponDefinitions}
     onSelect={(weapon) => {
       setWeapon(weapon)
       setIsWeaponSelectorOpen(false)

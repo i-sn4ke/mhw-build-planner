@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react'
 import type { ArmorPiece, ArmorSlot } from '../types/armor'
+import type { SkillDefinition } from '../types/skillDefinition'
 
 interface ArmorSelectorProps {
   armors: ArmorPiece[]
   slot: ArmorSlot
+  skills: SkillDefinition[]
   onSelect: (armor: ArmorPiece) => void
   onClose: () => void
 }
@@ -19,6 +21,7 @@ const slotNames: Record<ArmorSlot, string> = {
 function ArmorSelector({
   armors,
   slot,
+  skills,
   onSelect,
   onClose,
 }: ArmorSelectorProps) {
@@ -48,6 +51,13 @@ function ArmorSelector({
         a.name.localeCompare(b.name),
       )
   }, [armors, search, rankFilter])
+
+  const getSkillName = (skillId: string) => {
+  return (
+    skills.find((skill) => skill.id === skillId)?.name ??
+    skillId
+  )
+}
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
@@ -161,7 +171,7 @@ function ArmorSelector({
                           key={skill.skillId}
                           className="text-sm text-[#c99a45]"
                         >
-                          {skill.skillId} +{skill.level}
+                          {getSkillName(skill.skillId)} +{skill.level}
                         </span>
                       ))}
                     </div>

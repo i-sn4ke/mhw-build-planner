@@ -1,4 +1,4 @@
-import { testSkills } from '../data/skills'
+import { skills as skillDefinitions } from '../data/skills'
 
 interface SkillPanelProps {
   skills: Record<string, number>
@@ -28,14 +28,14 @@ function SkillPanel({ skills }: SkillPanelProps) {
               className="flex items-center justify-between rounded-md bg-[#15171a] px-3 py-2"
             >
               <span className="text-sm text-[#e7e4da]">
-                {testSkills.find((skill) => skill.id === skillId)?.name ??
-  skillId}
+                {skillDefinitions.find((skill) => skill.id === skillId)?.name ??
+                  skillId}
               </span>
 
               <span className="text-sm font-semibold text-[#c99a45]">
                   Lv {level} /{' '}
-                  {testSkills.find((skill) => skill.id === skillId)?.maxLevel ??
-                    '?'}
+                  {skillDefinitions.find((skill) => skill.id === skillId)?.maxLevel ??
+                    level}
               </span>
             </div>
           ))}
