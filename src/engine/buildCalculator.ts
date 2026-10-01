@@ -3,6 +3,7 @@ import type { ArmorSkill } from '../types/skill'
 import type { SkillDefinition } from '../types/skillDefinition'
 import type { SetBonusDefinition } from '../types/setBonus'
 import { calculateSkillTotals } from './skills'
+import type { CalculatedSkills } from '../types/calculatedSkill'
 import {
   calculateSetBonuses,
   getActiveSetBonusSkills,
@@ -84,7 +85,7 @@ export interface CalculatedBuildStats {
   attack: number
   affinity: number
 
-  skills: Record<string, number>
+  skills: CalculatedSkills
 }
 
 export function calculateBuildStats(

@@ -1,12 +1,16 @@
 import { skills as skillDefinitions } from '../data/skills'
+import type { CalculatedSkills } from '../types/calculatedSkill'
 
 interface SkillPanelProps {
-  skills: Record<string, number>
+  skills: CalculatedSkills
 }
-
 
 function SkillPanel({ skills }: SkillPanelProps) {
   const entries = Object.entries(skills)
+
+  const skillDefinitionById = new Map(
+    skillDefinitions.map((skill) => [skill.id, skill]),
+  )
 
   return (
     <div className="rounded-lg border border-[#30343a] bg-[#191b1f] p-5">
@@ -22,23 +26,53 @@ function SkillPanel({ skills }: SkillPanelProps) {
         </p>
       ) : (
         <div className="space-y-2">
-          {entries.map(([skillId, level]) => (
-            <div
-              key={skillId}
-              className="flex items-center justify-between rounded-md bg-[#15171a] px-3 py-2"
-            >
-              <span className="text-sm text-[#e7e4da]">
-                {skillDefinitions.find((skill) => skill.id === skillId)?.name ??
-                  skillId}
-              </span>
+          {entries.map(([skillId, calculatedSkill]) => {
+            const definition =
+              skillDefinitionById.get(skillId)
 
-              <span className="text-sm font-semibold text-[#c99a45]">
-                  Lv {level} /{' '}
-                  {skillDefinitions.find((skill) => skill.id === skillId)?.maxLevel ??
-                    level}
-              </span>
-            </div>
-          ))}
+            const hasSecretLevels =
+              definition?.secret !== undefined &&
+              definition.secret > 0
+
+            const secretLocked =
+              hasSecretLevels &&
+              !calculatedSkill.secretUnlocked
+
+            const secretUnlocked =
+              hasSecretLevels &&
+              calculatedSkill.secretUnlocked
+
+            return (
+              <div
+                key={skillId}
+                className="rounded-md bg-[#15171a] px-3 py-2"
+              >
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-sm text-[#e7e4da]">
+                    {definition?.name ?? skillId}
+                  </span>
+
+                  <span className="text-sm font-semibold text-[#c99a45]">
+                    Lv {calculatedSkill.level} /{' '}
+                    {calculatedSkill.currentMaxLevel}
+                  </span>
+                </div>
+
+                {secretLocked && (
+                  <div className="mt-1 text-xs text-[#777b82]">
+                    🔒 Secret cap:{' '}
+                    {calculatedSkill.absoluteMaxLevel}
+                  </div>
+                )}
+
+                {secretUnlocked && (
+                  <div className="mt-1 text-xs text-[#c99a45]">
+                    🔓 Secret unlocked
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </div>
       )}
     </div>
