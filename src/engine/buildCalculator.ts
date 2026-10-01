@@ -1,7 +1,12 @@
 import type { ArmorPiece, Weapon } from '../types/armor'
 import type { ArmorSkill } from '../types/skill'
 import type { SkillDefinition } from '../types/skillDefinition'
+import type { SetBonusDefinition } from '../types/setBonus'
 import { calculateSkillTotals } from './skills'
+import {
+  calculateSetBonuses,
+  getActiveSetBonusSkills,
+} from './setBonuses'
 
 export interface BuildStats {
   defense: number
@@ -87,14 +92,27 @@ export function calculateBuildStats(
   weapon: Weapon | null,
   skillSources: ArmorSkill[][],
   skillDefinitions: SkillDefinition[],
+  setBonusDefinitions: SetBonusDefinition[],
 ): CalculatedBuildStats {
-    const armorStats = calculateArmorStats(armorPieces)
-    const weaponStats = calculateWeaponStats(weapon)
+  const armorStats = calculateArmorStats(armorPieces)
+  const weaponStats = calculateWeaponStats(weapon)
 
-    const skills = calculateSkillTotals(   
-    skillSources,
+  const activeSetBonuses = calculateSetBonuses(
+    armorPieces,
+    weapon,
+    setBonusDefinitions,
+  )
+
+  const setBonusSkills =
+    getActiveSetBonusSkills(activeSetBonuses)
+
+  const skills = calculateSkillTotals(
+    [
+      ...skillSources,
+      setBonusSkills,
+    ],
     skillDefinitions,
-    )
+  )
 
   return {
     defense: armorStats.defense,

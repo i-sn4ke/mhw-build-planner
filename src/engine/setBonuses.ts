@@ -1,4 +1,5 @@
 import type { ArmorPiece, Weapon } from '../types/armor'
+import type { ArmorSkill } from '../types/skill'
 import type {
   SetBonusDefinition,
   SetBonusThreshold,
@@ -43,4 +44,20 @@ export function calculateSetBonuses(
       (setBonus): setBonus is ActiveSetBonus =>
         setBonus !== null,
     )
+}
+
+export function getActiveSetBonusSkills(
+  activeSetBonuses: ActiveSetBonus[],
+): ArmorSkill[] {
+  return activeSetBonuses.flatMap((setBonus) =>
+    setBonus.thresholds
+      .filter(
+        (threshold) =>
+          setBonus.pieces >= threshold.pieces,
+      )
+      .map((threshold) => ({
+        skillId: threshold.skillId,
+        level: 1,
+      })),
+  )
 }

@@ -216,6 +216,7 @@ const buildStats = calculateBuildStats(
     ),
   ],
   skills,
+  setBonusDefinitions,
 )
 
   return (
