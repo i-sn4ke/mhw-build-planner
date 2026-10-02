@@ -24,6 +24,11 @@ function DecorationSelector({
   const [search, setSearch] = useState('')
   const [slotFilter, setSlotFilter] = useState<number | 'all'>('all')
 
+  const skillNameById = useMemo(
+    () => new Map(skills.map((skill) => [skill.id, skill.name])),
+    [skills],
+  )
+
   const filteredDecorations = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase()
 
@@ -35,14 +40,19 @@ function DecorationSelector({
           decoration.slotSize === slotFilter,
       )
       .filter((decoration) =>
-        decoration.name.toLowerCase().includes(normalizedSearch),
+        decoration.name.toLowerCase().includes(normalizedSearch) ||
+        decoration.skills.some((skill) =>
+          (skillNameById.get(skill.skillId) ?? skill.skillId)
+            .toLowerCase()
+            .includes(normalizedSearch),
+        ),
       )
       .sort((a, b) => a.name.localeCompare(b.name))
-  }, [decorations, slotSize, slotFilter, search])
+  }, [decorations, slotSize, slotFilter, search, skillNameById])
 
     const getSkillName = (skillId: string) => {
       return (
-        skills.find((skill) => skill.id === skillId)?.name ??
+        skillNameById.get(skillId) ??
         skillId
       )
     }
@@ -75,7 +85,7 @@ function DecorationSelector({
               type="search"
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder="Search decorations..."
+              placeholder="Search decorations or skills..."
               className="min-w-0 flex-1 rounded-lg border border-[#30343a] bg-[#15171a] px-4 py-2 text-sm text-[#e7e4da] outline-none transition placeholder:text-[#666a70] focus:border-[#c99a45]"
             />
 

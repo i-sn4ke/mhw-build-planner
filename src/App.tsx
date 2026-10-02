@@ -13,6 +13,7 @@ import WeaponStatsPanel from './components/WeaponStatsPanel'
 import SetBonusPanel from './components/SetBonusPanel'
 import CharmSelector from './components/CharmSelector'
 import WeaponSelector from './components/WeaponSelector'
+import BuildGeneratorPanel from './components/BuildGeneratorPanel'
 
 import {calculateBuildStats,} from './engine/buildCalculator'
 
@@ -272,6 +273,21 @@ const buildStats = calculateBuildStats(
           </div>
         </div>
 
+        <BuildGeneratorPanel
+          weapon={selectedWeapon}
+          onSelectWeapon={() => setIsWeaponSelectorOpen(true)}
+          onApply={(savedBuild) => {
+            loadBuild(deserializeBuild(savedBuild, {
+              armors: armorDefinitions,
+              weapons: weaponDefinitions,
+              charms: charmDefinitions,
+              decorations: decorationDefinitions,
+            }))
+            setBuildFingerprint(null)
+            setShareStatus('idle')
+          }}
+        />
+
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
           <section>
 
@@ -407,8 +423,10 @@ const buildStats = calculateBuildStats(
             />
 
             <StatsPanel
-              defense={buildStats.defense}
-              resistances={buildStats.resistances}
+              stats={buildStats}
+              weapon={selectedWeapon}
+              armorPieces={armorPieces}
+              decorations={decorations}
             />
             
           </aside>
@@ -509,51 +527,6 @@ const buildStats = calculateBuildStats(
   />
 )}
 
-<div className="mt-4 rounded-lg border border-[#30343a] bg-[#191b1f] p-4">
-  <div className="mb-3">
-    <h2 className="text-sm font-semibold uppercase tracking-wider text-[#9b9b95]">
-      Equipped Decorations
-    </h2>
-  </div>
-
-  {decorations.length === 0 ? (
-    <p className="text-sm text-[#666a70]">
-      No decorations equipped.
-    </p>
-  ) : (
-    <div className="space-y-2">
-{decorations.map((equipped) => {
-  const locationKey =
-    equipped.location.type === 'armor'
-      ? `armor-${equipped.location.slot}-${equipped.location.slotIndex}`
-      : `weapon-${equipped.location.slotIndex}`
-
-  return (
-  <div
-    key={locationKey}
-    className="flex items-center justify-between rounded-md bg-[#15171a] px-3 py-2"
-  >
-    <div>
-      <p className="text-sm font-medium text-[#e7e4da]">
-        {equipped.decoration.name}
-      </p>
-
-      <p className="mt-1 text-xs text-[#666a70]">
-        {equipped.location.type === 'armor'
-          ? `${equipped.location.slot} slot ${equipped.location.slotIndex + 1}`
-          : `Weapon slot ${equipped.location.slotIndex + 1}`}
-      </p>
-    </div>
-
-    <span className="text-xs text-[#c99a45]">
-      Size {equipped.decoration.slotSize}
-    </span>
-  </div>
-  )
-})}
-    </div>
-  )}
-</div>
     </div>
   )
 }

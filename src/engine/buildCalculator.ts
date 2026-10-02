@@ -68,11 +68,14 @@ export function calculateWeaponStats(
   return {
     attack: weapon?.attack ?? 0,
     affinity: weapon?.affinity ?? 0,
+    defenseBonus: weapon?.defenseBonus ?? 0,
   }
 }
 
 export interface CalculatedBuildStats {
   defense: number
+  armorDefense: number
+  weaponDefenseBonus: number
 
   resistances: {
     fire: number
@@ -116,7 +119,9 @@ export function calculateBuildStats(
   )
 
   return {
-    defense: armorStats.defense,
+    defense: armorStats.defense + weaponStats.defenseBonus,
+    armorDefense: armorStats.defense,
+    weaponDefenseBonus: weaponStats.defenseBonus,
     resistances: armorStats.resistances,
     attack: weaponStats.attack,
     affinity: weaponStats.affinity,

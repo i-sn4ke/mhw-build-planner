@@ -1,5 +1,6 @@
 import { skills as skillDefinitions } from '../data/skills'
 import type { CalculatedSkills } from '../types/calculatedSkill'
+import SkillTooltip from './SkillTooltip'
 
 interface SkillPanelProps {
   skills: CalculatedSkills
@@ -48,9 +49,9 @@ function SkillPanel({ skills }: SkillPanelProps) {
                 className="rounded-md bg-[#15171a] px-3 py-2"
               >
                 <div className="flex items-center justify-between gap-4">
-                  <span className="text-sm text-[#e7e4da]">
-                    {definition?.name ?? skillId}
-                  </span>
+                  {definition ? (
+                    <SkillTooltip definition={definition} level={calculatedSkill.level} className="text-sm text-[#e7e4da]" />
+                  ) : <span className="text-sm text-[#e7e4da]">{skillId}</span>}
 
                   <span className="text-sm font-semibold text-[#c99a45]">
                     Lv {calculatedSkill.level} /{' '}

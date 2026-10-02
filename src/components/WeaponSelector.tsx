@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import type { Weapon } from '../types/armor'
+import { matchesWeaponElement } from '../engine/weaponFilters'
 
 interface WeaponSelectorProps {
   weapons: Weapon[]
@@ -32,6 +33,7 @@ function WeaponSelector({
   const [search, setSearch] = useState('')
   const [typeFilter, setTypeFilter] = useState('all')
   const [rarityFilter, setRarityFilter] = useState('all')
+  const [elementFilter, setElementFilter] = useState('all')
 
   const weaponTypes = useMemo(
     () =>
@@ -72,10 +74,12 @@ function WeaponSelector({
           rarityFilter === 'all' ||
           weapon.rarity === Number(rarityFilter)
 
+        const matchesElement = matchesWeaponElement(weapon, elementFilter)
+
         return (
           matchesSearch &&
           matchesType &&
-          matchesRarity
+          matchesRarity && matchesElement
         )
       })
       .sort((a, b) =>
@@ -86,17 +90,19 @@ function WeaponSelector({
     search,
     typeFilter,
     rarityFilter,
+    elementFilter,
   ])
 
   const hasActiveFilters =
     search.trim() !== '' ||
     typeFilter !== 'all' ||
-    rarityFilter !== 'all'
+    rarityFilter !== 'all' || elementFilter !== 'all'
 
   const clearFilters = () => {
     setSearch('')
     setTypeFilter('all')
     setRarityFilter('all')
+    setElementFilter('all')
   }
 
   return (
@@ -136,6 +142,7 @@ function WeaponSelector({
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <select
+              aria-label="Weapon type"
               value={typeFilter}
               onChange={(event) =>
                 setTypeFilter(event.target.value)
@@ -154,6 +161,7 @@ function WeaponSelector({
             </select>
 
             <select
+              aria-label="Weapon rarity"
               value={rarityFilter}
               onChange={(event) =>
                 setRarityFilter(event.target.value)
@@ -174,6 +182,36 @@ function WeaponSelector({
               ))}
             </select>
           </div>
+
+          <label className="block text-sm text-[#9b9b95]">
+            Element / Status
+            <select
+              aria-label="Element / Status"
+              value={elementFilter}
+              onChange={(event) => setElementFilter(event.target.value)}
+              className="mt-1 w-full rounded-md border border-[#30343a] bg-[#111214] px-3 py-2 text-sm text-[#e7e4da] outline-none focus:border-[#c99a45]"
+            >
+              <option value="all">Any element / status</option>
+              <optgroup label="Elements">
+                <option value="fire">Fire</option>
+                <option value="water">Water</option>
+                <option value="thunder">Thunder</option>
+                <option value="ice">Ice</option>
+                <option value="dragon">Dragon</option>
+              </optgroup>
+              <optgroup label="Status">
+                <option value="poison">Poison</option>
+                <option value="paralysis">Paralysis</option>
+                <option value="sleep">Sleep</option>
+                <option value="blast">Blast</option>
+              </optgroup>
+            </select>
+            {elementFilter !== 'all' && (
+              <span className="mt-1 block text-xs text-[#777b82]">
+                Hidden elements and statuses are excluded.
+              </span>
+            )}
+          </label>
 
           {hasActiveFilters && (
             <button
@@ -211,8 +249,8 @@ function WeaponSelector({
                   className="w-full rounded-md border border-[#30343a] bg-[#111214] p-4 text-left transition hover:border-[#c99a45] hover:bg-[#1d2024]"
                 >
                   <div className="flex items-center justify-between gap-4">
-                    <div>
-                      <div className="font-medium text-[#e7e4da]">
+                    <div className="min-w-0">
+                      <div className="break-words font-medium text-[#e7e4da]">
                         {weapon.name}
                       </div>
 
@@ -232,6 +270,23 @@ function WeaponSelector({
                       </div>
                     </div>
                   </div>
+
+                  {weapon.elements.length > 0 ? (
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {weapon.elements.map((element, index) => (
+                        <span
+                          key={`${weapon.id}-element-${index}`}
+                          className="inline-flex flex-wrap items-center gap-1 rounded bg-[#191b1f] px-2 py-1 text-xs text-[#e7e4da]"
+                        >
+                          <span>{element.type}</span>
+                          <span className="font-semibold text-[#c99a45]">{element.damage}</span>
+                          {element.hidden && <span className="text-[#777b82]">Hidden</span>}
+                        </span>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="mt-3 text-xs text-[#777b82]">Element / Status: None</p>
+                  )}
 
                   {weapon.slots.length > 0 && (
                     <div className="mt-3 flex gap-1">
