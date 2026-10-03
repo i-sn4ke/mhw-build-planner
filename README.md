@@ -68,24 +68,6 @@ I cataloghi di armi, armature, amuleti, gioielli, skill e Set Bonuses sono già 
 
 **Non modificare manualmente i JSON generati e non sostituirli con mock.** Gli script in `scripts/import-mhw-data/` leggono il progetto sorgente locale `../MHWorldData/source_data/` e scrivono i cataloghi. La rigenerazione richiede quella sorgente ed è un'operazione separata dal normale sviluppo; l'import delle armi dipende anche dai cataloghi skill e Set Bonuses già generati.
 
-## GitHub Pages
-
-URL previsto dopo il primo deploy riuscito:
-
-**https://i-sn4ke.github.io/mhw-build-planner/**
-
-Il workflow `.github/workflows/deploy-pages.yml` si avvia dai push su `main` oppure manualmente dalla scheda **Actions**. Usa Node.js 24, installa con `npm ci`, esegue `npm run build` e pubblica `dist/` attraverso le Actions ufficiali di GitHub Pages.
-
-Prima del primo deploy:
-
-1. Nel repository aprire **Settings → Pages**.
-2. In **Build and deployment → Source** selezionare **GitHub Actions**.
-3. Assicurarsi che GitHub Actions sia abilitato e che eventuali regole dell'environment `github-pages` consentano il deploy da `main`.
-
-Per GitHub Pages sul piano gratuito il repository deve essere pubblico. Non sono necessari token personali o servizi di hosting aggiuntivi. Consultare la [documentazione GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
-
-Vite usa `/mhw-build-planner/` per build e preview e `/` per lo sviluppo locale. Se cambia il nome del repository o si configura un dominio personalizzato, aggiornare il `base` in `vite.config.ts`. La SPA non usa React Router e non richiede un fallback `404.html`.
-
 ## Asset e attribuzioni
 
 Monster Hunter è una proprietà di Capcom; questo è un progetto non ufficiale. Le origini delle risorse grafiche sono documentate in [src/assets/hunter/README.md](src/assets/hunter/README.md). Le icone provenienti da MHWorldData includono la relativa licenza MIT. Le licenze dei font sono incluse in [src/assets/fonts/](src/assets/fonts/).
