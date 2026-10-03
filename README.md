@@ -1,75 +1,91 @@
-# React + TypeScript + Vite
+# Monster Hunter: World + Iceborne Build Planner
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Un planner per creare, verificare e condividere build di **Monster Hunter: World e Iceborne**, con dati reali importati localmente e un'interfaccia ispirata ai menu di gioco.
 
-Currently, two official plugins are available:
+Il progetto è una SPA in React e TypeScript, costruita con Vite, Tailwind CSS e Zustand. Il calcolo e la generazione delle build avvengono nel browser, senza un backend.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Funzionalità
 
-## React Compiler
+- Builder manuale con arma, cinque pezzi di armatura, amuleto e gioielli negli slot disponibili.
+- Selettori con ricerca e filtri; ricerca dei gioielli anche per nome delle skill conferite.
+- Visualizzazione di statistiche, elementi e stati dell'arma, difesa e resistenze.
+- Aggregazione delle skill, tooltip descrittivi, Set Bonuses, Secret skill caps e Inheritance.
+- Simulazione locale dei bonus ad attacco e affinity delle skill supportate, con condizioni attivabili manualmente.
+- Generazione di fino a tre build che soddisfano i livelli minimi delle skill richieste, mantenendo l'arma scelta.
+- Condivisione delle build attraverso URL con query parameter `?b=<payload>`.
+- Layout responsive, icone di categoria colorate per rarità e font IM Fell English SC e Cinzel serviti localmente.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Avvio locale
 
-## Expanding the ESLint configuration
+Usare **Node.js 24** e npm. Dalla directory del progetto:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```sh
+npm ci
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Aprire l'indirizzo indicato da Vite nel terminale. In sviluppo l'app è servita dal percorso `/`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Comando | Scopo |
+| --- | --- |
+| `npm run dev` | Server di sviluppo con aggiornamento automatico |
+| `npm run build` | Controllo TypeScript e build di produzione in `dist/` |
+| `npm run preview` | Anteprima locale della build di produzione |
+| `npm run lint` | Controlli ESLint |
+| `npm test` | Test dei calcoli, delle skill e del generatore |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Per l'anteprima eseguire prima `npm run build`, poi `npm run preview` e aprire il percorso `/mhw-build-planner/` sull'indirizzo indicato nel terminale.
 
+## Generatore e simulazione
+
+Il generatore richiede un'arma selezionata, un rank e almeno una skill con il suo livello minimo. Il rank limita **solo le armature**; amuleti e gioielli vengono cercati nell'intero catalogo, assumendo copie illimitate dei gioielli. La ricerca avviene in un Web Worker, con limiti di tempo e di nodi esplorati. Se raggiunge un limite senza trovare build, non prova che la combinazione sia impossibile. I risultati soddisfano le skill richieste, senza una classifica per danno.
+
+La simulazione offensiva applica le skill attualmente supportate: Attack Boost, Critical Eye, Agitator, Weakness Exploit, Peak Performance, Resentment, Maximum Might, Latent Power e Critical Draw. Le condizioni manuali modificano la simulazione locale. Non è un calcolatore completo del danno: sharpness, moltiplicatori dei critici e formule di danno non sono simulati.
+
+I link condivisi contengono la configurazione dell'equipaggiamento. Le condizioni manuali della simulazione non fanno parte del payload. Il formato di sharing mantiene il percorso corrente dell'app e funziona anche sotto il percorso di GitHub Pages.
+
+## Struttura
+
+```text
+src/
+  components/       Builder, selettori e pannelli dell'interfaccia
+  engine/           Calcoli, generazione, simulazione e sharing
+  store/            Stato della build gestito con Zustand
+  types/            Tipi del dominio
+  data/             Accesso ai cataloghi
+    generated/      JSON reali prodotti dagli importer
+  workers/          Generazione delle build fuori dal thread principale
+  assets/           Font, icone e risorse grafiche
+scripts/import-mhw-data/  Importer dei dati locali
+tests/                   Test eseguiti con Node.js
+design/                  Campionario statico degli asset dell'interfaccia
+.github/workflows/       Deploy automatico su GitHub Pages
 ```
+
+## Dati
+
+I cataloghi di armi, armature, amuleti, gioielli, skill e Set Bonuses sono già presenti in `src/data/generated/`. Non occorrono chiamate a un'API per usarli e non è necessario eseguire gli importer per avviare o pubblicare l'app.
+
+**Non modificare manualmente i JSON generati e non sostituirli con mock.** Gli script in `scripts/import-mhw-data/` leggono il progetto sorgente locale `../MHWorldData/source_data/` e scrivono i cataloghi. La rigenerazione richiede quella sorgente ed è un'operazione separata dal normale sviluppo; l'import delle armi dipende anche dai cataloghi skill e Set Bonuses già generati.
+
+## GitHub Pages
+
+URL previsto dopo il primo deploy riuscito:
+
+**https://i-sn4ke.github.io/mhw-build-planner/**
+
+Il workflow `.github/workflows/deploy-pages.yml` si avvia dai push su `main` oppure manualmente dalla scheda **Actions**. Usa Node.js 24, installa con `npm ci`, esegue `npm run build` e pubblica `dist/` attraverso le Actions ufficiali di GitHub Pages.
+
+Prima del primo deploy:
+
+1. Nel repository aprire **Settings → Pages**.
+2. In **Build and deployment → Source** selezionare **GitHub Actions**.
+3. Assicurarsi che GitHub Actions sia abilitato e che eventuali regole dell'environment `github-pages` consentano il deploy da `main`.
+
+Per GitHub Pages sul piano gratuito il repository deve essere pubblico. Non sono necessari token personali o servizi di hosting aggiuntivi. Consultare la [documentazione GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
+
+Vite usa `/mhw-build-planner/` per build e preview e `/` per lo sviluppo locale. Se cambia il nome del repository o si configura un dominio personalizzato, aggiornare il `base` in `vite.config.ts`. La SPA non usa React Router e non richiede un fallback `404.html`.
+
+## Asset e attribuzioni
+
+Monster Hunter è una proprietà di Capcom; questo è un progetto non ufficiale. Le origini delle risorse grafiche sono documentate in [src/assets/hunter/README.md](src/assets/hunter/README.md). Le icone provenienti da MHWorldData includono la relativa licenza MIT. Le licenze dei font sono incluse in [src/assets/fonts/](src/assets/fonts/).
