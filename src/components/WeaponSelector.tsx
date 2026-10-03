@@ -1,9 +1,12 @@
 import { useMemo, useState } from 'react'
 import type { Weapon } from '../types/armor'
+import type { SkillDefinition } from '../types/skillDefinition'
+import { matchesEquipmentSearch } from '../engine/equipmentFilters'
 import { matchesWeaponElement } from '../engine/weaponFilters'
 
 interface WeaponSelectorProps {
   weapons: Weapon[]
+  skills: SkillDefinition[]
   onSelect: (weapon: Weapon) => void
   onClose: () => void
 }
@@ -27,6 +30,7 @@ const weaponTypeNames: Record<Weapon['type'], string> = {
 
 function WeaponSelector({
   weapons,
+  skills,
   onSelect,
   onClose,
 }: WeaponSelectorProps) {
@@ -53,6 +57,11 @@ function WeaponSelector({
     [weapons],
   )
 
+  const skillNameById = useMemo(
+    () => new Map(skills.map((skill) => [skill.id, skill.name])),
+    [skills],
+  )
+
   const filteredWeapons = useMemo(() => {
     const normalizedSearch = search
       .trim()
@@ -60,11 +69,7 @@ function WeaponSelector({
 
     return weapons
       .filter((weapon) => {
-        const matchesSearch =
-          normalizedSearch === '' ||
-          weapon.name
-            .toLowerCase()
-            .includes(normalizedSearch)
+        const matchesSearch = matchesEquipmentSearch(weapon, normalizedSearch, skillNameById)
 
         const matchesType =
           typeFilter === 'all' ||
@@ -87,6 +92,7 @@ function WeaponSelector({
       )
   }, [
     weapons,
+    skillNameById,
     search,
     typeFilter,
     rarityFilter,
@@ -136,7 +142,7 @@ function WeaponSelector({
             onChange={(event) =>
               setSearch(event.target.value)
             }
-            placeholder="Search weapons..."
+            placeholder="Search weapons or skills..."
             className="w-full rounded-md border border-hunter-border bg-hunter-ink px-3 py-2 text-sm text-hunter-text outline-none placeholder:text-hunter-muted focus:border-hunter-gold"
           />
 
@@ -286,6 +292,19 @@ function WeaponSelector({
                     </div>
                   ) : (
                     <p className="mt-3 text-xs text-hunter-muted">Element / Status: None</p>
+                  )}
+
+                  {weapon.skills.length > 0 && (
+                    <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
+                      {weapon.skills.map((skill) => (
+                        <span
+                          key={skill.skillId}
+                          className="text-sm text-hunter-gold"
+                        >
+                          {skillNameById.get(skill.skillId) ?? skill.skillId} +{skill.level}
+                        </span>
+                      ))}
+                    </div>
                   )}
 
                   {weapon.slots.length > 0 && (

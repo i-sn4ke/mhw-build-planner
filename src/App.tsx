@@ -506,6 +506,7 @@ const buildStats = calculateBuildStats(
 {isWeaponSelectorOpen && (
   <WeaponSelector
     weapons={weaponDefinitions}
+    skills={skills}
     onSelect={(weapon) => {
       setWeapon(weapon)
       setIsWeaponSelectorOpen(false)

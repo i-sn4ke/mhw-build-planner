@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import type { ArmorPiece, ArmorSlot } from '../types/armor'
 import type { SkillDefinition } from '../types/skillDefinition'
+import { matchesEquipmentSearch } from '../engine/equipmentFilters'
 
 interface ArmorSelectorProps {
   armors: ArmorPiece[]
@@ -28,6 +29,11 @@ function ArmorSelector({
   const [search, setSearch] = useState('')
   const [rankFilter, setRankFilter] = useState('all')
 
+  const skillNameById = useMemo(
+    () => new Map(skills.map((skill) => [skill.id, skill.name])),
+    [skills],
+  )
+
   const filteredArmors = useMemo(() => {
     const normalizedSearch = search
       .trim()
@@ -35,11 +41,7 @@ function ArmorSelector({
 
     return armors
       .filter((armor) => {
-        const matchesSearch =
-          normalizedSearch === '' ||
-          armor.name
-            .toLowerCase()
-            .includes(normalizedSearch)
+        const matchesSearch = matchesEquipmentSearch(armor, normalizedSearch, skillNameById)
 
         const matchesRank =
           rankFilter === 'all' ||
@@ -50,14 +52,11 @@ function ArmorSelector({
       .sort((a, b) =>
         a.name.localeCompare(b.name),
       )
-  }, [armors, search, rankFilter])
+  }, [armors, search, rankFilter, skillNameById])
 
   const getSkillName = (skillId: string) => {
-  return (
-    skills.find((skill) => skill.id === skillId)?.name ??
-    skillId
-  )
-}
+    return skillNameById.get(skillId) ?? skillId
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
@@ -90,7 +89,7 @@ function ArmorSelector({
             onChange={(event) =>
               setSearch(event.target.value)
             }
-            placeholder={`Search ${slotNames[slot].toLowerCase()}...`}
+            placeholder={`Search ${slotNames[slot].toLowerCase()} or skills...`}
             className="w-full rounded-md border border-hunter-border bg-hunter-ink px-3 py-2 text-sm text-hunter-text outline-none placeholder:text-hunter-muted focus:border-hunter-gold"
           />
 

@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { generateBuilds, calculateBuildStats, deserializeBuild, serializeBuild, matchesWeaponElement, catalog } from './engineLoader.mjs'
+import { generateBuilds, calculateBuildStats, deserializeBuild, serializeBuild, matchesWeaponElement, matchesEquipmentSearch, catalog } from './engineLoader.mjs'
 
 const slots = ['head', 'chest', 'arms', 'waist', 'legs']
 const skill = (skillId, level) => ({ skillId, level })
@@ -153,6 +153,17 @@ test('element filtering excludes hidden elements but Any accepts statuses and hi
   assert.equal(matchesWeaponElement(weapon({ elements: [{ type: 'Fire', damage: 300, hidden: false }] }), 'fire'), true)
   assert.equal(matchesWeaponElement(weapon({ elements: [{ type: 'Fire', damage: 300, hidden: true }] }), 'fire'), false)
   assert.equal(matchesWeaponElement(weapon({ elements: [{ type: 'Poison', damage: 300, hidden: true }] }), 'all'), true)
+})
+
+test('equipment search matches item names and names of their associated skills', () => {
+  const entry = weapon({ name: 'Frostfang Great Sword', skills: [skill('critical-eye', 2)] })
+  const names = new Map([['critical-eye', 'Critical Eye']])
+  assert.equal(matchesEquipmentSearch(entry, 'frostfang', names), true)
+  assert.equal(matchesEquipmentSearch(entry, 'critical', names), true)
+  assert.equal(matchesEquipmentSearch(entry, 'eye', names), true)
+  assert.equal(matchesEquipmentSearch({ name: 'Rathalos Helm', skills: [skill('critical-eye', 1)] }, 'critical', names), true)
+  assert.equal(matchesEquipmentSearch(entry, '  ', names), true)
+  assert.equal(matchesEquipmentSearch(entry, 'attack boost', names), false)
 })
 
 test('real catalog supports Poison, Paralysis, Sleep and Blast filters with hidden attributes excluded', () => {
