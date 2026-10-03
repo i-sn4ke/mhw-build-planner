@@ -11,8 +11,10 @@ interface ArmorSlotProps {
   slot: ArmorSlotType
   armor?: ArmorPiece
   decorations: EquippedDecoration[]
+  isFixedForGeneration: boolean
   onSelect: () => void
   onClear: () => void
+  onToggleFixedForGeneration: () => void
   onDecorationSlotSelect: (slotIndex: number) => void
 }
 
@@ -30,8 +32,10 @@ function ArmorSlot({
   slot,
   armor,
   decorations,
+  isFixedForGeneration,
   onSelect,
   onClear,
+  onToggleFixedForGeneration,
   onDecorationSlotSelect,
 }: ArmorSlotProps) {
   const getDecoration = (slotIndex: number) =>
@@ -55,6 +59,10 @@ function ArmorSlot({
             <p className="mt-1 text-xs text-hunter-gold">{armor.skills.map((skill) => `${skillNameById.get(skill.skillId) ?? skill.skillId} +${skill.level}`).join(' · ')}</p>
           </>}
         </button>
+      {armor && <label className="mt-2 inline-flex cursor-pointer items-center gap-2 text-xs text-hunter-muted">
+        <input type="checkbox" checked={isFixedForGeneration} onChange={onToggleFixedForGeneration} className="accent-hunter-gold" aria-label={`Keep ${slotNames[slot]} armor fixed in generated builds`} />
+        Keep for generated builds
+      </label>}
       {armor && armor.slots.length > 0 && <div className="hunter-armor-slots mt-2 flex flex-wrap gap-1">
         {armor.slots.map((slot, index) => {
           const equipped = getDecoration(index)

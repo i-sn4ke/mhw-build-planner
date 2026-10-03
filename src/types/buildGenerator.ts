@@ -1,4 +1,4 @@
-import type { ArmorPiece } from './armor'
+import type { ArmorPiece, ArmorSlot, WeaponType } from './armor'
 import type { CalculatedSkills } from './calculatedSkill'
 import type { SavedBuildData } from './savedBuild'
 
@@ -8,9 +8,17 @@ export interface SkillRequirement {
 }
 
 export interface BuildGeneratorRequest {
+  weaponType: WeaponType
+  rank: ArmorPiece['rank']
+  skills: SkillRequirement[]
+  fixedArmor?: Partial<Record<ArmorSlot, string>>
+}
+
+export interface FixedWeaponBuildGeneratorRequest {
   weaponId: string
   rank: ArmorPiece['rank']
   skills: SkillRequirement[]
+  fixedArmor?: Partial<Record<ArmorSlot, string>>
 }
 
 export interface GeneratedBuild {

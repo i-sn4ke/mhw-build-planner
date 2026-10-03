@@ -1,11 +1,11 @@
-import type { ArmorPiece, ArmorSlot, Weapon } from '../types/armor'
+import type { ArmorPiece, ArmorSlot, Weapon, WeaponType } from '../types/armor'
 import type { Charm } from '../types/charm'
 import type { Decoration } from '../types/decoration'
 import type { ArmorSkill } from '../types/skill'
 import type { SkillDefinition } from '../types/skillDefinition'
 import type { SetBonusDefinition } from '../types/setBonus'
 import type { EquippedDecoration, DecorationLocation } from '../types/equipment'
-import type { BuildGeneratorRequest, BuildGeneratorResult } from '../types/buildGenerator'
+import type { BuildGeneratorRequest, BuildGeneratorResult, FixedWeaponBuildGeneratorRequest } from '../types/buildGenerator'
 import { calculateBuildStats } from './buildCalculator'
 import { calculateSetBonuses, getActiveSetBonusSkills } from './setBonuses'
 import { serializeBuild } from './buildSerializer'
@@ -30,10 +30,34 @@ interface SearchSlot {
 }
 
 const armorSlots: ArmorSlot[] = ['head', 'chest', 'arms', 'waist', 'legs']
+const maxLayoutCandidates = 48
+
+function validateFixedArmor(
+  requested: Partial<Record<ArmorSlot, string>> | undefined,
+  rank: ArmorPiece['rank'],
+  database: GeneratorDatabase,
+): Partial<Record<ArmorSlot, string>> {
+  const fixedArmor: Partial<Record<ArmorSlot, string>> = {}
+  for (const [slotValue, id] of Object.entries(requested ?? {})) {
+    if (!armorSlots.includes(slotValue as ArmorSlot)) {
+      throw new Error('A fixed armor piece uses an invalid slot.')
+    }
+    const slot = slotValue as ArmorSlot
+    const piece = database.armors.find((armor) => armor.id === id)
+    if (!piece || piece.slot !== slot) {
+      throw new Error('A fixed armor piece does not match its selected slot.')
+    }
+    if (piece.rank !== rank) {
+      throw new Error('A fixed armor piece must match the selected armor rank.')
+    }
+    fixedArmor[slot] = piece.id
+  }
+  return fixedArmor
+}
 
 /** Bounded search for up to three valid builds, without damage ranking. */
 export function generateBuilds(
-  request: BuildGeneratorRequest,
+  request: FixedWeaponBuildGeneratorRequest,
   database: GeneratorDatabase,
   limits: SearchLimits = {},
 ): BuildGeneratorResult {
@@ -42,12 +66,16 @@ export function generateBuilds(
   const maxTimeMs = limits.maxTimeMs ?? 10_000
   let visitedNodes = 0
   let limited = false
-  const builds: BuildGeneratorResult['builds'] = []
+  const layoutBuilds: { layout: string[]; build: BuildGeneratorResult['builds'][number] }[] = []
+  const fallbackBuilds: BuildGeneratorResult['builds'] = []
+  const seenArmorLayouts = new Set<string>()
+  const seenArmorCombinations = new Set<string>()
   const weapon = database.weapons.find((entry) => entry.id === request.weaponId)
   const definitions = new Map(database.skills.map((entry) => [entry.id, entry]))
   if (!weapon || !['low', 'high', 'master'].includes(request.rank) || !request.skills.length) {
     throw new Error('Choose a weapon, armor rank and at least one required skill.')
   }
+  const fixedArmor = validateFixedArmor(request.fixedArmor, request.rank, database)
   const required = new Map<string, number>()
   for (const entry of request.skills) {
     const definition = definitions.get(entry.skillId)
@@ -90,7 +118,7 @@ export function generateBuilds(
   }
   const signature = (values: number[]) => values.map((value, index) => Math.min(value, caps[index])).join(',')
   const visit = () => {
-    if (limited || builds.length === 3) return false
+    if (limited || layoutBuilds.length >= maxLayoutCandidates) return false
     visitedNodes++
     if (visitedNodes > maxNodes || (visitedNodes % 256 === 0 && performance.now() - started >= maxTimeMs)) {
       limited = true
@@ -98,12 +126,38 @@ export function generateBuilds(
     }
     return true
   }
-  const finish = (): BuildGeneratorResult => ({
-    builds,
-    status: builds.length === 3 ? 'found' : limited ? 'limit' : 'exhausted',
-    visitedNodes,
-    elapsedMs: performance.now() - started,
-  })
+  const finish = (): BuildGeneratorResult => {
+    const selected = layoutBuilds.length ? [layoutBuilds[0]] : []
+    const remaining = layoutBuilds.slice(1)
+    const distance = (a: string[], b: string[]) =>
+      a.reduce((total, family, index) => total + Number(family !== b[index]), 0)
+
+    while (selected.length < 3 && remaining.length) {
+      let bestIndex = 0
+      let bestDistance = -1
+      for (let index = 0; index < remaining.length; index++) {
+        const minDistance = Math.min(...selected.map((entry) => distance(entry.layout, remaining[index].layout)))
+        if (minDistance > bestDistance) {
+          bestDistance = minDistance
+          bestIndex = index
+        }
+      }
+      selected.push(remaining.splice(bestIndex, 1)[0])
+    }
+
+    const builds = [
+      ...selected.map((entry) => entry.build),
+      ...fallbackBuilds.slice(0, 3 - selected.length),
+    ]
+
+    return {
+      builds,
+      status: selected.length === 3 || (!limited && builds.length === 3)
+        ? 'found' : limited ? 'limit' : 'exhausted',
+      visitedNodes,
+      elapsedMs: performance.now() - started,
+    }
+  }
 
   // Identical relevant skill vectors need only the smallest decoration slot.
   const decorationByVector = new Map<string, { decoration: Decoration; values: number[] }>()
@@ -137,9 +191,11 @@ export function generateBuilds(
     })
   }
   const groups = armorSlots.map((slot) => representatives(
-    database.armors.filter((armor) => armor.rank === request.rank && armor.slot === slot)
+    database.armors.filter((armor) => armor.rank === request.rank && armor.slot === slot &&
+      (!fixedArmor[slot] || armor.id === fixedArmor[slot]),
+    )
       .sort((a, b) => equipmentScore(b) - equipmentScore(a) || a.id.localeCompare(b.id)),
-    (armor) => `${signature(vector(armor.skills))}|${armor.slots.map((slot) => slot.size).sort().join(',')}|${relevantSetIds.has(armor.setBonusId ?? '') ? armor.setBonusId : ''}`,
+    (armor) => `${signature(vector(armor.skills))}|${armor.slots.map((slot) => slot.size).sort().join(',')}|${armor.setBonusId ?? armor.name.replace(/\s+[αβ](?:\+)?$/u, '')}`,
   ))
   if (groups.some((group) => !group.length)) return finish()
   const charms: (Charm | null)[] = representatives(
@@ -220,10 +276,27 @@ export function generateBuilds(
       if ([...required].some(([id, level]) => (stats.skills[id]?.level ?? 0) < level)) {
         throw new Error('Generated build failed skill validation.')
       }
-      builds.push({ build: serializeBuild({
+      const armorCombination = armorSlots
+        .map((slot) => pieces.find((piece) => piece.slot === slot)!.id)
+        .join('|')
+      if (seenArmorCombinations.has(armorCombination)) return
+      seenArmorCombinations.add(armorCombination)
+      const armorLayout = armorSlots.map((slot) => {
+        const armor = pieces.find((piece) => piece.slot === slot)!
+        const family = armor.setBonusId ?? armor.name.replace(/\s+[αβ](?:\+)?$/u, '')
+        return `${slot}:${family}`
+      })
+      const candidate = { build: serializeBuild({
         selectedArmor: Object.fromEntries(pieces.map((armor) => [armor.slot, armor])),
         selectedWeapon: weapon!, selectedCharm: charm, decorations: equipped,
-      }), skills: stats.skills })
+      }), skills: stats.skills }
+      const layoutKey = armorLayout.join('|')
+      if (seenArmorLayouts.has(layoutKey)) {
+        if (fallbackBuilds.length < 3) fallbackBuilds.push(candidate)
+        return
+      }
+      seenArmorLayouts.add(layoutKey)
+      layoutBuilds.push({ layout: armorLayout, build: candidate })
       return
     }
     for (const armor of groups[depth]) {
@@ -232,12 +305,120 @@ export function generateBuilds(
       const nextSets = new Map(setCounts)
       if (armor.setBonusId) nextSets.set(armor.setBonusId, (nextSets.get(armor.setBonusId) ?? 0) + 1)
       searchArmor(depth + 1, add(values, vector(armor.skills)), nextSlots, nextSets, [...pieces, armor], charm)
-      if (limited || builds.length === 3) return
+      if (limited || layoutBuilds.length >= maxLayoutCandidates) return
     }
   }
   for (const charm of charms) {
     searchArmor(0, add(weaponValues, vector(charm?.skills ?? [])), weaponSlots, initialSetCounts, [], charm)
-    if (limited || builds.length === 3) break
+    if (limited || layoutBuilds.length >= maxLayoutCandidates) break
   }
   return finish()
+}
+
+/**
+ * Searches one weapon class at the selected progression rank, returning valid
+ * alternatives with distinct weapons. Rarity is the catalog's rank proxy:
+ * Low 1–4, High 5–8, and Master 9–12.
+ */
+export function generateBuildsForWeaponType(
+  request: BuildGeneratorRequest,
+  database: GeneratorDatabase,
+  limits: SearchLimits = {},
+): BuildGeneratorResult {
+  const started = performance.now()
+  const maxNodes = limits.maxNodes ?? 200_000
+  const maxTimeMs = limits.maxTimeMs ?? 10_000
+  const rarityByRank: Record<ArmorPiece['rank'], [number, number]> = {
+    low: [1, 4],
+    high: [5, 8],
+    master: [9, 12],
+  }
+  const ranks = Object.keys(rarityByRank)
+  const types: WeaponType[] = [
+    'great-sword', 'long-sword', 'sword-and-shield', 'dual-blades', 'hammer',
+    'hunting-horn', 'lance', 'gunlance', 'switch-axe', 'charge-blade',
+    'insect-glaive', 'light-bowgun', 'heavy-bowgun', 'bow',
+  ]
+  if (!ranks.includes(request.rank) || !types.includes(request.weaponType) || !request.skills.length) {
+    throw new Error('Choose a weapon type, armor rank and at least one required skill.')
+  }
+  const fixedArmor = validateFixedArmor(request.fixedArmor, request.rank, database)
+
+  const [minRarity, maxRarity] = rarityByRank[request.rank]
+  const candidates = database.weapons.filter((weapon) =>
+    weapon.type === request.weaponType && weapon.rarity >= minRarity && weapon.rarity <= maxRarity,
+  )
+  const builds: BuildGeneratorResult['builds'] = []
+  const weaponsById = new Map(database.weapons.map((weapon) => [weapon.id, weapon]))
+  const getWeaponFamily = (weapon: Weapon) => {
+    let current = weapon
+    const visited = new Set<string>()
+    while (current.previousWeaponId && !visited.has(current.id)) {
+      visited.add(current.id)
+      const previous = weaponsById.get(current.previousWeaponId)
+      if (!previous) break
+      current = previous
+    }
+    return current.id
+  }
+  let visitedNodes = 0
+  let searchWasLimited = false
+  const successfulFamilies = new Set<string>()
+  const fallbackCandidates: Weapon[] = []
+  const attemptedWeapons = new Set<string>()
+
+  const searchWeapon = (weapon: Weapon) => {
+    const remainingNodes = maxNodes - visitedNodes
+    const remainingTime = maxTimeMs - (performance.now() - started)
+    if (remainingNodes <= 0 || remainingTime <= 0) {
+      searchWasLimited = true
+      return null
+    }
+
+    attemptedWeapons.add(weapon.id)
+    const result = generateBuilds(
+      { weaponId: weapon.id, rank: request.rank, skills: request.skills, fixedArmor },
+      database,
+      { maxNodes: remainingNodes, maxTimeMs: remainingTime },
+    )
+    visitedNodes += result.visitedNodes
+    searchWasLimited ||= result.status === 'limit'
+    return result
+  }
+
+  for (const weapon of candidates) {
+    const family = getWeaponFamily(weapon)
+    if (successfulFamilies.has(family)) {
+      fallbackCandidates.push(weapon)
+      continue
+    }
+
+    const result = searchWeapon(weapon)
+    if (!result) break
+
+    if (result.builds.length) {
+      builds.push(result.builds[0])
+      successfulFamilies.add(family)
+    }
+    if (successfulFamilies.size === 3) break
+  }
+
+  // Prefer different weapon-tree lines; use other eligible weapons only when
+  // the requested skills leave fewer than three valid lines.
+  if (builds.length < 3 && !searchWasLimited) {
+    for (const weapon of fallbackCandidates) {
+      if (attemptedWeapons.has(weapon.id)) continue
+      const result = searchWeapon(weapon)
+      if (!result) break
+      if (result.builds.length) builds.push(result.builds[0])
+      if (builds.length === 3) break
+    }
+  }
+
+  return {
+    builds,
+    status: builds.length === 3 ? 'found' : searchWasLimited ? 'limit' : 'exhausted',
+    visitedNodes,
+    elapsedMs: performance.now() - started,
+  }
 }

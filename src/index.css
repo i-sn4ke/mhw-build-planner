@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  --color-hunter-ink: #11160f;
-  --color-hunter-panel: #1a2018;
-  --color-hunter-inset: #141a13;
-  --color-hunter-border: #68583b;
-  --color-hunter-trim: #95784b;
-  --color-hunter-hover: #303927;
-  --color-hunter-text: #f0ebdb;
-  --color-hunter-muted: #c1c2ad;
-  --color-hunter-gold: #e2c17c;
+  --color-hunter-ink: #10150f;
+  --color-hunter-panel: #192018;
+  --color-hunter-inset: #121912;
+  --color-hunter-border: #856342;
+  --color-hunter-trim: #ad8050;
+  --color-hunter-hover: #2b3427;
+  --color-hunter-text: #f0eadb;
+  --color-hunter-muted: #d0c7b3;
+  --color-hunter-gold: #e7c47f;
   --color-hunter-positive: #acd493;
   --color-hunter-negative: #ed9390;
 }
@@ -43,7 +43,12 @@ body {
   margin: 0 auto;
   border: 9px solid #4c3320;
   border-radius: 2px;
-  background: #ceb181 url('./assets/hunter/parchment.png') center / 640px;
+  background-color: #b9b2a2;
+  background-image:
+    repeating-linear-gradient(0deg, #59483206 0 1px, transparent 1px 5px),
+    linear-gradient(#b0aea3ad, #b0aea3ad),
+    url('./assets/hunter/parchment.png');
+  background-size: auto, auto, 640px;
   box-shadow: 0 0 0 1px #96704a, inset 0 0 0 2px #342016, 0 14px 50px #000b;
 }
 

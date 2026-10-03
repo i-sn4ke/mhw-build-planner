@@ -12,23 +12,23 @@
 }
 
 .hunter-header, .hunter-generator, .hunter-equipment-row, .hunter-weapon-row {
-  border: 9px solid transparent;
-  border-image: var(--hunter-menu-frame) 115 / 9px / 0 stretch;
+  border: 10px solid transparent;
+  border-image: var(--hunter-menu-frame) 115 / 10px / 0 stretch;
   background: linear-gradient(100deg, #20271a, #0d140f);
   background-clip: padding-box;
   box-shadow: none;
   border-radius: 0;
 }
 .hunter-header { padding: 6px 16px; }
-.hunter-generator { border-width: 7px; border-image-width: 7px; }
+.hunter-generator { border-width: 8px; border-image-width: 8px; }
 .hunter-generator > summary { padding: 2px 8px; }
 .hunter-equipment-row, .hunter-weapon-row { padding: 5px 8px; }
-.hunter-equipment-row + .hunter-equipment-row { border-top-width: 9px; }
+.hunter-equipment-row + .hunter-equipment-row { border-top-width: 10px; }
 .hunter-equipment-row::before, .hunter-equipment-row::after { display: none; }
 
 .hunter-equipment-icon {
-  border: 6px solid transparent;
-  border-image: var(--hunter-menu-frame) 115 / 6px / 0 stretch;
+  border: 7px solid transparent;
+  border-image: var(--hunter-menu-frame) 115 / 7px / 0 stretch;
   padding: 2px;
   background: linear-gradient(135deg, #253023, #090e0a);
   background-clip: padding-box;
@@ -53,8 +53,8 @@
   height: auto;
   z-index: -1;
   pointer-events: none;
-  border: 9px solid transparent;
-  border-image: var(--hunter-menu-frame) 115 / 9px / 0 stretch;
+  border: 10px solid transparent;
+  border-image: var(--hunter-menu-frame) 115 / 10px / 0 stretch;
   background: linear-gradient(100deg, #20271a, #0d140f);
   background-clip: padding-box;
 }
@@ -92,8 +92,8 @@
 /* Skin action buttons only: skill tooltip triggers and item cards retain their layout. */
 .hunter-editor-toolbar button, .hunter-weapon-row > div:first-child button:not([title]),
 .hunter-charm-row > div:first-child button:not([title]), .hunter-condition-grid > button, .hunter-generator button:not([aria-label]) {
-  border: 7px solid transparent;
-  border-image: var(--hunter-button-surface) 155 fill / 7px / 0 stretch;
+  border: 8px solid transparent;
+  border-image: var(--hunter-button-surface) 155 fill / 8px / 0 stretch;
   background: #151a12;
   background-clip: padding-box;
   border-radius: 0;
@@ -102,7 +102,7 @@
   color: #f1d8a3;
   text-transform: uppercase;
 }
-.hunter-editor-toolbar button { padding: 5px 16px; border-width: 10px; border-image-width: 10px; }
+.hunter-editor-toolbar button { padding: 5px 16px; border-width: 11px; border-image-width: 11px; }
 .hunter-weapon-row > div:first-child button:not([title]) { padding: 2px; font-size: 0.625rem; max-width: 100%; }
 .hunter-editor-toolbar button:hover, .hunter-weapon-row > div:first-child button:not([title]):hover,
 .hunter-charm-row > div:first-child button:not([title]):hover, .hunter-condition-grid > button:hover { filter: brightness(1.15); }
@@ -111,8 +111,8 @@
 .hunter-generator button:not([aria-label]):disabled { filter: none; }
 
 .hunter-dialog, .hunter-planner [role='tooltip'] {
-  border: 7px solid transparent;
-  border-image: var(--hunter-menu-frame) 115 / 7px / 0 stretch;
+  border: 8px solid transparent;
+  border-image: var(--hunter-menu-frame) 115 / 8px / 0 stretch;
   border-radius: 0;
   background-color: #11180f;
   background-clip: padding-box;
@@ -121,14 +121,109 @@
 
 @media (max-width: 639px) {
   .hunter-board { border-width: 16px; border-image-width: 16px; }
-  .hunter-header { padding: 6px; border-width: 7px; border-image-width: 7px; }
+  .hunter-header { padding: 6px; border-width: 8px; border-image-width: 8px; }
   .hunter-main { padding-left: 2px; padding-right: 2px; }
-  .hunter-equipment-row, .hunter-weapon-row { padding: 5px 4px; border-width: 6px; border-image-width: 6px; }
-  .hunter-equipment-row + .hunter-equipment-row { border-top-width: 6px; }
-  .hunter-equipment-icon { border-width: 4px; border-image-width: 4px; }
+  .hunter-equipment-row, .hunter-weapon-row { padding: 5px 4px; border-width: 7px; border-image-width: 7px; }
+  .hunter-equipment-row + .hunter-equipment-row { border-top-width: 7px; }
+  .hunter-equipment-icon { border-width: 5px; border-image-width: 5px; }
   .hunter-panel-heading { font-size: 0.875rem; }
   .hunter-panel > h2::after, .hunter-panel > div:first-child > h2::after, .hunter-panel-heading::after { display: none; }
-  .hunter-stats::before, .hunter-simulation::before, .hunter-skills::before, .hunter-set-bonuses::before { border-width: 6px; border-image-width: 6px; }
+  .hunter-stats::before, .hunter-simulation::before, .hunter-skills::before, .hunter-set-bonuses::before { border-width: 7px; border-image-width: 7px; }
   .hunter-stats > p, .hunter-simulation > p { padding-left: 5px; padding-right: 5px; }
-  .hunter-editor-toolbar button { padding: 3px 10px; border-width: 7px; border-image-width: 7px; }
+  .hunter-editor-toolbar button { padding: 3px 10px; border-width: 8px; border-image-width: 8px; }
 }
+
+/* Muted parchment and a clearer copper-on-verdigris panel hierarchy. */
+.hunter-header {
+  position: relative;
+  isolation: isolate;
+  background-color: #0e140f;
+  background-image:
+    repeating-linear-gradient(0deg, #f1d7a508 0 1px, transparent 1px 4px),
+    linear-gradient(105deg, #0a100cf5, #171912ed),
+    url('./assets/hunter/parchment.png');
+  background-size: auto, auto, 420px;
+  background-position: center;
+  box-shadow: inset 0 0 0 2px #090d09, inset 0 0 0 4px #946c42;
+}
+.hunter-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: url('./assets/hunter/ui-v2/header-flourish-v1.png') center top / 58% 120% no-repeat;
+  opacity: .3;
+}
+.hunter-header > * { position: relative; z-index: 1; }
+.hunter-brand-title { border-left-color: #b18453; }
+.hunter-brand-title h1 {
+  color: #fff0cf;
+  text-shadow: 0 2px 2px #050805, 0 0 12px #d3a45b55;
+}
+.hunter-brand-title p { color: #d9c9a9; }
+
+.hunter-editor-toolbar button {
+  color: #ffe5ad;
+  text-shadow: 0 1px 2px #2b190b;
+  box-shadow: inset 0 1px 0 #f4d28b66, 0 2px 4px #000a;
+}
+.hunter-editor-toolbar button:hover { color: #fff1d0; }
+
+.hunter-generator {
+  background-color: #10150f;
+  background-image:
+    repeating-linear-gradient(0deg, #f1d7a506 0 1px, transparent 1px 4px),
+    linear-gradient(100deg, #0b110c, #171a12);
+}
+.hunter-generator > summary {
+  color: #f4d99f;
+  text-shadow: 0 1px 2px #080b07;
+}
+.hunter-generator > summary span { color: #d6c9ad; }
+
+.hunter-stats::before, .hunter-simulation::before, .hunter-skills::before, .hunter-set-bonuses::before {
+  background-color: #111811;
+  background-image:
+    repeating-linear-gradient(0deg, #ffffff04 0 1px, transparent 1px 5px),
+    linear-gradient(110deg, #1b231a, #0e150f);
+}
+.hunter-panel > :not(h2):not(h3):not(:first-child), .hunter-equipment > .hunter-weapon-row {
+  background-color: #111811;
+}
+.hunter-panel > h2, .hunter-panel > div:first-child > h2, .hunter-panel-heading {
+  color: #382a1d;
+  background-image: linear-gradient(90deg, #a7794326, #b9843910 62%, transparent);
+  text-shadow: 0 1px #f1e1bf;
+}
+.hunter-panel > h2::after, .hunter-panel > div:first-child > h2::after, .hunter-panel-heading::after {
+  filter: sepia(.2) saturate(1.12);
+}
+
+.hunter-equipment-row, .hunter-weapon-row {
+  background-color: #171e17;
+  background-image:
+    repeating-linear-gradient(0deg, #ffffff04 0 1px, transparent 1px 4px),
+    linear-gradient(100deg, #242c21, #111811);
+}
+.hunter-equipment-row h3, .hunter-weapon-row > div:first-child h2, .hunter-charm-row h2 {
+  color: #e7d4ad;
+}
+.hunter-skill-row {
+  background-color: #192119;
+  background-image: linear-gradient(100deg, #242c21, #171e17);
+  box-shadow: inset 0 0 0 1px #9a714733;
+}
+.hunter-simulation dl > div {
+  background: linear-gradient(110deg, #20291f, #151c16);
+  border-color: #8c6846;
+}
+.hunter-stats > details, .hunter-stats > div:last-child, .hunter-conditions,
+.hunter-contributions, .hunter-simulation > details {
+  border-top-color: #a0774d;
+}
+.hunter-stats > p, .hunter-simulation > p { color: #d0c6b1; }
+.hunter-stat-list > div:nth-child(odd) { background-color: #b27f3c0c; }
+.hunter-resistances { border-left-color: #9d754b; }
+
+:focus-visible { outline-color: #f0c97d; }

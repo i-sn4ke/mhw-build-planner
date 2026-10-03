@@ -47,6 +47,7 @@ function App() {
   const selectedArmor = useBuildStore(
     (state) => state.selectedArmor,
   )
+  const [fixedArmorSlots, setFixedArmorSlots] = useState<Set<ArmorSlotType>>(() => new Set())
 
   const setArmor = useBuildStore(
     (state) => state.setArmor,
@@ -184,6 +185,25 @@ const [decorationTarget, setDecorationTarget] = useState<
     setSelectorSlot(null)
   }
 
+  const toggleFixedArmor = (slot: ArmorSlotType) => {
+    setFixedArmorSlots((current) => {
+      const next = new Set(current)
+      if (next.has(slot)) next.delete(slot)
+      else next.add(slot)
+      return next
+    })
+  }
+
+  const clearArmorSlot = (slot: ArmorSlotType) => {
+    clearArmor(slot)
+    setFixedArmorSlots((current) => {
+      if (!current.has(slot)) return current
+      const next = new Set(current)
+      next.delete(slot)
+      return next
+    })
+  }
+
 
   const handleSelectDecoration = (decoration: Decoration) => {
   if (!decorationTarget) return
@@ -261,11 +281,12 @@ const buildStats = calculateBuildStats(
 
       <main className="hunter-main">
 
-        <details className="hunter-generator mb-5 rounded-lg border border-hunter-border bg-hunter-panel">
-          <summary className="cursor-pointer px-5 py-4 font-semibold">Build Generator <span className="ml-2 text-xs font-normal text-hunter-muted">Find builds for your required skills</span></summary>
+        <details open className="hunter-generator mb-5 rounded-lg border border-hunter-border bg-hunter-panel">
+          <summary id="generator-title" className="cursor-pointer px-5 py-4 font-semibold">Build Generator <span className="ml-2 text-xs font-normal text-hunter-muted">Choose a weapon type, rank and required skills</span></summary>
         <BuildGeneratorPanel
           weapon={selectedWeapon}
-          onSelectWeapon={() => setIsWeaponSelectorOpen(true)}
+          selectedArmor={selectedArmor}
+          fixedArmorSlots={fixedArmorSlots}
           onApply={(savedBuild) => {
             loadBuild(deserializeBuild(savedBuild, {
               armors: armorDefinitions,
@@ -312,8 +333,10 @@ const buildStats = calculateBuildStats(
                 slot="head"
                 armor={selectedArmor.head}
                 decorations={decorations}
+                isFixedForGeneration={fixedArmorSlots.has('head')}
                 onSelect={() => setSelectorSlot('head')}
-                onClear={() => clearArmor('head')}
+                onClear={() => clearArmorSlot('head')}
+                onToggleFixedForGeneration={() => toggleFixedArmor('head')}
                 onDecorationSlotSelect={(slotIndex) => {
                     setDecorationTarget({
                       type: 'armor',
@@ -328,8 +351,10 @@ const buildStats = calculateBuildStats(
                 slot="chest"
                 armor={selectedArmor.chest}
                 decorations={decorations}
+                isFixedForGeneration={fixedArmorSlots.has('chest')}
                 onSelect={() => setSelectorSlot('chest')}
-                onClear={() => clearArmor('chest')}
+                onClear={() => clearArmorSlot('chest')}
+                onToggleFixedForGeneration={() => toggleFixedArmor('chest')}
                 onDecorationSlotSelect={(slotIndex) => {
                   setDecorationTarget({
                     type: 'armor',
@@ -345,8 +370,10 @@ const buildStats = calculateBuildStats(
                 slot="arms"
                 armor={selectedArmor.arms}
                 decorations={decorations}
+                isFixedForGeneration={fixedArmorSlots.has('arms')}
                 onSelect={() => setSelectorSlot('arms')}
-                onClear={() => clearArmor('arms')}
+                onClear={() => clearArmorSlot('arms')}
+                onToggleFixedForGeneration={() => toggleFixedArmor('arms')}
                 onDecorationSlotSelect={(slotIndex) => {
                   setDecorationTarget({
                     type: 'armor',
@@ -361,8 +388,10 @@ const buildStats = calculateBuildStats(
                 slot="waist"
                 armor={selectedArmor.waist}
                 decorations={decorations}
+                isFixedForGeneration={fixedArmorSlots.has('waist')}
                 onSelect={() => setSelectorSlot('waist')}
-                onClear={() => clearArmor('waist')}
+                onClear={() => clearArmorSlot('waist')}
+                onToggleFixedForGeneration={() => toggleFixedArmor('waist')}
                 onDecorationSlotSelect={(slotIndex) => {
                   setDecorationTarget({
                     type: 'armor',
@@ -378,8 +407,10 @@ const buildStats = calculateBuildStats(
                 slot="legs"
                 armor={selectedArmor.legs}
                 decorations={decorations}
+                isFixedForGeneration={fixedArmorSlots.has('legs')}
                 onSelect={() => setSelectorSlot('legs')}
-                onClear={() => clearArmor('legs')}
+                onClear={() => clearArmorSlot('legs')}
+                onToggleFixedForGeneration={() => toggleFixedArmor('legs')}
                 onDecorationSlotSelect={(slotIndex) => {
                   setDecorationTarget({
                     type: 'armor',

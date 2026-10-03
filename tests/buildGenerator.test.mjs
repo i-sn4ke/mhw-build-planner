@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { generateBuilds, calculateBuildStats, deserializeBuild, serializeBuild, matchesWeaponElement, matchesEquipmentSearch, catalog } from './engineLoader.mjs'
+import { generateBuilds, generateBuildsForWeaponType, calculateBuildStats, deserializeBuild, serializeBuild, matchesWeaponElement, matchesEquipmentSearch, catalog } from './engineLoader.mjs'
 
 const slots = ['head', 'chest', 'arms', 'waist', 'legs']
 const skill = (skillId, level) => ({ skillId, level })
@@ -47,6 +47,27 @@ test('uses only the selected armor rank and keeps the chosen weapon regardless o
   const result = generateBuilds(input, data)
   assert.ok(result.builds.length)
   verify(result, input, data)
+})
+
+test('keeps fixed armor pieces in their selected slots', () => {
+  const fixedHead = armor('head', { id: 'fixed-head', skills: [skill('attack', 1)] })
+  const data = database({ armors: [fixedHead, ...slots.filter((slot) => slot !== 'head').map((slot) => armor(slot))] })
+  const input = { ...request(), fixedArmor: { head: fixedHead.id } }
+  const result = generateBuilds(input, data)
+
+  assert.ok(result.builds.length)
+  assert.ok(result.builds.every((candidate) => candidate.build.armor.head === fixedHead.id))
+  verify(result, input, data)
+})
+
+test('rejects fixed armor from another slot or rank', () => {
+  const data = database({ armors: [
+    ...slots.map((slot) => armor(slot)),
+    armor('chest', { id: 'high-head', slot: 'head', rank: 'high' }),
+  ] })
+
+  assert.throws(() => generateBuilds({ ...request(), fixedArmor: { head: 'chest' } }, data), /does not match its selected slot/)
+  assert.throws(() => generateBuilds({ ...request(), fixedArmor: { head: 'high-head' } }, data), /must match the selected armor rank/)
 })
 
 test('fills mixed slots with unlimited copies and combined-skill decorations', () => {
@@ -135,8 +156,19 @@ test('returns at most three distinct builds, including equivalent armor alternat
   assert.equal(result.status, 'found')
   assert.equal(result.builds.length, 3)
   assert.equal(new Set(result.builds.map((entry) => JSON.stringify(entry.build))).size, 3)
+  assert.equal(new Set(result.builds.map(({ build }) => slots.map((slot) => `${slot}:${slot}`).join('|'))).size, 1)
   verify(result, request(), data)
 })
+test('does not return the same armor pieces in the same slots more than once', () => {
+  const data = database({
+    charms: [0, 1, 2].map((index) => ({ id: `charm-${index}`, name: `Charm ${index}`, rarity: 1, skills: [skill('attack', 1)] })),
+  })
+  const result = generateBuilds(request(), data)
+  assert.equal(result.builds.length, 1)
+  assert.equal(result.status, 'exhausted')
+  verify(result, request(), data)
+})
+
 test('distinguishes a bounded search from proven absence of solutions', () => {
   const data = database({ decorations: [decoration('attack-jewel', 1, [skill('attack', 1)])], armors: slots.map((slot) => armor(slot, { slots: [{ size: 1 }] })) })
   const result = generateBuilds(request(), data, { maxNodes: 0 })
@@ -188,6 +220,41 @@ test('real catalog: generates and round-trips builds for all ranks', () => {
     verify(result, input, data)
   }
 })
+
+test('real catalog: weapon-type generation returns different eligible weapons', () => {
+  const data = catalog()
+  const input = { weaponType: 'long-sword', rank: 'master', skills: [skill('critical-eye', 5)] }
+  const result = generateBuildsForWeaponType(input, data)
+
+  assert.equal(result.builds.length, 3)
+  assert.equal(new Set(result.builds.map((candidate) => candidate.build.weaponId)).size, 3)
+  const weaponById = new Map(data.weapons.map((weapon) => [weapon.id, weapon]))
+  const roots = result.builds.map((candidate) => {
+    let weapon = weaponById.get(candidate.build.weaponId)
+    while (weapon.previousWeaponId && weaponById.has(weapon.previousWeaponId)) {
+      weapon = weaponById.get(weapon.previousWeaponId)
+    }
+    return weapon.id
+  })
+  assert.equal(new Set(roots).size, 3)
+  for (const candidate of result.builds) {
+    const selectedWeapon = data.weapons.find((entry) => entry.id === candidate.build.weaponId)
+    assert.equal(selectedWeapon.type, input.weaponType)
+    assert.ok(selectedWeapon.rarity >= 9 && selectedWeapon.rarity <= 12)
+    assert.ok(candidate.skills['critical-eye'].level >= 5)
+  }
+})
+
+test('weapon-type generation preserves fixed armor pieces', () => {
+  const data = database({ armors: slots.map((slot) => armor(slot, { skills: slot === 'legs' ? [skill('attack', 1)] : [] })) })
+  const input = { weaponType: 'long-sword', rank: 'master', skills: [skill('attack', 1)], fixedArmor: { legs: 'legs' } }
+  const result = generateBuildsForWeaponType(input, data)
+
+  assert.equal(result.builds.length, 1)
+  assert.equal(result.builds[0].build.armor.legs, 'legs')
+  verify({ builds: result.builds }, { ...input, weaponId: 'weapon' }, data)
+})
+
 test('real catalog: Agitator 7 requires a valid Secret unlock', () => {
   const data = catalog()
   const input = { weaponId: data.weapons.find((entry) => entry.type === 'long-sword').id, rank: 'master', skills: [skill('agitator', 7), skill('critical-eye', 7), skill('weakness-exploit', 3)] }
@@ -195,6 +262,59 @@ test('real catalog: Agitator 7 requires a valid Secret unlock', () => {
   assert.ok(result.builds.length, result.status)
   verify(result, input, data)
   assert.ok(result.builds.every((entry) => entry.skills.agitator.secretUnlocked))
+})
+
+test('real catalog: build suggestions prefer different armor set layouts over alpha/beta variants', () => {
+  const data = catalog()
+  const selectedWeapon = data.weapons.find((entry) => /frostfang/i.test(entry.name))
+  assert.ok(selectedWeapon)
+  const input = {
+    weaponId: selectedWeapon.id,
+    rank: 'master',
+    skills: [
+      skill('masters-touch', 1), skill('critical-boost', 1),
+      skill('critical-draw', 1), skill('critical-eye', 4), skill('weakness-exploit', 1),
+    ],
+  }
+  const result = generateBuilds(input, data)
+  assert.equal(result.builds.length, 3, result.status)
+  const armorById = new Map(data.armors.map((piece) => [piece.id, piece]))
+  const layout = build => slots.map(slot => {
+    const piece = armorById.get(build.armor[slot])
+    return `${slot}:${piece.setBonusId ?? piece.name.replace(/\s+[αβ](?:\+)?$/u, '')}`
+  })
+  const layouts = result.builds.map(({ build }) => layout(build))
+  assert.equal(new Set(layouts.map(value => value.join('|'))).size, 3)
+  for (let left = 0; left < layouts.length; left++) {
+    for (let right = left + 1; right < layouts.length; right++) {
+      assert.ok(layouts[left].filter((family, index) => family !== layouts[right][index]).length >= 2)
+    }
+  }
+  verify(result, input, data)
+})
+
+test('weapon-type generation uses rarity for weapon rank and returns distinct eligible weapons', () => {
+  const data = database({ weapons: [
+    weapon({ id: 'low-long-sword', rarity: 4, skills: [skill('attack', 1)] }),
+    weapon({ id: 'master-long-sword-a', rarity: 9, skills: [skill('attack', 1)] }),
+    weapon({ id: 'high-long-sword', rarity: 8, skills: [skill('attack', 1)] }),
+    weapon({ id: 'master-long-sword-b', rarity: 10, skills: [skill('attack', 1)] }),
+    weapon({ id: 'other-class', type: 'great-sword', rarity: 12, skills: [skill('attack', 1)] }),
+    weapon({ id: 'master-long-sword-c', rarity: 12, skills: [skill('attack', 1)] }),
+  ] })
+  const input = { weaponType: 'long-sword', rank: 'master', skills: [skill('attack', 1)] }
+  const result = generateBuildsForWeaponType(input, data)
+  const weaponIds = result.builds.map((candidate) => candidate.build.weaponId)
+
+  assert.equal(result.status, 'found')
+  assert.equal(result.builds.length, 3)
+  assert.equal(new Set(weaponIds).size, 3)
+  for (const candidate of result.builds) {
+    const selectedWeapon = data.weapons.find((entry) => entry.id === candidate.build.weaponId)
+    assert.equal(selectedWeapon.type, input.weaponType)
+    assert.ok(selectedWeapon.rarity >= 9 && selectedWeapon.rarity <= 12)
+    verify({ builds: [candidate] }, { ...input, weaponId: selectedWeapon.id }, data)
+  }
 })
 
 test('pruning agrees with exhaustive search on small deterministic catalogs', () => {

@@ -9,6 +9,7 @@ Generated with the built-in image_gen tool using the approved mockup `exec-d7f65
 | button-surface-v2.png | Bronze blank button with dark textured center | 1254 × 1254 | 155, fill |
 | tribal-divider-v2.png | Distressed sepia decorative band | 2172 × 724 | background centered vertically |
 | guild-watermark-v2.png | Ochre tribal crest behind set bonus data | 1254 × 1254 | contain, low opacity |
+| header-flourish-v1.png | Thin engraved copper rule with side motifs for the header | 2172 × 413 | header overlay, centered |
 
 All PNGs preserve the generated RGBA alpha. The two hollow frames have transparent centers; the button center has opaque-looking dark texture. No text is baked into the images.
 
@@ -16,4 +17,4 @@ All PNGs preserve the generated RGBA alpha. The two hollow frames have transpare
 
 Visual sample: `../../../../design/hunter-assets-v2.html`. Sample content uses existing equipment names; the preview is a static design specimen and does not provide build logic. The assets are now integrated in the React interface through `src/hunter-assets.css`, imported after the layout stylesheet.
 
-The complete generation prompts, including the button cleanup edit, are in `prompts.json`. PNGs have not been cropped or repainted with external image editing tools.
+The complete original v2 generation prompts, including the button cleanup edit, are in `prompts.json`. The new header flourish preserves its generated RGBA artwork; only transparent padding around the visible pixels was trimmed for a better fit.
