@@ -26,11 +26,11 @@ function WeaponDetails({ weapon }: { weapon: Weapon }) {
     <div className="space-y-4">
       {weapon.type === 'gunlance' && weapon.shelling && (
         <div className="flex items-center justify-between gap-4">
-          <span className="text-sm text-[#9b9b95]">
+          <span className="text-sm text-hunter-muted">
             Shelling
           </span>
 
-          <span className="text-right font-semibold text-[#e7e4da]">
+          <span className="text-right font-semibold text-hunter-text">
             {formatElementType(weapon.shelling)}
             {weapon.shellingLevel !== undefined && (
               <> · Lv {weapon.shellingLevel}</>
@@ -42,11 +42,11 @@ function WeaponDetails({ weapon }: { weapon: Weapon }) {
       {(weapon.type === 'switch-axe' ||
         weapon.type === 'charge-blade') && weapon.phial && (
         <div className="flex items-center justify-between gap-4">
-          <span className="text-sm text-[#9b9b95]">
+          <span className="text-sm text-hunter-muted">
             Phial
           </span>
 
-          <span className="text-right font-semibold text-[#e7e4da]">
+          <span className="text-right font-semibold text-hunter-text">
             {formatElementType(weapon.phial)}
             {weapon.phialPower !== undefined && (
               <> ({weapon.phialPower})</>
@@ -57,11 +57,11 @@ function WeaponDetails({ weapon }: { weapon: Weapon }) {
 
       {weapon.type === 'insect-glaive' && weapon.kinsectBonus && (
         <div className="flex items-center justify-between gap-4">
-          <span className="text-sm text-[#9b9b95]">
+          <span className="text-sm text-hunter-muted">
             Kinsect Bonus
           </span>
 
-          <span className="text-right font-semibold text-[#e7e4da]">
+          <span className="text-right font-semibold text-hunter-text">
             {formatElementType(
               weapon.kinsectBonus.replace(/_/g, ' / '),
             )}
@@ -71,7 +71,7 @@ function WeaponDetails({ weapon }: { weapon: Weapon }) {
 
       {weapon.type === 'hunting-horn' && weapon.notes && (
         <div>
-          <p className="mb-2 text-sm text-[#9b9b95]">
+          <p className="mb-2 text-sm text-hunter-muted">
             Notes
           </p>
 
@@ -82,7 +82,7 @@ function WeaponDetails({ weapon }: { weapon: Weapon }) {
               return (
                 <span
                   key={`${weapon.id}-note-${index}`}
-                  className="inline-flex items-center gap-2 rounded bg-[#15171a] px-3 py-2 text-sm text-[#e7e4da]"
+                  className="inline-flex items-center gap-2 rounded bg-hunter-inset px-3 py-2 text-sm text-hunter-text"
                 >
                   {note && (
                     <span
@@ -101,7 +101,7 @@ function WeaponDetails({ weapon }: { weapon: Weapon }) {
 
       {weapon.elements.length > 0 && (
         <div>
-          <p className="mb-2 text-sm text-[#9b9b95]">
+          <p className="mb-2 text-sm text-hunter-muted">
             Element / Status
           </p>
 
@@ -109,18 +109,18 @@ function WeaponDetails({ weapon }: { weapon: Weapon }) {
             {weapon.elements.map((element, index) => (
               <div
                 key={`${element.type}-${index}`}
-                className="flex items-center justify-between rounded bg-[#15171a] px-3 py-2"
+                className="flex items-center justify-between rounded bg-hunter-inset px-3 py-2"
               >
-                <span className="text-sm text-[#e7e4da]">
+                <span className="text-sm text-hunter-text">
                   {formatElementType(element.type)}
                   {element.hidden && (
-                    <span className="ml-2 text-xs text-[#777b82]">
+                    <span className="ml-2 text-xs text-hunter-muted">
                       Hidden
                     </span>
                   )}
                 </span>
 
-                <span className="text-sm font-semibold text-[#e7e4da]">
+                <span className="text-sm font-semibold text-hunter-text">
                   {element.damage}
                 </span>
               </div>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hunter UI — Asset dal mockup</title>
+  <link rel="stylesheet" href="../src/assets/hunter/ui-v2/components.css" />
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 24px; color: #eee8d8; font: 16px 'Trebuchet MS', Arial, sans-serif; background: linear-gradient(#160f0870,#160f0870),url('../src/assets/hunter/tavern.png') center / cover fixed; }
+    .board { max-width: 1220px; margin: auto; padding: 12px; }
+    header { display: flex; align-items: center; gap: 20px; padding: 12px 20px; }
+    header img { width: 126px; height: 85px; object-fit: contain; }
+    h1 { margin: 0; font: bold 34px Georgia, serif; color: #f0d8a4; }
+    header p { margin: 6px 0 0; letter-spacing: .17em; font-size: 11px; }
+    header button { margin-left: auto; }
+    .intro { color: #4a321d; margin: 18px 8px 8px; font-size: 14px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; padding: 8px; }
+    h2 { position: relative; color: #2b1d10; font: bold 20px Georgia, serif; margin: 0; padding: 8px 8px; }
+    h2::after { content: ''; position: absolute; right: 0; bottom: 0; width: 43%; height: 30px; background: url('../src/assets/hunter/ui-v2/tribal-divider-v2.png') center / 660px 220px; }
+    .row { display: flex; gap: 14px; align-items: center; min-height: 90px; padding: 6px 10px; }
+    .icon { width: 58px; height: 58px; padding: 3px; flex-shrink: 0; }
+    .icon img { width: 100%; height: 100%; }
+    .row:first-of-type .icon img { filter: brightness(0) invert(1); }
+    .row:not(:first-of-type) .icon img { filter: brightness(0) saturate(100%) invert(88%) sepia(43%) saturate(476%) hue-rotate(347deg) brightness(99%) contrast(91%); }
+    .label { width: 60px; color: #e3ce9d; font-size: 12px; }
+    .name { flex: 1; }
+    .name small { display: block; color: #bcbcaa; font-size: 12px; margin-top: 4px; }
+    .slots { display: flex; gap: 5px; margin-top: 5px; }
+    .slots span { border: 1px solid #9c8b66; background: #44483b; padding: 2px 8px; font-size: 12px; }
+    .stats { padding: 10px 18px; }
+    dl { margin: 0; }
+    dl div { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #79643b; }
+    dd { margin: 0; }
+    .buttons { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; padding: 16px; }
+    .bonus { padding: 18px; min-height: 210px; }
+    .bonus strong { font: 22px Georgia, serif; }
+    .bonus p { margin: 15px 0 0; }
+    .ornament { margin: 14px 8px; }
+    .footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; padding: 0 10px 8px; color: #5b3b20; font-size: 12px; }
+    @media(max-width:700px) { body { padding: 8px; } .board { border-width: 18px; border-image-width: 18px; padding: 4px; } .grid { grid-template-columns: 1fr; padding: 0; } header { flex-wrap: wrap; padding: 8px; } header img { width: 90px; } h1 { font-size: 26px; } header button { margin-left: 0; } .label { width: 38px; font-size: 10px; } .row { gap: 7px; padding: 4px; } }
+  </style>
+</head>
+<body>
+  <main class="board hunter-art-board">
+    <header class="hunter-art-frame">
+      <img src="../src/assets/hunter/monster-hunter-logo.png" alt="Monster Hunter" />
+      <div><h1>Build Planner</h1><p>WORLD + ICEBORNE</p></div>
+      <button class="hunter-art-button">Share Build</button>
+    </header>
+    <p class="intro">Asset ricavati dal mockup approvato · Prova grafica di cornici, fregi e pulsanti</p>
+    <div class="grid">
+      <section>
+        <h2>Equipaggiamento</h2>
+        <div class="row hunter-art-frame">
+          <span class="label">WEAPON</span><div class="icon hunter-art-frame"><img src="../src/assets/hunter/icons/ic_equipment_longsword_base.svg" alt="Long Sword" /></div>
+          <div class="name">Lightbreak Edge<small>Long Sword · Rarity 12</small><div class="slots"><span>4</span><span>3</span></div></div>
+        </div>
+        <div class="row hunter-art-frame">
+          <span class="label">HEAD</span><div class="icon hunter-art-frame"><img src="../src/assets/hunter/icons/ic_equipment_head_base.svg" alt="Head armor" /></div>
+          <div class="name">Frostfang Helm α+<small>Rarity 11 · master rank</small><div class="slots"><span>3</span><span>2</span><span>1</span></div></div>
+        </div>
+        <div class="row hunter-art-frame">
+          <span class="label">CHEST</span><div class="icon hunter-art-frame"><img src="../src/assets/hunter/icons/ic_equipment_chest_base.svg" alt="Chest armor" /></div>
+          <div class="name">Frostfang Mail α+<small>Rarity 11 · master rank</small><div class="slots"><span>3</span><span>2</span></div></div>
+        </div>
+        <h2>Pulsanti riutilizzabili</h2>
+        <div class="buttons hunter-art-frame"><button class="hunter-art-button">Select</button><button class="hunter-art-button">Reset</button><button class="hunter-art-button">Generate Builds</button></div>
+      </section>
+      <section>
+        <h2>Pannello statistiche</h2>
+        <div class="stats hunter-art-frame"><dl><div><dt>ATTACK</dt><dd>990</dd></div><div><dt>AFFINITY</dt><dd>0%</dd></div><div><dt>DEFENSE</dt><dd>810</dd></div></dl></div>
+        <h2>Decorazione della gilda</h2>
+        <div class="bonus hunter-art-frame hunter-art-watermark"><strong>Frostfang Absolute Art</strong><p>5 pieces</p><p>✓ 1 · Punishing Draw</p><p>✓ 3 · Slugger Secret</p></div>
+      </section>
+    </div>
+    <div class="ornament hunter-art-ornament" aria-hidden="true"></div>
+    <div class="footer"><span>5 PNG con trasparenza · Testo e dati restano HTML</span><span>Anteprima degli asset, separata dall’app</span></div>
+  </main>
+</body>
+</html>

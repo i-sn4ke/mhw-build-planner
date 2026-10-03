@@ -66,14 +66,14 @@ function CharmSelector({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-      <div className="flex max-h-[80vh] w-full max-w-2xl flex-col rounded-lg border border-[#30343a] bg-[#191b1f]">
-        <div className="flex items-center justify-between border-b border-[#30343a] px-5 py-4">
+      <div className="hunter-dialog flex max-h-[80vh] w-full max-w-2xl flex-col rounded-lg border border-hunter-border bg-hunter-panel">
+        <div className="flex items-center justify-between border-b border-hunter-border px-5 py-4">
           <div>
-            <h2 className="text-lg font-semibold text-[#e7e4da]">
+            <h2 className="text-lg font-semibold text-hunter-text">
               Select Charm
             </h2>
 
-            <p className="mt-1 text-sm text-[#666a70]">
+            <p className="mt-1 text-sm text-hunter-muted">
               {filteredCharms.length} charm
               {filteredCharms.length === 1 ? '' : 's'}
             </p>
@@ -82,13 +82,13 @@ function CharmSelector({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md px-3 py-2 text-[#666a70] transition hover:bg-[#25282d] hover:text-[#e7e4da]"
+            className="rounded-md px-3 py-2 text-hunter-muted transition hover:bg-hunter-hover hover:text-hunter-text"
           >
             ✕
           </button>
         </div>
 
-        <div className="border-b border-[#30343a] p-4">
+        <div className="border-b border-hunter-border p-4">
           <input
             type="text"
             value={search}
@@ -96,21 +96,21 @@ function CharmSelector({
               setSearch(event.target.value)
             }
             placeholder="Search charms or skills..."
-            className="w-full rounded-md border border-[#30343a] bg-[#111214] px-3 py-2 text-sm text-[#e7e4da] outline-none placeholder:text-[#666a70] focus:border-[#c99a45]"
+            className="w-full rounded-md border border-hunter-border bg-hunter-ink px-3 py-2 text-sm text-hunter-text outline-none placeholder:text-hunter-muted focus:border-hunter-gold"
           />
         </div>
 
         <div className="min-h-0 overflow-y-auto p-4">
           {filteredCharms.length === 0 ? (
             <div className="py-10 text-center">
-              <p className="text-sm text-[#666a70]">
+              <p className="text-sm text-hunter-muted">
                 No charms found.
               </p>
 
               <button
                 type="button"
                 onClick={() => setSearch('')}
-                className="mt-3 text-sm text-[#c99a45] transition hover:text-[#e7e4da]"
+                className="mt-3 text-sm text-hunter-gold transition hover:text-hunter-text"
               >
                 Clear search
               </button>
@@ -122,15 +122,15 @@ function CharmSelector({
                   key={charm.id}
                   type="button"
                   onClick={() => onSelect(charm)}
-                  className="w-full rounded-md border border-[#30343a] bg-[#111214] p-4 text-left transition hover:border-[#c99a45] hover:bg-[#1d2024]"
+                  className="w-full rounded-md border border-hunter-border bg-hunter-ink p-4 text-left transition hover:border-hunter-gold hover:bg-hunter-hover"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <div className="font-medium text-[#e7e4da]">
+                      <div className="font-medium text-hunter-text">
                         {charm.name}
                       </div>
 
-                      <div className="mt-1 text-sm text-[#9b9b95]">
+                      <div className="mt-1 text-sm text-hunter-muted">
                         Rarity {charm.rarity}
                       </div>
                     </div>
@@ -141,7 +141,7 @@ function CharmSelector({
                       {charm.skills.map((skill) => (
                         <span
                           key={skill.skillId}
-                          className="text-sm text-[#c99a45]"
+                          className="text-sm text-hunter-gold"
                         >
                           {getSkillName(skill.skillId)} +{skill.level}
                         </span>

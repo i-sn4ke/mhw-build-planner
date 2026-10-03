@@ -39,16 +39,16 @@ function SkillTooltip({ definition, level, className = '' }: SkillTooltipProps) 
         onBlur={() => setOpen(false)}
         onClick={() => setOpen(true)}
         onKeyDown={(event) => { if (event.key === 'Escape') setOpen(false) }}
-        className={`rounded text-left underline decoration-dotted underline-offset-4 outline-none hover:text-[#c99a45] focus-visible:ring-1 focus-visible:ring-[#c99a45] ${className}`}
+        className={`rounded text-left underline decoration-dotted underline-offset-4 outline-none hover:text-hunter-gold focus-visible:ring-1 focus-visible:ring-hunter-gold ${className}`}
       >
         <span>{definition.name}</span>
       </button>
       {open && (
-        <span id={id} role="tooltip" className="absolute left-0 top-full z-[60] block w-64 max-w-[calc(100vw-4rem)] rounded-md border border-[#454950] bg-[#111214] p-3 text-left text-xs font-normal leading-relaxed text-[#e7e4da] shadow-xl">
-          <span className="block font-semibold text-[#c99a45]">{definition.name}</span>
+        <span id={id} role="tooltip" className="absolute left-0 top-full z-[60] block w-64 max-w-[calc(100vw-4rem)] rounded-md border border-hunter-trim bg-hunter-ink p-3 text-left text-xs font-normal leading-relaxed text-hunter-text shadow-xl">
+          <span className="block font-semibold text-hunter-gold">{definition.name}</span>
           <span className="mt-1 block">{definition.description || 'No description available.'}</span>
           <span className="mt-2 block">Lv {level}: {effect ?? 'No level effect description available.'}</span>
-          <span className="mt-2 block text-[#9b9b95]">
+          <span className="mt-2 block text-hunter-muted">
             {supportedOffensiveSkills.has(definition.id)
               ? 'Included in attack / affinity simulation when its conditions are met.'
               : capSkill ? 'Skill cap unlocks are included in the build calculation.'

@@ -107,14 +107,14 @@ function WeaponSelector({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-      <div className="flex max-h-[80vh] w-full max-w-2xl flex-col rounded-lg border border-[#30343a] bg-[#191b1f]">
-        <div className="flex items-center justify-between border-b border-[#30343a] px-5 py-4">
+      <div className="hunter-dialog flex max-h-[80vh] w-full max-w-2xl flex-col rounded-lg border border-hunter-border bg-hunter-panel">
+        <div className="flex items-center justify-between border-b border-hunter-border px-5 py-4">
           <div>
-            <h2 className="text-lg font-semibold text-[#e7e4da]">
+            <h2 className="text-lg font-semibold text-hunter-text">
               Select Weapon
             </h2>
 
-            <p className="mt-1 text-sm text-[#666a70]">
+            <p className="mt-1 text-sm text-hunter-muted">
               {filteredWeapons.length} weapon
               {filteredWeapons.length === 1 ? '' : 's'}
             </p>
@@ -123,13 +123,13 @@ function WeaponSelector({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md px-3 py-2 text-[#666a70] transition hover:bg-[#25282d] hover:text-[#e7e4da]"
+            className="rounded-md px-3 py-2 text-hunter-muted transition hover:bg-hunter-hover hover:text-hunter-text"
           >
             ✕
           </button>
         </div>
 
-        <div className="space-y-3 border-b border-[#30343a] p-4">
+        <div className="space-y-3 border-b border-hunter-border p-4">
           <input
             type="text"
             value={search}
@@ -137,7 +137,7 @@ function WeaponSelector({
               setSearch(event.target.value)
             }
             placeholder="Search weapons..."
-            className="w-full rounded-md border border-[#30343a] bg-[#111214] px-3 py-2 text-sm text-[#e7e4da] outline-none placeholder:text-[#666a70] focus:border-[#c99a45]"
+            className="w-full rounded-md border border-hunter-border bg-hunter-ink px-3 py-2 text-sm text-hunter-text outline-none placeholder:text-hunter-muted focus:border-hunter-gold"
           />
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -147,7 +147,7 @@ function WeaponSelector({
               onChange={(event) =>
                 setTypeFilter(event.target.value)
               }
-              className="w-full rounded-md border border-[#30343a] bg-[#111214] px-3 py-2 text-sm text-[#e7e4da] outline-none focus:border-[#c99a45]"
+              className="w-full rounded-md border border-hunter-border bg-hunter-ink px-3 py-2 text-sm text-hunter-text outline-none focus:border-hunter-gold"
             >
               <option value="all">
                 All weapon types
@@ -166,7 +166,7 @@ function WeaponSelector({
               onChange={(event) =>
                 setRarityFilter(event.target.value)
               }
-              className="w-full rounded-md border border-[#30343a] bg-[#111214] px-3 py-2 text-sm text-[#e7e4da] outline-none focus:border-[#c99a45]"
+              className="w-full rounded-md border border-hunter-border bg-hunter-ink px-3 py-2 text-sm text-hunter-text outline-none focus:border-hunter-gold"
             >
               <option value="all">
                 All rarities
@@ -183,13 +183,13 @@ function WeaponSelector({
             </select>
           </div>
 
-          <label className="block text-sm text-[#9b9b95]">
+          <label className="block text-sm text-hunter-muted">
             Element / Status
             <select
               aria-label="Element / Status"
               value={elementFilter}
               onChange={(event) => setElementFilter(event.target.value)}
-              className="mt-1 w-full rounded-md border border-[#30343a] bg-[#111214] px-3 py-2 text-sm text-[#e7e4da] outline-none focus:border-[#c99a45]"
+              className="mt-1 w-full rounded-md border border-hunter-border bg-hunter-ink px-3 py-2 text-sm text-hunter-text outline-none focus:border-hunter-gold"
             >
               <option value="all">Any element / status</option>
               <optgroup label="Elements">
@@ -207,7 +207,7 @@ function WeaponSelector({
               </optgroup>
             </select>
             {elementFilter !== 'all' && (
-              <span className="mt-1 block text-xs text-[#777b82]">
+              <span className="mt-1 block text-xs text-hunter-muted">
                 Hidden elements and statuses are excluded.
               </span>
             )}
@@ -217,7 +217,7 @@ function WeaponSelector({
             <button
               type="button"
               onClick={clearFilters}
-              className="text-left text-sm text-[#c99a45] transition hover:text-[#e7e4da]"
+              className="text-left text-sm text-hunter-gold transition hover:text-hunter-text"
             >
               Clear filters
             </button>
@@ -227,14 +227,14 @@ function WeaponSelector({
         <div className="min-h-0 overflow-y-auto p-4">
           {filteredWeapons.length === 0 ? (
             <div className="py-10 text-center">
-              <p className="text-sm text-[#666a70]">
+              <p className="text-sm text-hunter-muted">
                 No weapons found.
               </p>
 
               <button
                 type="button"
                 onClick={clearFilters}
-                className="mt-3 text-sm text-[#c99a45] transition hover:text-[#e7e4da]"
+                className="mt-3 text-sm text-hunter-gold transition hover:text-hunter-text"
               >
                 Clear filters
               </button>
@@ -246,26 +246,26 @@ function WeaponSelector({
                   key={weapon.id}
                   type="button"
                   onClick={() => onSelect(weapon)}
-                  className="w-full rounded-md border border-[#30343a] bg-[#111214] p-4 text-left transition hover:border-[#c99a45] hover:bg-[#1d2024]"
+                  className="w-full rounded-md border border-hunter-border bg-hunter-ink p-4 text-left transition hover:border-hunter-gold hover:bg-hunter-hover"
                 >
                   <div className="flex items-center justify-between gap-4">
                     <div className="min-w-0">
-                      <div className="break-words font-medium text-[#e7e4da]">
+                      <div className="break-words font-medium text-hunter-text">
                         {weapon.name}
                       </div>
 
-                      <div className="mt-1 text-sm text-[#9b9b95]">
+                      <div className="mt-1 text-sm text-hunter-muted">
                         {weaponTypeNames[weapon.type]} · Rarity{' '}
                         {weapon.rarity}
                       </div>
                     </div>
 
                     <div className="shrink-0 text-right text-sm">
-                      <div className="text-[#e7e4da]">
+                      <div className="text-hunter-text">
                         {weapon.attack} Attack
                       </div>
 
-                      <div className="mt-1 text-[#9b9b95]">
+                      <div className="mt-1 text-hunter-muted">
                         {weapon.affinity}% Affinity
                       </div>
                     </div>
@@ -276,16 +276,16 @@ function WeaponSelector({
                       {weapon.elements.map((element, index) => (
                         <span
                           key={`${weapon.id}-element-${index}`}
-                          className="inline-flex flex-wrap items-center gap-1 rounded bg-[#191b1f] px-2 py-1 text-xs text-[#e7e4da]"
+                          className="inline-flex flex-wrap items-center gap-1 rounded bg-hunter-panel px-2 py-1 text-xs text-hunter-text"
                         >
                           <span>{element.type}</span>
-                          <span className="font-semibold text-[#c99a45]">{element.damage}</span>
-                          {element.hidden && <span className="text-[#777b82]">Hidden</span>}
+                          <span className="font-semibold text-hunter-gold">{element.damage}</span>
+                          {element.hidden && <span className="text-hunter-muted">Hidden</span>}
                         </span>
                       ))}
                     </div>
                   ) : (
-                    <p className="mt-3 text-xs text-[#777b82]">Element / Status: None</p>
+                    <p className="mt-3 text-xs text-hunter-muted">Element / Status: None</p>
                   )}
 
                   {weapon.slots.length > 0 && (
@@ -294,7 +294,7 @@ function WeaponSelector({
                         (slot, index) => (
                           <span
                             key={`${weapon.id}-slot-${index}`}
-                            className="flex h-6 w-6 items-center justify-center rounded border border-[#454950] text-xs text-[#c99a45]"
+                            className="flex h-6 w-6 items-center justify-center rounded border border-hunter-trim text-xs text-hunter-gold"
                           >
                             {slot.size}
                           </span>

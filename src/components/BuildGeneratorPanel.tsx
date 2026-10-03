@@ -19,7 +19,7 @@ const skillById = new Map(skills.map((skill) => [skill.id, skill]))
 const armorById = new Map(armors.map((armor) => [armor.id, armor]))
 const charmById = new Map(charms.map((charm) => [charm.id, charm]))
 const decorationById = new Map(decorations.map((decoration) => [decoration.id, decoration]))
-const controlClass = 'rounded-md border border-[#30343a] bg-[#111214] px-3 py-2 text-sm text-[#e7e4da] outline-none focus:border-[#c99a45] disabled:opacity-50'
+const controlClass = 'rounded-md border border-hunter-border bg-hunter-ink px-3 py-2 text-sm text-hunter-text outline-none focus:border-hunter-gold disabled:opacity-50'
 
 function BuildGeneratorPanel({ weapon, onSelectWeapon, onApply }: BuildGeneratorPanelProps) {
   const [rank, setRank] = useState<ArmorPiece['rank']>('master')
@@ -90,21 +90,21 @@ function BuildGeneratorPanel({ weapon, onSelectWeapon, onApply }: BuildGenerator
   }
 
   return (
-    <section className="mb-6 rounded-lg border border-[#30343a] bg-[#191b1f] p-5" aria-labelledby="generator-title">
+    <section className="border-t border-hunter-border p-5" aria-labelledby="generator-title">
       <h2 id="generator-title" className="text-lg font-semibold">Build Generator</h2>
-      <p className="mt-2 text-sm text-[#9b9b95]">
+      <p className="mt-2 text-sm text-hunter-muted">
         Find up to 3 builds that meet your minimum skill levels with your chosen weapon.
       </p>
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded bg-[#15171a] p-3">
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded bg-hunter-inset p-3">
         <div>
-          <p className="text-xs text-[#9b9b95]">Fixed weapon</p>
+          <p className="text-xs text-hunter-muted">Fixed weapon</p>
           <p className="mt-1 text-sm">{weapon?.name ?? 'Select a weapon before generating.'}</p>
         </div>
-        <button type="button" onClick={onSelectWeapon} disabled={running} className={`${controlClass} hover:border-[#c99a45]`}>
+        <button type="button" onClick={onSelectWeapon} disabled={running} className={`${controlClass} hover:border-hunter-gold`}>
           {weapon ? 'Change Weapon' : 'Select Weapon'}
         </button>
       </div>
-      <label className="mt-4 block text-sm text-[#9b9b95]">
+      <label className="mt-4 block text-sm text-hunter-muted">
         Armor Rank
         <select value={rank} disabled={running} onChange={(event) => {
           setRank(event.target.value as ArmorPiece['rank'])
@@ -115,7 +115,7 @@ function BuildGeneratorPanel({ weapon, onSelectWeapon, onApply }: BuildGenerator
           <option value="master">Master Rank</option>
         </select>
       </label>
-      <p className="mt-2 text-xs text-[#777b82]">
+      <p className="mt-2 text-xs text-hunter-muted">
         Only armor of this rank is used. Charms and decorations use the full catalog, with unlimited decoration copies.
       </p>
 
@@ -128,25 +128,25 @@ function BuildGeneratorPanel({ weapon, onSelectWeapon, onApply }: BuildGenerator
               <option key={skill.id} value={skill.id}>{skill.name}</option>
             ))}
           </select>
-          <button type="button" disabled={running || !newSkillId} className={`${controlClass} hover:border-[#c99a45]`} onClick={() => {
+          <button type="button" disabled={running || !newSkillId} className={`${controlClass} hover:border-hunter-gold`} onClick={() => {
             setRequirements([...requirements, { skillId: newSkillId, level: 1 }])
             setNewSkillId('')
             clearResult()
           }}>Add Skill</button>
         </div>
-        {!requirements.length && <p className="mt-3 text-sm text-[#777b82]">Add at least one skill to start.</p>}
+        {!requirements.length && <p className="mt-3 text-sm text-hunter-muted">Add at least one skill to start.</p>}
         <div className="mt-3 space-y-2">
           {requirements.map((entry) => {
             const definition = skillById.get(entry.skillId)!
             const needsSecret = definition.secret !== undefined && entry.level > definition.maxLevel - definition.secret
             return (
-              <div key={entry.skillId} className="flex flex-wrap items-center justify-between gap-3 rounded bg-[#15171a] p-3">
+              <div key={entry.skillId} className="flex flex-wrap items-center justify-between gap-3 rounded bg-hunter-inset p-3">
                 <div>
                   <SkillTooltip definition={definition} level={entry.level} className="text-sm" />
-                  {needsSecret && <p className="mt-1 text-xs text-[#c99a45]">Requires Secret unlock or Inheritance.</p>}
+                  {needsSecret && <p className="mt-1 text-xs text-hunter-gold">Requires Secret unlock or Inheritance.</p>}
                 </div>
                 <div className="flex items-center gap-2">
-                  <label className="text-xs text-[#9b9b95]">
+                  <label className="text-xs text-hunter-muted">
                     Minimum level
                     <select aria-label={`${definition.name} minimum level`} value={entry.level} disabled={running} className={`${controlClass} ml-2`} onChange={(event) => {
                       setRequirements(requirements.map((requirement) => requirement.skillId === entry.skillId ? { ...requirement, level: Number(event.target.value) } : requirement))
@@ -155,7 +155,7 @@ function BuildGeneratorPanel({ weapon, onSelectWeapon, onApply }: BuildGenerator
                       {Array.from({ length: definition.maxLevel }, (_, index) => <option key={index + 1} value={index + 1}>{index + 1}</option>)}
                     </select>
                   </label>
-                  <button type="button" aria-label={`Remove ${definition.name}`} disabled={running} className="rounded px-2 py-2 text-sm text-[#9b9b95] hover:text-red-400 disabled:opacity-50" onClick={() => {
+                  <button type="button" aria-label={`Remove ${definition.name}`} disabled={running} className="rounded px-2 py-2 text-sm text-hunter-muted hover:text-red-400 disabled:opacity-50" onClick={() => {
                     setRequirements(requirements.filter((requirement) => requirement.skillId !== entry.skillId))
                     clearResult()
                   }}>✕</button>
@@ -166,18 +166,18 @@ function BuildGeneratorPanel({ weapon, onSelectWeapon, onApply }: BuildGenerator
         </div>
       </div>
       <div className="mt-4 flex flex-wrap items-center gap-3">
-        <button type="button" disabled={!weapon || !requirements.length || running} onClick={generate} className="rounded-md border border-[#c99a45] px-4 py-2 text-sm font-semibold text-[#c99a45] hover:bg-[#c99a45] hover:text-[#111214] disabled:cursor-not-allowed disabled:opacity-40">
+        <button type="button" disabled={!weapon || !requirements.length || running} onClick={generate} className="rounded-md border border-hunter-gold px-4 py-2 text-sm font-semibold text-hunter-gold hover:bg-hunter-gold hover:text-hunter-ink disabled:cursor-not-allowed disabled:opacity-40">
           {running ? 'Generating...' : 'Generate Builds'}
         </button>
         {running && <button type="button" onClick={cancel} className={controlClass}>Cancel</button>}
       </div>
-      <div aria-live="polite" className="mt-3 text-sm text-[#9b9b95]">
+      <div aria-live="polite" className="mt-3 text-sm text-hunter-muted">
         {running && <p>Searching combinations. You can cancel at any time.</p>}
         {error && <p className="text-red-400" role="alert">{error}</p>}
         {result && (
           <>
             <p>{result.builds.length} valid build{result.builds.length === 1 ? '' : 's'} found.</p>
-            {result.status === 'limit' && <p className="mt-1 text-[#c99a45]">Search limit reached. More solutions may exist; this does not mean the request is impossible.</p>}
+            {result.status === 'limit' && <p className="mt-1 text-hunter-gold">Search limit reached. More solutions may exist; this does not mean the request is impossible.</p>}
             {result.status === 'exhausted' && !result.builds.length && <p className="mt-1">No combination in the selected armor rank meets all requested skills.</p>}
             {!!result.builds.length && <p className="mt-1 text-xs">All results meet every minimum. Results are not ranked by damage.</p>}
           </>
@@ -185,24 +185,24 @@ function BuildGeneratorPanel({ weapon, onSelectWeapon, onApply }: BuildGenerator
       </div>
       <div className="mt-4 grid gap-3 xl:grid-cols-3">
         {result?.builds.map((candidate, index) => (
-          <article key={index} className="rounded-md border border-[#30343a] bg-[#111214] p-4">
+          <article key={index} className="rounded-md border border-hunter-border bg-hunter-ink p-4">
             <h3 className="font-semibold">Build {index + 1}</h3>
-            <ul className="mt-3 space-y-1 text-sm text-[#9b9b95]">
+            <ul className="mt-3 space-y-1 text-sm text-hunter-muted">
               {Object.entries(candidate.build.armor).map(([slot, id]) => <li key={slot}>{armorById.get(id!)?.name ?? id}</li>)}
               <li>Charm: {candidate.build.charmId ? charmById.get(candidate.build.charmId)?.name : 'None'}</li>
               <li>{candidate.build.decorations.length} decorations</li>
             </ul>
             {!!candidate.build.decorations.length && (
-              <ul className="mt-2 space-y-1 text-xs text-[#9b9b95]">
+              <ul className="mt-2 space-y-1 text-xs text-hunter-muted">
                 {[...new Set(candidate.build.decorations.map((entry) => entry.decorationId))].map((id) => (
                   <li key={id}>{candidate.build.decorations.filter((entry) => entry.decorationId === id).length} × {decorationById.get(id)?.name ?? id}</li>
                 ))}
               </ul>
             )}
-            <ul className="mt-3 space-y-1 text-sm text-[#c99a45]">
+            <ul className="mt-3 space-y-1 text-sm text-hunter-gold">
               {requirements.map((entry) => <li key={entry.skillId}>{skillById.get(entry.skillId)?.name}: Lv {candidate.skills[entry.skillId]?.level ?? 0} / {entry.level} required</li>)}
             </ul>
-            <button type="button" className={`${controlClass} mt-4 w-full hover:border-[#c99a45]`} onClick={() => {
+            <button type="button" className={`${controlClass} mt-4 w-full hover:border-hunter-gold`} onClick={() => {
               onApply(candidate.build)
               setAppliedIndex(index)
             }}>{appliedIndex === index ? 'Applied to Editor' : 'Apply to Editor'}</button>

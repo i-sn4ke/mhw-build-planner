@@ -1,0 +1,134 @@
+/* Mockup-derived materials. Geometry and interactive controls stay in index.css. */
+.hunter-planner {
+  --hunter-menu-frame: url('./assets/hunter/ui-v2/menu-frame-v2.png');
+  --hunter-button-surface: url('./assets/hunter/ui-v2/button-surface-v2.png');
+}
+
+.hunter-board {
+  border: 24px solid #67482e;
+  border-image: url('./assets/hunter/ui-v2/board-frame-v2.png') 115 / 24px / 0 stretch;
+  background-clip: padding-box;
+  box-shadow: 0 14px 50px #000b;
+}
+
+.hunter-header, .hunter-generator, .hunter-equipment-row, .hunter-weapon-row {
+  border: 9px solid transparent;
+  border-image: var(--hunter-menu-frame) 115 / 9px / 0 stretch;
+  background: linear-gradient(100deg, #20271a, #0d140f);
+  background-clip: padding-box;
+  box-shadow: none;
+  border-radius: 0;
+}
+.hunter-header { padding: 6px 16px; }
+.hunter-generator { border-width: 7px; border-image-width: 7px; }
+.hunter-generator > summary { padding: 2px 8px; }
+.hunter-equipment-row, .hunter-weapon-row { padding: 5px 8px; }
+.hunter-equipment-row + .hunter-equipment-row { border-top-width: 9px; }
+.hunter-equipment-row::before, .hunter-equipment-row::after { display: none; }
+
+.hunter-equipment-icon {
+  border: 6px solid transparent;
+  border-image: var(--hunter-menu-frame) 115 / 6px / 0 stretch;
+  padding: 2px;
+  background: linear-gradient(135deg, #253023, #090e0a);
+  background-clip: padding-box;
+  box-shadow: none;
+}
+
+.hunter-panel > h2::after, .hunter-panel > div:first-child > h2::after, .hunter-panel-heading::after {
+  height: 28px;
+  width: 40%;
+  background: url('./assets/hunter/ui-v2/tribal-divider-v2.png') center / 560px 187px repeat-x;
+}
+.hunter-simulation .hunter-panel-heading::after { width: 28%; }
+
+/* A single frame behind each body avoids repeating bulky borders between sections. */
+.hunter-stats, .hunter-simulation, .hunter-skills, .hunter-set-bonuses { isolation: isolate; }
+.hunter-stats::before, .hunter-simulation::before, .hunter-skills::before, .hunter-set-bonuses::before {
+  content: '';
+  display: block;
+  position: absolute;
+  inset: 34px 0 0;
+  width: auto;
+  height: auto;
+  z-index: -1;
+  pointer-events: none;
+  border: 9px solid transparent;
+  border-image: var(--hunter-menu-frame) 115 / 9px / 0 stretch;
+  background: linear-gradient(100deg, #20271a, #0d140f);
+  background-clip: padding-box;
+}
+.hunter-stats > p, .hunter-stats-columns, .hunter-stats > details, .hunter-stats > div:last-child,
+.hunter-simulation > p, .hunter-simulation > dl, .hunter-conditions, .hunter-contributions, .hunter-simulation > details,
+.hunter-skills > div:last-child, .hunter-skills > p, .hunter-set-bonuses > div:last-child, .hunter-set-bonuses > p {
+  border: 0;
+  background: transparent;
+}
+.hunter-stats > p, .hunter-simulation > p { padding-top: 14px; }
+.hunter-stats > details, .hunter-stats > div:last-child, .hunter-conditions, .hunter-contributions, .hunter-simulation > details {
+  border-top: 1px solid #8b7043;
+}
+.hunter-skills > div:last-child, .hunter-skills > p, .hunter-set-bonuses > div:last-child, .hunter-set-bonuses > p { padding-top: 16px; }
+.hunter-skills, .hunter-set-bonuses { padding-bottom: 14px; }
+.hunter-simulation > details { padding-bottom: 8px; }
+.hunter-panel:is(.hunter-stats, .hunter-simulation, .hunter-skills, .hunter-set-bonuses) > :not(h2):not(h3):not(:first-child) {
+  background: transparent;
+}
+
+.hunter-set-bonuses::after {
+  content: '';
+  display: block;
+  position: absolute;
+  inset: 48px 20px 12px 47%;
+  width: auto;
+  height: auto;
+  z-index: -1;
+  pointer-events: none;
+  border: 0;
+  background: url('./assets/hunter/ui-v2/guild-watermark-v2.png') center / contain no-repeat;
+  opacity: .24;
+}
+
+/* Skin action buttons only: skill tooltip triggers and item cards retain their layout. */
+.hunter-editor-toolbar button, .hunter-weapon-row > div:first-child button:not([title]),
+.hunter-charm-row > div:first-child button:not([title]), .hunter-condition-grid > button, .hunter-generator button:not([aria-label]) {
+  border: 7px solid transparent;
+  border-image: var(--hunter-button-surface) 155 fill / 7px / 0 stretch;
+  background: #151a12;
+  background-clip: padding-box;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 3px 10px;
+  color: #f1d8a3;
+  text-transform: uppercase;
+}
+.hunter-editor-toolbar button { padding: 5px 16px; border-width: 10px; border-image-width: 10px; }
+.hunter-weapon-row > div:first-child button:not([title]) { padding: 2px; font-size: 0.625rem; max-width: 100%; }
+.hunter-editor-toolbar button:hover, .hunter-weapon-row > div:first-child button:not([title]):hover,
+.hunter-charm-row > div:first-child button:not([title]):hover, .hunter-condition-grid > button:hover { filter: brightness(1.15); }
+.hunter-editor-toolbar button:active, .hunter-condition-grid > button:active { filter: brightness(.9); }
+.hunter-generator button:not([aria-label]):not(:disabled):hover { filter: brightness(1.15); }
+.hunter-generator button:not([aria-label]):disabled { filter: none; }
+
+.hunter-dialog, .hunter-planner [role='tooltip'] {
+  border: 7px solid transparent;
+  border-image: var(--hunter-menu-frame) 115 / 7px / 0 stretch;
+  border-radius: 0;
+  background-color: #11180f;
+  background-clip: padding-box;
+}
+.hunter-planner [role='tooltip'] { border-width: 4px; border-image-width: 4px; }
+
+@media (max-width: 639px) {
+  .hunter-board { border-width: 16px; border-image-width: 16px; }
+  .hunter-header { padding: 6px; border-width: 7px; border-image-width: 7px; }
+  .hunter-main { padding-left: 2px; padding-right: 2px; }
+  .hunter-equipment-row, .hunter-weapon-row { padding: 5px 4px; border-width: 6px; border-image-width: 6px; }
+  .hunter-equipment-row + .hunter-equipment-row { border-top-width: 6px; }
+  .hunter-equipment-icon { border-width: 4px; border-image-width: 4px; }
+  .hunter-panel-heading { font-size: 0.875rem; }
+  .hunter-panel > h2::after, .hunter-panel > div:first-child > h2::after, .hunter-panel-heading::after { display: none; }
+  .hunter-stats::before, .hunter-simulation::before, .hunter-skills::before, .hunter-set-bonuses::before { border-width: 6px; border-image-width: 6px; }
+  .hunter-stats > p, .hunter-simulation > p { padding-left: 5px; padding-right: 5px; }
+  .hunter-editor-toolbar button { padding: 3px 10px; border-width: 7px; border-image-width: 7px; }
+}

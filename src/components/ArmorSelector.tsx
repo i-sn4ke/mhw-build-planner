@@ -61,14 +61,14 @@ function ArmorSelector({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-      <div className="flex max-h-[80vh] w-full max-w-2xl flex-col rounded-lg border border-[#30343a] bg-[#191b1f]">
-        <div className="flex items-center justify-between border-b border-[#30343a] px-5 py-4">
+      <div className="hunter-dialog flex max-h-[80vh] w-full max-w-2xl flex-col rounded-lg border border-hunter-border bg-hunter-panel">
+        <div className="flex items-center justify-between border-b border-hunter-border px-5 py-4">
           <div>
-            <h2 className="text-lg font-semibold text-[#e7e4da]">
+            <h2 className="text-lg font-semibold text-hunter-text">
               Select {slotNames[slot]}
             </h2>
 
-            <p className="mt-1 text-sm text-[#666a70]">
+            <p className="mt-1 text-sm text-hunter-muted">
               {filteredArmors.length} piece
               {filteredArmors.length === 1 ? '' : 's'}
             </p>
@@ -77,13 +77,13 @@ function ArmorSelector({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md px-3 py-2 text-[#666a70] transition hover:bg-[#25282d] hover:text-[#e7e4da]"
+            className="rounded-md px-3 py-2 text-hunter-muted transition hover:bg-hunter-hover hover:text-hunter-text"
           >
             ✕
           </button>
         </div>
 
-        <div className="space-y-3 border-b border-[#30343a] p-4">
+        <div className="space-y-3 border-b border-hunter-border p-4">
           <input
             type="text"
             value={search}
@@ -91,7 +91,7 @@ function ArmorSelector({
               setSearch(event.target.value)
             }
             placeholder={`Search ${slotNames[slot].toLowerCase()}...`}
-            className="w-full rounded-md border border-[#30343a] bg-[#111214] px-3 py-2 text-sm text-[#e7e4da] outline-none placeholder:text-[#666a70] focus:border-[#c99a45]"
+            className="w-full rounded-md border border-hunter-border bg-hunter-ink px-3 py-2 text-sm text-hunter-text outline-none placeholder:text-hunter-muted focus:border-hunter-gold"
           />
 
           <select
@@ -99,7 +99,7 @@ function ArmorSelector({
             onChange={(event) =>
               setRankFilter(event.target.value)
             }
-            className="w-full rounded-md border border-[#30343a] bg-[#111214] px-3 py-2 text-sm text-[#e7e4da] outline-none focus:border-[#c99a45]"
+            className="w-full rounded-md border border-hunter-border bg-hunter-ink px-3 py-2 text-sm text-hunter-text outline-none focus:border-hunter-gold"
           >
             <option value="all">All ranks</option>
             <option value="low">Low Rank</option>
@@ -111,7 +111,7 @@ function ArmorSelector({
         <div className="min-h-0 overflow-y-auto p-4">
           {filteredArmors.length === 0 ? (
             <div className="py-10 text-center">
-              <p className="text-sm text-[#666a70]">
+              <p className="text-sm text-hunter-muted">
                 No armor pieces found.
               </p>
 
@@ -121,7 +121,7 @@ function ArmorSelector({
                   setSearch('')
                   setRankFilter('all')
                 }}
-                className="mt-3 text-sm text-[#c99a45] transition hover:text-[#e7e4da]"
+                className="mt-3 text-sm text-hunter-gold transition hover:text-hunter-text"
               >
                 Clear filters
               </button>
@@ -133,15 +133,15 @@ function ArmorSelector({
                   key={armor.id}
                   type="button"
                   onClick={() => onSelect(armor)}
-                  className="w-full rounded-md border border-[#30343a] bg-[#111214] p-4 text-left transition hover:border-[#c99a45] hover:bg-[#1d2024]"
+                  className="w-full rounded-md border border-hunter-border bg-hunter-ink p-4 text-left transition hover:border-hunter-gold hover:bg-hunter-hover"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <div className="font-medium text-[#e7e4da]">
+                      <div className="font-medium text-hunter-text">
                         {armor.name}
                       </div>
 
-                      <div className="mt-1 text-sm text-[#9b9b95]">
+                      <div className="mt-1 text-sm text-hunter-muted">
                         Rarity {armor.rarity} ·{' '}
                         {armor.rank} rank ·{' '}
                         {armor.defense.base} Defense
@@ -154,7 +154,7 @@ function ArmorSelector({
                           (slotSize, index) => (
                             <span
                               key={`${armor.id}-slot-${index}`}
-                              className="flex h-6 w-6 items-center justify-center rounded border border-[#454950] text-xs text-[#c99a45]"
+                              className="flex h-6 w-6 items-center justify-center rounded border border-hunter-trim text-xs text-hunter-gold"
                             >
                               {slotSize.size}
                             </span>
@@ -169,7 +169,7 @@ function ArmorSelector({
                       {armor.skills.map((skill) => (
                         <span
                           key={skill.skillId}
-                          className="text-sm text-[#c99a45]"
+                          className="text-sm text-hunter-gold"
                         >
                           {getSkillName(skill.skillId)} +{skill.level}
                         </span>

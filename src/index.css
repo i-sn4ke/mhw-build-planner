@@ -1,9 +1,24 @@
 @import "tailwindcss";
 
+@theme {
+  --color-hunter-ink: #11160f;
+  --color-hunter-panel: #1a2018;
+  --color-hunter-inset: #141a13;
+  --color-hunter-border: #68583b;
+  --color-hunter-trim: #95784b;
+  --color-hunter-hover: #303927;
+  --color-hunter-text: #f0ebdb;
+  --color-hunter-muted: #c1c2ad;
+  --color-hunter-gold: #e2c17c;
+  --color-hunter-positive: #acd493;
+  --color-hunter-negative: #ed9390;
+}
+
 :root {
-  font-family: Inter, system-ui, sans-serif;
-  color: #e7e4da;
-  background: #111214;
+  font-family: Arial, system-ui, sans-serif;
+  color: var(--color-hunter-text);
+  background: #17120d;
+  color-scheme: dark;
 }
 
 * {
@@ -14,5 +29,298 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background: #111214;
+  background: #17120d;
+}
+
+.hunter-planner {
+  padding: clamp(10px, 2vw, 28px);
+  background: linear-gradient(#100d0980, #100d09a8), url('./assets/hunter/tavern.png') center top / cover fixed;
+}
+
+.hunter-board {
+  position: relative;
+  max-width: 1600px;
+  margin: 0 auto;
+  border: 9px solid #4c3320;
+  border-radius: 2px;
+  background: #ceb181 url('./assets/hunter/parchment.png') center / 640px;
+  box-shadow: 0 0 0 1px #96704a, inset 0 0 0 2px #342016, 0 14px 50px #000b;
+}
+
+/* Small iron reinforcements keep the parchment frame light. */
+.hunter-board::before, .hunter-board::after {
+  content: '';
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  pointer-events: none;
+  z-index: 1;
+  border: 3px solid #68625a;
+  background: radial-gradient(circle at 9px 9px, #bfa37a 0 2px, #292c27 3px 4px, transparent 5px), linear-gradient(135deg, #48483e, #222820);
+  box-shadow: 1px 1px 3px #0009;
+}
+.hunter-board::before { top: -10px; left: -10px; clip-path: polygon(0 0, 100% 0, 0 100%); }
+.hunter-board::after { bottom: -10px; right: -10px; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+
+.hunter-header {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 3vw, 40px);
+  padding: 12px clamp(14px, 2vw, 28px);
+  border-bottom: 3px double #a4814c;
+  background: linear-gradient(#151b14ed, #0e140feb);
+}
+.hunter-logo { width: clamp(125px, 19vw, 230px); height: auto; object-fit: contain; flex-shrink: 0; }
+.hunter-brand-title { border-left: 1px solid #aa8654; padding-left: clamp(12px, 2vw, 28px); }
+.hunter-brand-title h1 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.5rem, 3vw, 2.75rem);
+  font-weight: 700;
+  color: #f3dfb4;
+  text-shadow: 1px 2px #050b06, 0 -1px #e8ca89;
+}
+.hunter-brand-title p { font-size: 0.6875rem; letter-spacing: .23em; color: #d6cdb6; margin-top: 4px; }
+.hunter-editor-toolbar { color: #302317; align-items: center; }
+.hunter-editor-toolbar h2 { font-family: Georgia, 'Times New Roman', serif; color: #302317; }
+.hunter-editor-toolbar p, .hunter-editor-toolbar span { color: #57402b; }
+.hunter-editor-toolbar button { background: #1b2419; }
+.hunter-editor-toolbar button:hover { background: #43351f; color: #f3e6c3; }
+.hunter-generator { border-radius: 1px; border-color: #725331; box-shadow: 0 1px 2px #2b1b1570; }
+.hunter-generator > summary { padding: 12px 16px; font-family: Georgia, 'Times New Roman', serif; color: #efd39a; }
+.hunter-generator > summary span { font-family: Arial, system-ui, sans-serif; }
+.hunter-panel {
+  position: relative;
+  border: 1px solid #7c5c36;
+  border-radius: 1px;
+  background: repeating-linear-gradient(0deg, transparent 0 3px, #ffffff02 3px 4px), linear-gradient(110deg, #242b1eee, #10180ff5);
+  box-shadow: inset 0 0 0 2px #14150e, 0 2px 3px #46301d50;
+}
+.hunter-panel > h2, .hunter-panel > div:first-child > h2, .hunter-panel-heading {
+  position: relative;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 700;
+  font-size: 1.0625rem;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  color: #efdab0;
+  padding-bottom: 9px;
+  border-bottom: 1px solid #9c7d45;
+  text-shadow: 1px 1px #000;
+}
+.hunter-panel::before, .hunter-panel::after {
+  content: '';
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border: 1px solid #201309;
+  background: radial-gradient(circle, #201309 0 1px, #ae814a 2px 3px, #604329 4px);
+  pointer-events: none;
+}
+.hunter-panel::before { left: 4px; top: 4px; }
+.hunter-panel::after { right: 4px; bottom: 4px; }
+.hunter-equipment-row { margin-top: 8px; padding: 12px 8px; border: 1px solid #79623d; background: #0c120d66; }
+.hunter-weapon-row { padding: 0 6px 12px; }
+.hunter-equipment-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  padding: 4px;
+  background: #111910;
+  border: 1px solid #927247;
+  box-shadow: inset 0 0 0 2px #070b08;
+}
+.hunter-equipment-icon svg { display: block; width: 100%; height: 100%; }
+.hunter-icon-empty { opacity: .42; }
+.hunter-icon-master svg { filter: drop-shadow(0 0 2px currentColor); }
+.hunter-armor-slots { margin-left: 108px; }
+.hunter-panel button, .hunter-generator button, .hunter-generator select, .hunter-panel select { border-radius: 2px; }
+.hunter-panel button[title^='Add decoration'], .hunter-panel button[title^='Change '] { background: #293322; border-color: #9b7a43; }
+.hunter-simulation { border-color: #b38c4d; }
+.hunter-simulation dl > div { background: #283020; border: 1px solid #6b623c; border-radius: 1px; }
+.hunter-simulation dl dd { font-family: Georgia, 'Times New Roman', serif; font-variant-numeric: tabular-nums; }
+.hunter-levels { display: inline-flex; gap: 3px; }
+.hunter-levels span { width: 9px; height: 11px; border: 1px solid #756647; background: #111b12; }
+.hunter-levels .hunter-level-filled { background: linear-gradient(#efd18a, #ad7d31); border-color: #d8b565; }
+.hunter-stat-icon { display: inline-flex; width: 20px; height: 20px; flex-shrink: 0; color: #d7bd87; }
+.hunter-stat-icon svg { width: 100%; height: 100%; }
+:focus-visible { outline: 2px solid #efd28d; outline-offset: 3px; }
+
+/* Quest-board composition: parchment title strips over compact iron-framed menus. */
+.hunter-planner { padding: 32px clamp(12px, 4vw, 58px); background-image: linear-gradient(#100d0933, #100d0944), url('./assets/hunter/tavern.png'); }
+.hunter-board { max-width: 1400px; border: 14px solid #715034; border-image: url('./assets/hunter/wood-frame.svg') 24 / 14px / 0 stretch; box-shadow: inset 0 0 0 2px #2d1e14, 0 0 0 2px #21170e, 0 14px 50px #000c; }
+.hunter-board::before, .hunter-board::after { display: none; }
+.hunter-header { min-height: 104px; padding: 6px 20px; gap: 18px; box-shadow: inset 0 0 0 2px #090d09, inset 0 0 0 4px #75603e; }
+.hunter-logo { width: 160px; height: 94px; }
+.hunter-brand-title { padding-left: 18px; }
+.hunter-brand-title h1 { font-size: clamp(1.5625rem, 3.2vw, 2.625rem); letter-spacing: .04em; }
+.hunter-editor-toolbar { margin-left: auto; max-width: 240px; color: var(--color-hunter-text); }
+.hunter-editor-toolbar p, .hunter-editor-toolbar span { color: var(--color-hunter-muted); }
+.hunter-editor-toolbar button { padding: 10px 20px; border: 3px ridge #b18a51; border-radius: 0; box-shadow: inset 0 0 0 2px #050906, 0 2px 4px #0009; text-transform: uppercase; letter-spacing: .03em; }
+.hunter-main { padding: 8px 18px 24px; }
+.hunter-generator { margin-bottom: 10px; border: 3px ridge #9e7748; background: linear-gradient(90deg, #11180f, #29271a); }
+.hunter-generator > summary { padding: 5px 12px; font-family: 'Arial Narrow', Arial, sans-serif; font-size: 0.9375rem; text-transform: uppercase; }
+.hunter-generator > summary span { font-size: 0.6875rem; }
+.hunter-primary-grid, .hunter-bottom-grid { gap: 20px; }
+.hunter-bottom-grid { margin-top: 12px; }
+.hunter-primary-grid > aside { display: grid; gap: 12px; }
+.hunter-primary-grid > aside > * { margin-block: 0; }
+.hunter-primary-grid > aside { row-gap: 6px; }
+.hunter-panel { padding: 0 10px 10px; border: 0; background: transparent; box-shadow: none; }
+.hunter-panel::before, .hunter-panel::after { display: none; }
+.hunter-panel > h2, .hunter-panel > div:first-child > h2, .hunter-panel-heading {
+  margin: 0 -10px 0; padding: 5px 28px 5px 14px; min-height: 34px;
+  color: #23180e; font-size: 1.125rem; letter-spacing: .015em; text-shadow: 0 1px #e9d19c;
+  border: 0; background: linear-gradient(transparent, #b9843922);
+}
+.hunter-panel > h2::after, .hunter-panel > div:first-child > h2::after, .hunter-panel-heading::after {
+  content: ''; position: absolute; right: 12px; bottom: 1px; width: 42%; height: 22px; background: url('./assets/hunter/quest-ornament.svg') right bottom / 180px 22px repeat-x; pointer-events: none;
+}
+.hunter-panel > div:first-child:has(> h2) { margin-bottom: 0; }
+.hunter-panel > :not(h2):not(h3):not(:first-child), .hunter-equipment > .hunter-weapon-row {
+  background-color: #12190ff5;
+}
+.hunter-equipment-row, .hunter-weapon-row {
+  position: relative; margin: 0; padding: 8px 10px; border: 3px ridge #a17c4b;
+  background: repeating-linear-gradient(0deg, #ffffff02 0 1px, transparent 1px 3px), linear-gradient(100deg, #20271b, #0c140e);
+  box-shadow: inset 0 0 0 1px #050b07;
+}
+.hunter-equipment-row + .hunter-equipment-row { border-top-width: 1px; }
+.hunter-equipment-row::before, .hunter-equipment-row::after {
+  content: ''; position: absolute; width: 8px; height: 8px; border: 1px solid #24190d; background: radial-gradient(circle, #20180e 1px, #a17c4b 2px, #68472a 3px); pointer-events: none;
+}
+.hunter-equipment-row::before { top: -4px; left: -4px; }
+.hunter-equipment-row::after { bottom: -4px; right: -4px; }
+.hunter-equipment-row h3 { width: 60px; color: #e9d8b2; }
+.hunter-equipment-icon { width: 54px; height: 54px; border: 3px ridge #aa8454; background: linear-gradient(135deg, #253023, #090e0a); }
+.hunter-armor-slots { margin-left: 0; margin-top: 3px; position: relative; }
+.hunter-armor-content p { line-height: 1.15; }
+.hunter-armor-content button { padding: 0; }
+.hunter-armor-content { min-height: 54px; }
+.hunter-equipment-row p { margin-top: 0; }
+.hunter-equipment-row button > p:first-child { font-size: 0.9375rem; }
+.hunter-equipment-row button > p:nth-child(2) { font-size: 0.625rem; }
+.hunter-equipment-row button > p:nth-child(3) { font-size: 0.625rem; }
+.hunter-equipment-row > div { gap: 8px; }
+.hunter-panel button[title^='Add decoration'], .hunter-panel button[title^='Change '] { min-height: 24px; min-width: 25px; border: 2px ridge #9f8b63; background: linear-gradient(#45483b, #24281e); }
+.hunter-weapon-row { padding: 8px 10px; }
+.hunter-weapon-row > div:first-child { margin-bottom: 5px; }
+.hunter-weapon-row { display: grid; grid-template-columns: 58px minmax(0, 1fr); column-gap: 10px; min-height: 115px; }
+.hunter-weapon-row > div:first-child { display: block; }
+.hunter-weapon-row > div:first-child > div { flex-direction: column; gap: 2px; margin-top: 10px; }
+.hunter-weapon-row > div:first-child > div > button:first-child { padding: 0 4px; }
+.hunter-weapon-row > div:nth-child(2) { margin-left: 0 !important; padding-left: 64px; }
+.hunter-weapon-row .hunter-equipment-icon { left: 0 !important; }
+.hunter-weapon-row > div:first-child h2, .hunter-charm-row h2 { font-size: 0.6875rem; color: #e9d8b2; }
+.hunter-weapon-row > div:first-child button, .hunter-charm-row > div:first-child button { padding: 2px 8px; font-size: 0.6875rem; }
+.hunter-weapon-row > div:nth-child(2) { margin-top: 0; margin-left: 68px; position: relative; }
+.hunter-weapon-row .hunter-equipment-icon { position: absolute; left: -68px; top: 0; }
+.hunter-weapon-row > div:nth-child(2) > div:last-child > p { display: none; }
+.hunter-charm-row { min-height: 85px; }
+.hunter-stats > p, .hunter-simulation > p { margin: 0; padding: 6px 10px; color: #b7b6a4; font-size: 0.625rem; border-left: 3px ridge #a17c4b; border-right: 3px ridge #a17c4b; }
+.hunter-stats-columns { display: grid; grid-template-columns: 1.1fr 1fr; gap: 18px; padding: 8px 14px; border: 3px ridge #a17c4b; border-top: 0; }
+.hunter-stat-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 5px; }
+.hunter-stat-list > div { grid-column: auto; display: flex; justify-content: space-between; align-items: center; padding: 0; background: transparent; border: 0; gap: 10px; }
+.hunter-stat-list dt { font-size: 0.9375rem; text-transform: uppercase; color: var(--color-hunter-text); flex-wrap: nowrap; }
+.hunter-stat-list dd { font-size: 1.1875rem; }
+.hunter-stat-list > div:nth-child(n+4) dt, .hunter-stat-list > div:nth-child(n+4) dd { font-size: 0.625rem; text-transform: none; }
+.hunter-resistances { border-left: 1px solid #9b7b46; padding-left: 16px; }
+.hunter-resistances h3 { font-size: 0.5625rem; margin-bottom: 2px; }
+.hunter-resistances dl { display: grid; gap: 2px; }
+.hunter-resistances dt { text-transform: uppercase; font-size: 0.8125rem; color: var(--color-hunter-text); }
+.hunter-stats > details, .hunter-stats > div:last-child { margin-top: 0; padding: 6px 10px; border: 3px ridge #a17c4b; border-top: 0; }
+.hunter-stats > div:last-child h3 { display: inline; margin-right: 12px; }
+.hunter-stats > div:last-child p { display: inline; }
+.hunter-stats > div:last-child dl { margin-top: 4px; }
+.hunter-stats summary { margin-bottom: 0; }
+.hunter-simulation > dl { margin: 0; gap: 0; padding: 10px 12px; border: 3px ridge #a17c4b; border-top: 0; }
+.hunter-simulation dl > div { padding: 0 12px; border: 0; background: transparent; }
+.hunter-simulation dl > div + div { border-left: 1px solid #9c7d45; }
+.hunter-simulation dl dd { font-size: 2.25rem; line-height: 1.2; padding-left: 28px; }
+.hunter-simulation dl dt { font-size: 0.75rem; text-transform: uppercase; color: var(--color-hunter-text); }
+.hunter-conditions { display: block; margin-top: 0; padding: 8px 12px; border: 3px ridge #a17c4b; border-top: 0; }
+.hunter-conditions legend { float: left; width: 100%; padding-bottom: 6px; margin-bottom: 0; font-size: 0.75rem; color: #e6cf99; text-transform: uppercase; }
+.hunter-condition-grid { clear: both; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; }
+.hunter-target { grid-column: 1; grid-row: 1 / 3; }
+.hunter-health { grid-column: 1; grid-row: 3 / 5; }
+.hunter-condition-grid > label:nth-child(3) { grid-column: 2; grid-row: 1; }
+.hunter-condition-grid > label:nth-child(4) { grid-column: 2; grid-row: 2; }
+.hunter-condition-grid > label:nth-child(6) { grid-column: 2; grid-row: 3; }
+.hunter-condition-grid > label:nth-child(7) { grid-column: 2; grid-row: 4; }
+.hunter-conditions label { font-size: 0.6875rem; }
+.hunter-conditions select { margin-top: 3px; padding: 4px 6px; border: 2px ridge #9a784d; font-size: 0.75rem; }
+.hunter-condition-grid > p { grid-column: 1 / -1; grid-row: 5; font-size: 0.625rem; }
+.hunter-condition-grid > button { padding: 4px 10px; justify-self: end; grid-column: 2; border: 2px ridge #a17c4b; }
+.hunter-contributions { margin-top: 0; padding: 8px 12px; grid-template-columns: 1fr; gap: 0; border: 3px ridge #a17c4b; border-top: 0; }
+.hunter-contributions h4 { grid-column: 1; padding-bottom: 4px; color: #e6cf99; text-transform: uppercase; }
+.hunter-contributions > div { padding: 5px 0; border-top: 1px solid #74603e; background: transparent; display: flex; flex-wrap: wrap; align-items: center; gap: 3px 8px; }
+.hunter-contributions > div > p { margin-top: 0; margin-left: auto; }
+.hunter-simulation > details { margin-top: 0; padding: 5px 12px; border: 3px ridge #a17c4b; border-top: 0; }
+.hunter-skills > div:last-child, .hunter-set-bonuses > div:last-child, .hunter-skills > p, .hunter-set-bonuses > p { margin-top: 0; padding: 8px 12px; border: 3px ridge #a17c4b; }
+.hunter-skill-row { position: relative; padding: 6px 0; background: transparent; border-radius: 0; border-bottom: 1px solid #74603e; }
+.hunter-skills .space-y-2 > * { margin-top: 0; }
+.hunter-skill-row > div:first-child { padding-right: 0; gap: 6px; }
+.hunter-skill-row .hunter-levels { margin-top: 4px; }
+.hunter-skills .hunter-skill-row { margin-block: 0; }
+.hunter-skills { padding-bottom: 0; }
+.hunter-skills .hunter-skill-row { padding-top: 4px; padding-bottom: 4px; }
+.hunter-levels { gap: 2px; }
+.hunter-levels span { width: 15px; height: 14px; border: 2px ridge #807a68; background: #41453d; }
+.hunter-levels .hunter-level-filled { background: linear-gradient(#ffe19a, #bf8e25); border-color: #e7c263; }
+.hunter-set-bonuses > div:last-child { min-height: 150px; background-image: repeating-linear-gradient(45deg, transparent 0 28px, #a78a4620 28px 30px, transparent 30px 44px); }
+.hunter-stat-icon { width: 24px; height: 24px; }
+.hunter-element-fire { color: #f7804f; }.hunter-element-water { color: #69bdf5; }.hunter-element-thunder { color: #ead059; }.hunter-element-ice { color: #8dd9dc; }.hunter-element-dragon { color: #bd83d1; }
+
+@media (min-width: 1200px) {
+  .hunter-skill-row > div:first-child { padding-right: 160px; }
+  .hunter-skill-row .hunter-levels { position: absolute; right: 8px; top: 6px; margin: 0; }
+}
+@media (max-width: 1023px) { .hunter-primary-grid, .hunter-bottom-grid { grid-template-columns: minmax(0, 1fr); } }
+
+@media (max-width: 639px) {
+  .hunter-planner { padding: 8px; background-attachment: scroll; }
+  .hunter-board { border-width: 5px; }
+  .hunter-header { gap: 12px; padding: 12px; }
+  .hunter-brand-title { padding-left: 12px; }
+  .hunter-logo { width: 95px; }
+  .hunter-brand-title h1 { font-size: 1.4375rem; }
+  .hunter-brand-title p { font-size: 0.5625rem; letter-spacing: .1em; }
+  .hunter-panel { padding: 12px; }
+  .hunter-panel > h2, .hunter-panel > div:first-child > h2, .hunter-panel-heading { font-size: 0.9375rem; }
+  .hunter-equipment-row { padding: 10px 4px; }
+  .hunter-equipment-row h3 { width: 36px; font-size: 0.625rem; }
+  .hunter-equipment-icon { width: 35px; height: 35px; padding: 3px; }
+  .hunter-armor-slots { margin-left: 87px; }
+  .hunter-equipment-row p { overflow-wrap: anywhere; }
+  .hunter-editor-toolbar { gap: 8px; }
+  .hunter-planner { padding: 8px; }
+  .hunter-main { padding: 6px 5px 12px; }
+  .hunter-header { flex-wrap: wrap; gap: 8px; padding: 8px; min-height: 0; }
+  .hunter-logo { width: 90px; height: 60px; }
+  .hunter-brand-title { padding-left: 10px; }
+  .hunter-editor-toolbar { max-width: none; width: 100%; }
+  .hunter-editor-toolbar button { padding: 5px 10px; font-size: 0.6875rem; }
+  .hunter-generator > summary span { display: block; margin-left: 0; }
+  .hunter-panel { padding: 0 4px 4px; }
+  .hunter-panel > h2, .hunter-panel > div:first-child > h2, .hunter-panel-heading { margin-left: -4px; margin-right: -4px; padding-left: 8px; font-size: 0.9375rem; }
+  .hunter-panel > h2::after, .hunter-panel > div:first-child > h2::after, .hunter-panel-heading::after { display: none; }
+  .hunter-equipment-row { padding: 6px 4px; }
+  .hunter-equipment-row h3 { width: 36px; }
+  .hunter-equipment-icon { width: 42px; height: 42px; }
+  .hunter-armor-slots { margin-left: 0; }
+  .hunter-armor-slots { margin-top: 2px; }
+  .hunter-equipment-row button > p:first-child { font-size: 0.8125rem; }
+  .hunter-weapon-row > div:nth-child(2) { margin-left: 52px; }
+  .hunter-weapon-row .hunter-equipment-icon { left: -52px; }
+  .hunter-stats-columns { gap: 8px; padding: 8px; }
+  .hunter-stat-list dt { font-size: 0.6875rem; }
+  .hunter-stat-list dd { font-size: 0.9375rem; }
+  .hunter-resistances { padding-left: 8px; }
+  .hunter-resistances dt { font-size: 0.625rem; gap: 3px; }
+  .hunter-stat-icon { width: 18px; height: 18px; }
+  .hunter-simulation dl dd { font-size: 1.75rem; padding-left: 0; }
+  .hunter-condition-grid { grid-template-columns: minmax(0, 1fr); }
+  .hunter-condition-grid > * { grid-column: 1 !important; grid-row: auto !important; }
 }

@@ -1,0 +1,89 @@
+@font-face {
+  font-family: 'IM Fell English SC';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./assets/fonts/im-fell-english-sc.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Cinzel';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./assets/fonts/cinzel-regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Cinzel';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('./assets/fonts/cinzel-semibold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Cinzel';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('./assets/fonts/cinzel-bold.ttf') format('truetype');
+}
+
+:root { font-family: 'Cinzel', Georgia, serif; font-size: 120%; }
+.hunter-brand-title h1,
+.hunter-panel > h2,
+.hunter-panel > div:first-child > h2,
+.hunter-panel-heading,
+.hunter-panel h3,
+.hunter-panel h4,
+.hunter-dialog h2,
+.hunter-generator h2,
+.hunter-generator h3 {
+  font-family: 'IM Fell English SC', Georgia, serif;
+  font-weight: 400;
+  font-synthesis: none;
+}
+.hunter-generator > summary { font-family: 'Cinzel', Georgia, serif; font-weight: 600; }
+.hunter-generator > summary span { font-family: 'Cinzel', Georgia, serif; font-weight: 400; }
+.hunter-simulation dl dd { font-family: 'Cinzel', Georgia, serif; font-weight: 600; }
+.hunter-planner [role='tooltip'] { font-size: 0.8125rem; line-height: 1.6; }
+.hunter-equipment-row button > p:nth-child(2), .hunter-equipment-row button > p:nth-child(3) {
+  font-size: 0.6875rem;
+  line-height: 1.25;
+}
+.hunter-stats > p, .hunter-simulation > p, .hunter-condition-grid > p { font-size: 0.6875rem; line-height: 1.5; }
+.hunter-conditions label { font-size: 0.75rem; }
+
+/* Keep fixed geometry in step with the larger reading scale. */
+.hunter-brand-title h1 { font-size: clamp(1.5625rem, 3.84vw, 2.625rem); }
+.hunter-logo { width: 10rem; height: 5.875rem; }
+.hunter-panel > h2, .hunter-panel > div:first-child > h2, .hunter-panel-heading {
+  min-height: 2.625rem;
+  line-height: 1.25;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+}
+.hunter-stats::before, .hunter-simulation::before, .hunter-skills::before, .hunter-set-bonuses::before { top: 2.625rem; }
+.hunter-set-bonuses::after { top: 3.5rem; }
+.hunter-equipment-icon { width: 3.375rem; height: 3.375rem; }
+.hunter-stat-icon { width: 1.5rem; height: 1.5rem; }
+.hunter-equipment-row h3 { width: 3.75rem; }
+.hunter-weapon-row { grid-template-columns: 3.625rem minmax(0, 1fr); }
+.hunter-weapon-row > div:nth-child(2) { padding-left: 4rem; }
+.hunter-armor-content { min-height: 3.375rem; }
+.hunter-levels span { width: .9375rem; height: .875rem; }
+.hunter-simulation .hunter-panel-heading::after { width: 18%; }
+
+@media (min-width: 1200px) {
+  .hunter-skill-row > div:first-child { padding-right: 10rem; }
+}
+@media (max-width: 639px) {
+  .hunter-brand-title h1 { font-size: 1.4375rem; }
+  .hunter-logo { width: 5.625rem; height: 3.75rem; }
+  .hunter-equipment-icon { width: 2.625rem; height: 2.625rem; }
+  .hunter-stat-icon { width: 1.125rem; height: 1.125rem; }
+  .hunter-equipment-row h3 { width: 2.25rem; }
+  .hunter-weapon-row > div:nth-child(2) { padding-left: 3.25rem; }
+}
+@media (max-width: 359px) {
+  .hunter-stats-columns { grid-template-columns: minmax(0, 1fr); }
+  .hunter-resistances { border-left: 0; border-top: 1px solid #9b7b46; padding-left: 0; padding-top: .5rem; }
+}

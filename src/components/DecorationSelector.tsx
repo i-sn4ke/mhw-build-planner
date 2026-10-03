@@ -58,14 +58,14 @@ function DecorationSelector({
     }
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-      <div className="w-full max-w-2xl rounded-xl border border-[#30343a] bg-[#191b1f] shadow-2xl">
-        <div className="flex items-center justify-between border-b border-[#30343a] px-6 py-4">
+      <div className="hunter-dialog w-full max-w-2xl rounded-xl border border-hunter-border bg-hunter-panel shadow-2xl">
+        <div className="flex items-center justify-between border-b border-hunter-border px-6 py-4">
           <div>
             <h2 className="text-lg font-semibold">
               Select Decoration
             </h2>
 
-            <p className="mt-1 text-sm text-[#666a70]">
+            <p className="mt-1 text-sm text-hunter-muted">
               Choose a decoration for a size {slotSize} slot
             </p>
           </div>
@@ -73,20 +73,20 @@ function DecorationSelector({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md px-3 py-2 text-[#9b9b95] transition hover:bg-[#25282d] hover:text-[#e7e4da]"
+            className="rounded-md px-3 py-2 text-hunter-muted transition hover:bg-hunter-hover hover:text-hunter-text"
           >
             ✕
           </button>
         </div>
 
-        <div className="border-b border-[#30343a] p-4">
+        <div className="border-b border-hunter-border p-4">
           <div className="flex gap-3">
             <input
               type="search"
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search decorations or skills..."
-              className="min-w-0 flex-1 rounded-lg border border-[#30343a] bg-[#15171a] px-4 py-2 text-sm text-[#e7e4da] outline-none transition placeholder:text-[#666a70] focus:border-[#c99a45]"
+              className="min-w-0 flex-1 rounded-lg border border-hunter-border bg-hunter-inset px-4 py-2 text-sm text-hunter-text outline-none transition placeholder:text-hunter-muted focus:border-hunter-gold"
             />
 
             <select
@@ -98,7 +98,7 @@ function DecorationSelector({
                   value === 'all' ? 'all' : Number(value),
                 )
               }}
-              className="rounded-lg border border-[#30343a] bg-[#15171a] px-3 py-2 text-sm text-[#e7e4da] outline-none transition focus:border-[#c99a45]"
+              className="rounded-lg border border-hunter-border bg-hunter-inset px-3 py-2 text-sm text-hunter-text outline-none transition focus:border-hunter-gold"
             >
               <option value="all">All slots</option>
 
@@ -112,7 +112,7 @@ function DecorationSelector({
             </select>
           </div>
 
-          <p className="mt-2 text-xs text-[#666a70]">
+          <p className="mt-2 text-xs text-hunter-muted">
             {filteredDecorations.length} decorations
           </p>
         </div>
@@ -122,14 +122,14 @@ function DecorationSelector({
             <button
               type="button"
               onClick={onRemove}
-              className="mb-3 w-full rounded-lg border border-[#30343a] bg-[#15171a] p-4 text-left text-sm text-[#9b9b95] transition hover:border-red-400 hover:text-red-400"
+              className="mb-3 w-full rounded-lg border border-hunter-border bg-hunter-inset p-4 text-left text-sm text-hunter-muted transition hover:border-red-400 hover:text-red-400"
             >
               Remove decoration
             </button>
           )}
 
           {filteredDecorations.length === 0 ? (
-            <p className="p-4 text-center text-[#666a70]">
+            <p className="p-4 text-center text-hunter-muted">
               No decorations match the current filters.
             </p>
           ) : (
@@ -139,20 +139,20 @@ function DecorationSelector({
                   key={decoration.id}
                   type="button"
                   onClick={() => onSelect(decoration)}
-                  className="w-full rounded-lg border border-[#30343a] bg-[#15171a] p-4 text-left transition hover:border-[#c99a45] hover:bg-[#1d2024]"
+                  className="w-full rounded-lg border border-hunter-border bg-hunter-inset p-4 text-left transition hover:border-hunter-gold hover:bg-hunter-hover"
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium text-[#e7e4da]">
+                      <p className="font-medium text-hunter-text">
                         {decoration.name}
                       </p>
 
-                      <p className="mt-1 text-xs text-[#666a70]">
+                      <p className="mt-1 text-xs text-hunter-muted">
                         Slot size {decoration.slotSize}
                       </p>
                     </div>
 
-                    <span className="flex h-8 w-8 items-center justify-center rounded border border-[#454950] text-sm text-[#c99a45]">
+                    <span className="flex h-8 w-8 items-center justify-center rounded border border-hunter-trim text-sm text-hunter-gold">
                       {decoration.slotSize}
                     </span>
                   </div>
@@ -162,7 +162,7 @@ function DecorationSelector({
                       {decoration.skills.map((skill) => (
                         <span
                           key={skill.skillId}
-                          className="text-sm text-[#c99a45]"
+                          className="text-sm text-hunter-gold"
                         >
                           {getSkillName(skill.skillId)} +{skill.level}
                         </span>

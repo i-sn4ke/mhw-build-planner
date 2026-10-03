@@ -7,6 +7,7 @@ import ArmorSelector from './components/ArmorSelector'
 import ArmorSlot from './components/ArmorSlot'
 import SkillPanel from './components/SkillPanel'
 import StatsPanel from './components/StatsPanel'
+import OffensiveSimulationPanel from './components/OffensiveSimulationPanel'
 import CharmStatsPanel from './components/CharmStatsPanel'
 import DecorationSelector from './components/DecorationSelector'
 import WeaponStatsPanel from './components/WeaponStatsPanel'
@@ -14,6 +15,7 @@ import SetBonusPanel from './components/SetBonusPanel'
 import CharmSelector from './components/CharmSelector'
 import WeaponSelector from './components/WeaponSelector'
 import BuildGeneratorPanel from './components/BuildGeneratorPanel'
+import hunterLogo from './assets/hunter/monster-hunter-logo.png'
 
 import {calculateBuildStats,} from './engine/buildCalculator'
 
@@ -221,38 +223,22 @@ const buildStats = calculateBuildStats(
 )
 
   return (
-    <div className="min-h-screen bg-[#111214] text-[#e7e4da]">
-      <header className="border-b border-[#30343a] px-8 py-5">
-        <h1 className="text-xl font-bold tracking-wide">
-          MONSTER HUNTER: WORLD
-        </h1>
-
-        <p className="mt-1 text-sm text-[#9b9b95]">
-          Build Planner
-        </p>
-      </header>
-
-      <main className="p-8">
-        <div className="mb-8 flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <h2 className="text-2xl font-semibold">
-              Build Editor
-            </h2>
-
-            <p className="mt-2 text-[#9b9b95]">
-              Create your armor set.
-            </p>
-
+    <div className="hunter-planner min-h-screen text-hunter-text">
+      <div className="hunter-board">
+      <header className="hunter-header">
+        <img src={hunterLogo} alt="Monster Hunter" className="hunter-logo" />
+        <div className="hunter-brand-title">
+          <h1>Build Planner</h1>
+          <p>WORLD + ICEBORNE</p>
+        </div>
+        <div className="hunter-editor-toolbar flex flex-wrap items-center justify-end gap-3">
             {buildFingerprint && (
-              <p className="mt-2 font-mono text-xs text-[#666a70]">
+              <p className="mt-2 font-mono text-xs text-hunter-muted">
                 Build ID: {buildFingerprint.slice(0, 12)}
               </p>
             )}
-          </div>
-
-          <div className="flex items-center gap-3">
             {shareStatus === 'copied' && (
-              <span className="text-sm text-[#9b9b95]">
+              <span className="text-sm text-hunter-muted">
                 Link copied!
               </span>
             )}
@@ -266,13 +252,17 @@ const buildStats = calculateBuildStats(
             <button
               type="button"
               onClick={handleShareBuild}
-              className="rounded-md border border-[#c99a45] px-4 py-2 text-sm font-semibold text-[#c99a45] transition hover:bg-[#c99a45] hover:text-[#111214]"
+              className="rounded-md border border-hunter-gold px-4 py-2 text-sm font-semibold text-hunter-gold transition hover:bg-hunter-gold hover:text-hunter-ink"
             >
               Share Build
             </button>
-          </div>
         </div>
+      </header>
 
+      <main className="hunter-main">
+
+        <details className="hunter-generator mb-5 rounded-lg border border-hunter-border bg-hunter-panel">
+          <summary className="cursor-pointer px-5 py-4 font-semibold">Build Generator <span className="ml-2 text-xs font-normal text-hunter-muted">Find builds for your required skills</span></summary>
         <BuildGeneratorPanel
           weapon={selectedWeapon}
           onSelectWeapon={() => setIsWeaponSelectorOpen(true)}
@@ -287,12 +277,13 @@ const buildStats = calculateBuildStats(
             setShareStatus('idle')
           }}
         />
+        </details>
 
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
-          <section>
+        <div className="hunter-primary-grid grid items-start gap-5 lg:grid-cols-[minmax(0,46fr)_minmax(0,54fr)]">
+          <section aria-labelledby="equipment-title" className="hunter-panel hunter-equipment min-w-0">
 
   <div className="mb-3">
-    <h2 className="text-sm font-semibold uppercase tracking-wider text-[#9b9b95]">
+    <h2 id="equipment-title" className="text-sm font-semibold uppercase tracking-wider text-hunter-muted">
       Equipment
     </h2>
   </div>
@@ -316,7 +307,7 @@ const buildStats = calculateBuildStats(
               }}
             />
 
-  <div className="grid gap-4 md:grid-cols-2">
+  <div>
               <ArmorSlot
                 slot="head"
                 armor={selectedArmor.head}
@@ -413,25 +404,23 @@ const buildStats = calculateBuildStats(
             </div>
           </section>
 
-          <aside className="space-y-4">
-
-            <SkillPanel skills={buildStats.skills} />
-
-            <SetBonusPanel
-              setBonuses={activeSetBonuses}
-              skills={skills}
-            />
-
+          <aside className="min-w-0 space-y-5">
             <StatsPanel
               stats={buildStats}
               weapon={selectedWeapon}
               armorPieces={armorPieces}
               decorations={decorations}
             />
+            <OffensiveSimulationPanel weapon={selectedWeapon} skills={buildStats.skills} />
             
           </aside>
         </div>
+        <div className="hunter-bottom-grid mt-5 grid items-start gap-5 lg:grid-cols-[minmax(0,46fr)_minmax(0,54fr)]">
+          <SkillPanel skills={buildStats.skills} />
+          <SetBonusPanel setBonuses={activeSetBonuses} skills={skills} />
+        </div>
       </main>
+      </div>
 
       {selectorSlot && (
         <ArmorSelector

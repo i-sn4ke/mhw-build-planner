@@ -18,13 +18,13 @@ function SetBonusPanel({
   }
 
   return (
-    <div className="rounded-lg border border-[#30343a] bg-[#191b1f] p-5">
-      <h2 className="text-sm font-semibold uppercase tracking-wider text-[#9b9b95]">
+    <div className="hunter-panel hunter-set-bonuses rounded-lg border border-hunter-border bg-hunter-panel p-5">
+      <h2 className="text-sm font-semibold uppercase tracking-wider text-hunter-muted">
         Set Bonuses
       </h2>
 
       {setBonuses.length === 0 ? (
-        <p className="mt-3 text-sm text-[#666a70]">
+        <p className="mt-3 text-sm text-hunter-muted">
           No active set bonuses.
         </p>
       ) : (
@@ -32,11 +32,11 @@ function SetBonusPanel({
           {setBonuses.map((setBonus) => (
             <div key={setBonus.id}>
               <div className="flex items-center justify-between">
-                <span className="font-medium text-[#e7e4da]">
+                <span className="font-medium text-hunter-text">
                   {setBonus.name}
                 </span>
 
-                <span className="text-sm text-[#9b9b95]">
+                <span className="text-sm text-hunter-muted">
                   {setBonus.pieces} pieces
                 </span>
               </div>
@@ -54,8 +54,8 @@ function SetBonusPanel({
                       <span
                         className={
                           isActive
-                            ? 'text-[#c99a45]'
-                            : 'text-[#666a70]'
+                            ? 'text-hunter-gold'
+                            : 'text-hunter-muted'
                         }
                       >
                         {isActive ? '✓' : '○'}
@@ -64,8 +64,8 @@ function SetBonusPanel({
                       <span
                         className={
                           isActive
-                            ? 'text-[#e7e4da]'
-                            : 'text-[#666a70]'
+                            ? 'text-hunter-text'
+                            : 'text-hunter-muted'
                         }
                       >
                         {threshold.pieces} pieces
@@ -74,8 +74,8 @@ function SetBonusPanel({
                       <span
                         className={
                           isActive
-                            ? 'text-[#9b9b95]'
-                            : 'text-[#666a70]'
+                            ? 'text-hunter-muted'
+                            : 'text-hunter-muted'
                         }
                       >
                         {getSkillName(threshold.skillId)}

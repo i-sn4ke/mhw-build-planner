@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <pattern id="grain" width="128" height="24" patternUnits="userSpaceOnUse">
+      <rect width="128" height="24" fill="#67482e"/>
+      <path d="M0 2h128M0 22h128M6 8l35-2 25 3 62-3M0 15l28 2 40-3 35 3 25-2" stroke="#352518" fill="none" stroke-width="2"/>
+      <path d="M0 4h128M0 20h128M0 11l40-2 28 3 60-2" stroke="#aa7a49" fill="none"/>
+    </pattern>
+    <g id="corner">
+      <path d="M0 0h24v8L8 24H0z" fill="#45433a" stroke="#b09364"/>
+      <path d="M3 3h16L3 19z" fill="#202720" stroke="#757361"/>
+      <circle cx="7" cy="7" r="3" fill="#bca578" stroke="#181b15"/>
+    </g>
+  </defs>
+  <rect x="1" y="1" width="254" height="254" fill="url(#grain)" stroke="#22180f" stroke-width="2"/>
+  <rect x="19" y="19" width="218" height="218" fill="none" stroke="#bb955e" stroke-width="2"/>
+  <use href="#corner"/>
+  <use href="#corner" transform="translate(256 0) rotate(90)"/>
+  <use href="#corner" transform="translate(256 256) rotate(180)"/>
+  <use href="#corner" transform="translate(0 256) rotate(270)"/>
+</svg>

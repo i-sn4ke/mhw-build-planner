@@ -1,0 +1,45 @@
+/* Generated art kept separate from application styles until visual approval. */
+.hunter-art-board {
+  border: 24px solid #67482e;
+  border-image: url('./board-frame-v2.png') 115 / 24px / 0 stretch;
+  background: #d9bd88 url('../parchment.png') center / 650px;
+  background-clip: padding-box;
+}
+.hunter-art-frame {
+  border: 10px solid transparent;
+  border-image: url('./menu-frame-v2.png') 115 / 10px / 0 stretch;
+  background: linear-gradient(100deg, #20271a, #0d140f);
+  background-clip: padding-box;
+}
+.hunter-art-button {
+  border: 10px solid transparent;
+  border-image: url('./button-surface-v2.png') 155 fill / 10px / 0 stretch;
+  background: #151a12;
+  background-clip: padding-box;
+  padding: 5px 16px;
+  color: #f1d8a3;
+  font: inherit;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.hunter-art-button:hover { filter: brightness(1.15); }
+.hunter-art-button:active { filter: brightness(.9); }
+.hunter-art-button:focus-visible { outline: 2px solid #ffe0a0; outline-offset: 3px; }
+.hunter-art-ornament {
+  height: 34px;
+  background: url('./tribal-divider-v2.png') center / 660px 220px repeat-x;
+  pointer-events: none;
+}
+.hunter-art-watermark {
+  position: relative;
+  isolation: isolate;
+}
+.hunter-art-watermark::before {
+  content: '';
+  position: absolute;
+  inset: 8px 8px 8px 45%;
+  background: url('./guild-watermark-v2.png') center / contain no-repeat;
+  opacity: .25;
+  z-index: -1;
+  pointer-events: none;
+}
