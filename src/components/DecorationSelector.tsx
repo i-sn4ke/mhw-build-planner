@@ -1,3 +1,5 @@
+import EquipmentSkillList from './EquipmentSkillList'
+import EquipmentOption from './EquipmentOption'
 import { useMemo, useState } from 'react'
 import type { Decoration } from '../types/decoration'
 import type { SkillDefinition } from '../types/skillDefinition'
@@ -50,12 +52,6 @@ function DecorationSelector({
       .sort((a, b) => a.name.localeCompare(b.name))
   }, [decorations, slotSize, slotFilter, search, skillNameById])
 
-    const getSkillName = (skillId: string) => {
-      return (
-        skillNameById.get(skillId) ??
-        skillId
-      )
-    }
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
       <div className="hunter-dialog w-full max-w-2xl rounded-xl border border-hunter-border bg-hunter-panel shadow-2xl">
@@ -135,10 +131,10 @@ function DecorationSelector({
           ) : (
             <div className="space-y-2">
               {filteredDecorations.map((decoration) => (
-                <button
+                <EquipmentOption
                   key={decoration.id}
-                  type="button"
-                  onClick={() => onSelect(decoration)}
+                  name={decoration.name}
+                  onSelect={() => onSelect(decoration)}
                   className="w-full rounded-lg border border-hunter-border bg-hunter-inset p-4 text-left transition hover:border-hunter-gold hover:bg-hunter-hover"
                 >
                   <div className="flex items-center justify-between">
@@ -157,19 +153,8 @@ function DecorationSelector({
                     </span>
                   </div>
 
-                  {decoration.skills.length > 0 && (
-                    <div className="mt-3 flex flex-wrap gap-3">
-                      {decoration.skills.map((skill) => (
-                        <span
-                          key={skill.skillId}
-                          className="text-sm text-hunter-gold"
-                        >
-                          {getSkillName(skill.skillId)} +{skill.level}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </button>
+                  <EquipmentSkillList skills={decoration.skills} />
+                </EquipmentOption>
               ))}
             </div>
           )}

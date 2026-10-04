@@ -3,7 +3,7 @@ import type {
   ArmorSlot as ArmorSlotType,
 } from '../types/armor'
 
-import { skills } from '../data/skills'
+import EquipmentSkillList from './EquipmentSkillList'
 import EquipmentIcon from './EquipmentIcon'
 import type { EquippedDecoration } from '../types/equipment'
 
@@ -18,7 +18,6 @@ interface ArmorSlotProps {
   onDecorationSlotSelect: (slotIndex: number) => void
 }
 
-const skillNameById = new Map(skills.map((skill) => [skill.id, skill.name]))
 
 const slotNames: Record<ArmorSlotType, string> = {
   head: 'Head',
@@ -47,18 +46,17 @@ function ArmorSlot({
     )
 
   return (
-    <div className="hunter-equipment-row border-t border-hunter-border py-3">
+    <div className="hunter-equipment-row hunter-armor-row border-t border-hunter-border py-3">
       <div className="flex items-start gap-2">
-        <h3 className="w-12 shrink-0 pt-2 text-xs font-semibold uppercase text-hunter-muted">{slotNames[slot]}</h3>
-        <EquipmentIcon category={slot} rarity={armor?.rarity} />
+        <EquipmentIcon category={slot} rarity={armor?.rarity} onSelect={onSelect} />
         <div className="hunter-armor-content min-w-0 flex-1">
-        <button type="button" onClick={onSelect} aria-label={`Select ${slotNames[slot]} armor`} className="w-full min-w-0 rounded-md text-left hover:bg-hunter-hover">
-          <p className="break-words text-sm font-medium">{armor?.name ?? 'Select armor...'}</p>
+        <div className="hunter-item-summary">
+          <p className="break-words text-sm font-medium">{armor?.name ?? `No ${slotNames[slot].toLowerCase()} selected.`}</p>
           {armor && <>
             <p className="mt-1 text-xs text-hunter-muted">Rarity {armor.rarity} · {armor.rank} rank</p>
-            <p className="mt-1 text-xs text-hunter-gold">{armor.skills.map((skill) => `${skillNameById.get(skill.skillId) ?? skill.skillId} +${skill.level}`).join(' · ')}</p>
           </>}
-        </button>
+        </div>
+        {armor && <EquipmentSkillList skills={armor.skills} />}
       {armor && <label className="mt-2 inline-flex cursor-pointer items-center gap-2 text-xs text-hunter-muted">
         <input type="checkbox" checked={isFixedForGeneration} onChange={onToggleFixedForGeneration} className="accent-hunter-gold" aria-label={`Keep ${slotNames[slot]} armor fixed in generated builds`} />
         Keep for generated builds
@@ -72,7 +70,7 @@ function ArmorSlot({
         })}
       </div>}
         </div>
-        {armor && <button type="button" onClick={onClear} title={`Remove ${slotNames[slot]}`} aria-label={`Remove ${slotNames[slot]}`} className="shrink-0 rounded-md px-2 py-2 text-xs text-hunter-muted hover:text-red-400">✕</button>}
+        {armor && <button type="button" onClick={onClear} title={`Remove ${slotNames[slot]}`} aria-label={`Remove ${slotNames[slot]}`} className="hunter-slot-remove text-xs text-hunter-muted hover:text-red-400">✕</button>}
       </div>
     </div>
   )

@@ -15,12 +15,16 @@ const weaponIconNames: Record<WeaponType, string> = {
   'light-bowgun': 'light_bowgun', 'heavy-bowgun': 'heavy_bowgun', bow: 'bow',
 }
 
-function EquipmentIcon({ category, rarity }: { category: ArmorSlot | WeaponType | 'charm'; rarity?: number }) {
+function EquipmentIcon({ category, rarity, onSelect }: { category: ArmorSlot | WeaponType | 'charm'; rarity?: number; onSelect?: () => void }) {
   const name = category in armorIconNames ? armorIconNames[category as ArmorSlot]
     : category === 'charm' ? 'charm' : weaponIconNames[category as WeaponType]
   const source = icons[`../assets/hunter/icons/ic_equipment_${name}_base.svg`]
-  return <span className={`hunter-equipment-icon ${rarity === undefined ? 'hunter-icon-empty' : ''} ${rarity !== undefined && rarity >= 10 ? 'hunter-icon-master' : ''}`}
-    style={{ color: rarityColors[rarity ?? 0] ?? rarityColors[0] }} aria-hidden="true"
+  const slotLabel = category in armorIconNames ? category.charAt(0).toUpperCase() + category.slice(1)
+    : category === 'charm' ? 'Charm' : 'Weapon'
+  const Tag = onSelect ? 'button' : 'span'
+  return <Tag className={`hunter-equipment-icon ${onSelect ? 'hunter-slot-button' : ''} ${rarity === undefined ? 'hunter-icon-empty' : ''} ${rarity !== undefined && rarity >= 10 ? 'hunter-icon-master' : ''}`}
+    type={onSelect ? 'button' : undefined} onClick={onSelect}
+    style={{ color: rarityColors[rarity ?? 0] ?? rarityColors[0] }} role={onSelect ? undefined : 'img'} aria-label={onSelect ? `Select ${slotLabel.toLowerCase()}` : `${slotLabel} slot`} tabIndex={0} data-slot-label={slotLabel}
     dangerouslySetInnerHTML={{ __html: source ?? '' }} />
 }
 

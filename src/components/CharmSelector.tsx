@@ -1,3 +1,5 @@
+import EquipmentSkillList from './EquipmentSkillList'
+import EquipmentOption from './EquipmentOption'
 import { useMemo, useState } from 'react'
 import type { Charm } from '../types/charm'
 import type { SkillDefinition } from '../types/skillDefinition'
@@ -28,9 +30,6 @@ function CharmSelector({
     [skills],
   )
 
-  const getSkillName = (skillId: string) => {
-    return skillNames.get(skillId) ?? skillId
-  }
 
   const filteredCharms = useMemo(() => {
     const normalizedSearch = search
@@ -118,10 +117,10 @@ function CharmSelector({
           ) : (
             <div className="space-y-2">
               {filteredCharms.map((charm) => (
-                <button
+                <EquipmentOption
                   key={charm.id}
-                  type="button"
-                  onClick={() => onSelect(charm)}
+                  name={charm.name}
+                  onSelect={() => onSelect(charm)}
                   className="w-full rounded-md border border-hunter-border bg-hunter-ink p-4 text-left transition hover:border-hunter-gold hover:bg-hunter-hover"
                 >
                   <div className="flex items-start justify-between gap-4">
@@ -136,19 +135,8 @@ function CharmSelector({
                     </div>
                   </div>
 
-                  {charm.skills.length > 0 && (
-                    <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
-                      {charm.skills.map((skill) => (
-                        <span
-                          key={skill.skillId}
-                          className="text-sm text-hunter-gold"
-                        >
-                          {getSkillName(skill.skillId)} +{skill.level}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </button>
+                  <EquipmentSkillList skills={charm.skills} />
+                </EquipmentOption>
               ))}
             </div>
           )}

@@ -86,8 +86,68 @@
 }
 .hunter-equipment .hunter-armor-content p, .hunter-equipment .hunter-charm-row p,
 .hunter-equipment .hunter-weapon-row p, .hunter-equipment .hunter-armor-content label {
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: 'Cinzel', Georgia, serif;
   line-height: 1.45;
+}
+
+/* Manual selectors share the current parchment and simple bronze frame. */
+.hunter-equipment .hunter-equipment-icon { position: relative; }
+.hunter-equipment .hunter-icon-empty { opacity: 1; }
+.hunter-equipment .hunter-icon-empty svg { opacity: .42; }
+.hunter-equipment-icon:hover, .hunter-equipment-icon:focus-visible { z-index: 10; }
+.hunter-equipment-icon::after {
+  content: attr(data-slot-label);
+  display: none;
+  position: absolute;
+  left: 0;
+  top: calc(100% + 6px);
+  z-index: 10;
+  padding: 4px 8px;
+  border: 1px solid #987346;
+  background: #191815;
+  color: #efdab0;
+  font: .6875rem 'Cinzel', Georgia, serif;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.hunter-equipment-icon:hover::after, .hunter-equipment-icon:focus-visible::after { display: block; }
+.hunter-equipment .hunter-weapon-row > div:nth-child(2) { padding-left: 0; }
+.hunter-equipment .hunter-weapon-row .hunter-equipment-icon { position: relative; top: auto; }
+.hunter-charm-row { display: grid; grid-template-columns: 3.625rem minmax(0, 1fr); gap: 10px; }
+.hunter-charm-row > div:first-child { display: block; }
+.hunter-charm-row > div:first-child > div { flex-direction: column; margin-top: 10px; }
+.hunter-charm-row > div:nth-child(2) { margin-top: 0; }
+.hunter-dialog {
+  position: relative;
+  isolation: isolate;
+  border: 12px solid transparent;
+  border-image: url('./assets/hunter/ui-v3/equipment-frame-v3.png') 320 / 18px / 0 stretch;
+  background: linear-gradient(115deg, #221f1b33, #13131055), url('./assets/hunter/ui-v3/dark-parchment-v1.png') center / 700px;
+  box-shadow: 0 12px 48px #000b;
+  font-family: 'Cinzel', Georgia, serif;
+}
+.hunter-dialog > div { border-color: #846443; }
+.hunter-dialog input, .hunter-dialog select {
+  border-color: #987346;
+  background-color: #191815;
+  font-family: inherit;
+}
+.hunter-equipment-option {
+  border-color: #846443;
+  border-radius: 2px;
+  background: linear-gradient(100deg, #17161370, #10100e99), url('./assets/hunter/ui-v3/dark-parchment-v1.png') center / 560px;
+}
+.hunter-equipment-option:focus-within { border-color: #dcc18c; }
+.hunter-equipment-option > :not(.hunter-option-select) { position: relative; pointer-events: none; }
+.hunter-equipment-option .hunter-equipment-skills { pointer-events: auto; }
+.hunter-equipment-option .hunter-option-select { width: 100%; height: 100%; }
+.hunter-skill-tooltip {
+  border: 1px solid #987346;
+  border-radius: 2px;
+  background: linear-gradient(#181714bb, #181714bb), url('./assets/hunter/ui-v3/dark-parchment-v1.png') center / 560px;
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: .75rem;
+  line-height: 1.6;
 }
 .hunter-equipment .hunter-armor-content button > p:first-child { color: #f1e7d2; }
 .hunter-equipment .hunter-armor-content button > p:nth-child(2) { color: #b7ad97; }
@@ -304,3 +364,18 @@
   }
   .hunter-generate-action .hunter-stat-icon { width: 16px; height: 16px; }
 }
+/* Icon-driven equipment rows. Keep all seven slots aligned. */
+.hunter-equipment .hunter-item-row { display: flex; align-items: flex-start; gap: 8px; min-height: 0; position: relative; }
+.hunter-equipment .hunter-armor-row { position: relative; }
+.hunter-equipment .hunter-slot-content { flex: 1; min-width: 0; margin: 0 !important; padding-left: 0; }
+.hunter-equipment .hunter-item-summary, .hunter-equipment .hunter-slot-empty { min-height: 3.375rem; display: flex; flex-direction: column; justify-content: center; }
+.hunter-equipment .hunter-slot-empty { align-items: flex-start; }
+.hunter-equipment .hunter-slot-content:has(.hunter-item-summary), .hunter-equipment .hunter-armor-content:has(.hunter-equipment-skills) { padding-right: 24px; }
+.hunter-equipment .hunter-slot-remove { position: absolute; top: 6px; right: 6px; padding: 4px 6px; z-index: 1; }
+.hunter-equipment .hunter-slot-button { flex-shrink: 0; position: relative; top: auto; left: auto !important; cursor: pointer; padding: 5px; }
+.hunter-equipment .hunter-slot-button:hover { border-color: #dcc18c; background-color: #302c25; }
+.hunter-equipment .hunter-slot-content > div:first-child { margin: 0; }
+@media (max-width: 639px) {
+  .hunter-equipment .hunter-item-summary, .hunter-equipment .hunter-slot-empty { min-height: 2.625rem; }
+}
+.hunter-equipment .hunter-item-summary { align-items: flex-start; }

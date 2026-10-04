@@ -1,3 +1,5 @@
+import EquipmentSkillList from './EquipmentSkillList'
+import EquipmentOption from './EquipmentOption'
 import { useMemo, useState } from 'react'
 import type { ArmorPiece, ArmorSlot } from '../types/armor'
 import type { SkillDefinition } from '../types/skillDefinition'
@@ -54,9 +56,6 @@ function ArmorSelector({
       )
   }, [armors, search, rankFilter, skillNameById])
 
-  const getSkillName = (skillId: string) => {
-    return skillNameById.get(skillId) ?? skillId
-  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
@@ -128,10 +127,10 @@ function ArmorSelector({
           ) : (
             <div className="space-y-2">
               {filteredArmors.map((armor) => (
-                <button
+                <EquipmentOption
                   key={armor.id}
-                  type="button"
-                  onClick={() => onSelect(armor)}
+                  name={armor.name}
+                  onSelect={() => onSelect(armor)}
                   className="w-full rounded-md border border-hunter-border bg-hunter-ink p-4 text-left transition hover:border-hunter-gold hover:bg-hunter-hover"
                 >
                   <div className="flex items-start justify-between gap-4">
@@ -163,19 +162,8 @@ function ArmorSelector({
                     )}
                   </div>
 
-                  {armor.skills.length > 0 && (
-                    <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
-                      {armor.skills.map((skill) => (
-                        <span
-                          key={skill.skillId}
-                          className="text-sm text-hunter-gold"
-                        >
-                          {getSkillName(skill.skillId)} +{skill.level}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </button>
+                  <EquipmentSkillList skills={armor.skills} />
+                </EquipmentOption>
               ))}
             </div>
           )}

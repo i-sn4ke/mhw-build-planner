@@ -1,73 +1,66 @@
 # Monster Hunter: World + Iceborne Build Planner
 
-Un planner per creare, verificare e condividere build di **Monster Hunter: World e Iceborne**, con dati reali importati localmente e un'interfaccia ispirata ai menu di gioco.
+Un banco di lavoro per preparare la prossima caccia: scegliere l’equipaggiamento, capire quali abilità si attivano e trovare combinazioni che rispettino le skill desiderate.
 
-Il progetto è una SPA in React e TypeScript, costruita con Vite, Tailwind CSS e Zustand. Il calcolo e la generazione delle build avvengono nel browser, senza un backend.
+Il planner riunisce armi, armature, amuleti e gioielli di **Monster Hunter: World e Iceborne** in un’interfaccia ispirata ai bestiari e ai menu del gioco. Pergamena scura, cornici in bronzo, glifi tribali e illustrazioni di Rathalos e Zinogre accompagnano un builder pensato per confrontare le scelte senza perdere di vista la build complessiva.
 
-## Funzionalità
+**[Apri il planner](https://i-sn4ke.github.io/mhw-build-planner/)**
 
-- Builder manuale con arma, cinque pezzi di armatura, amuleto e gioielli negli slot disponibili.
-- Selettori con ricerca e filtri; ricerca dei gioielli anche per nome delle skill conferite.
-- Visualizzazione di statistiche, elementi e stati dell'arma, difesa e resistenze.
-- Aggregazione delle skill, tooltip descrittivi, Set Bonuses, Secret skill caps e Inheritance.
-- Simulazione locale dei bonus ad attacco e affinity delle skill supportate, con condizioni attivabili manualmente.
-- Generazione di fino a tre build che soddisfano i livelli minimi delle skill richieste, mantenendo l'arma scelta.
-- Condivisione delle build attraverso URL con query parameter `?b=<payload>`.
-- Layout responsive, icone di categoria colorate per rarità e font IM Fell English SC e Cinzel serviti localmente.
+## La build, pezzo per pezzo
 
-## Avvio locale
+Il builder manuale permette di combinare un’arma, i cinque pezzi di armatura, un amuleto e i gioielli compatibili con gli slot disponibili. Le icone identificano gli slot e aprono i rispettivi selettori; il colore segue la rarità del pezzo. Il nome dello slot resta disponibile al passaggio del mouse e da tastiera.
 
-Usare **Node.js 24** e npm. Dalla directory del progetto:
+I selettori consentono di cercare sia per nome dell’equipaggiamento sia per abilità conferite. Filtri dedicati aiutano a restringere il catalogo per rank, tipo di arma, rarità, elemento, stato o dimensione dello slot, secondo il pezzo cercato. I tooltip delle skill mostrano la descrizione e l’effetto al livello conferito dall’oggetto, anche prima di equipaggiarlo.
+
+Accanto all’equipaggiamento, il planner raccoglie attacco, affinity, difesa, resistenze, elementi e stati dell’arma e utilizzo degli slot. I pannelli Skills e Set Bonuses ricostruiscono le abilità della build, comprese le soglie dei bonus di set, i limiti sbloccati dalle Secret skill e l’effetto di Inheritance.
+
+## Dal requisito alla combinazione
+
+Il Build Generator parte dal **tipo di arma**, dal **rank** e dai livelli minimi delle skill richieste. Cerca fino a tre build valide e le presenta come alternative da applicare direttamente al builder. I risultati includono l’arma e usano armi diverse; la ricerca favorisce anche configurazioni di armature differenti, evitando di limitarsi alle sole varianti alfa e beta quando trova alternative.
+
+È possibile partire da una build incompleta: i pezzi di armatura contrassegnati con **Keep for generated builds** restano fissati nei loro slot, mentre il generatore cerca il resto dell’equipaggiamento. Se un pezzo fissato appartiene a un rank diverso da quello richiesto, la generazione si ferma finché la selezione non viene allineata.
+
+Il rank filtra le armature e determina il gruppo di armi cercato, stimato dalla rarità: Low 1–4, High 5–8, Master 9–12. Amuleti e gioielli provengono dall’intero catalogo; i gioielli sono considerati disponibili in copie illimitate. Il generatore soddisfa i requisiti delle skill, senza ordinare i risultati per danno.
+
+La ricerca avviene in un Web Worker, per mantenere reattiva l’interfaccia. Ha limiti di tempo e di combinazioni esplorate: una ricerca interrotta senza risultati non dimostra che la build sia impossibile.
+
+## Leggere gli effetti delle skill
+
+Le statistiche di base e la simulazione offensiva sono presentate separatamente. Le prime descrivono l’equipaggiamento senza upgrade, augment o bonus delle skill; la seconda applica gli effetti supportati ad attacco e affinity.
+
+Le condizioni manuali permettono di osservare come cambiano i valori contro un punto debole, con una ferita, durante l’ira del mostro o in particolari condizioni di salute e stamina. Sono supportate Attack Boost, Critical Eye, Agitator, Weakness Exploit, Peak Performance, Resentment, Maximum Might, Latent Power e Critical Draw.
+
+La simulazione aiuta a leggere i contributi delle abilità, ma non rappresenta un calcolo completo del danno: sharpness, moltiplicatori dei colpi critici e formule dei singoli attacchi non vengono simulati.
+
+## Condividere una build
+
+Una build può essere condivisa tramite un link generato dal pulsante **Share Build**. Il destinatario ritrova arma, armature, amuleto e gioielli nell’editor, senza account o salvataggi sul server.
+
+La configurazione viaggia nel parametro `?b=<payload>` dell’URL. Le condizioni manuali della simulazione e i vincoli locali del generatore non fanno parte della build condivisa.
+
+## Dati e tecnologia
+
+L’app utilizza cataloghi reali importati localmente: armi, armature, amuleti, gioielli, skill e Set Bonuses sono già inclusi in `src/data/generated/`. Calcoli e generazione avvengono nel browser, senza backend né chiamate a un’API per consultare i cataloghi.
+
+Il progetto è una SPA sviluppata con **React, TypeScript, Vite, Tailwind CSS e Zustand**. I componenti dell’interfaccia si trovano in `src/components/`, i calcoli e lo sharing in `src/engine/`, lo stato del builder in `src/store/` e il lavoro del generatore in `src/workers/`. Font, icone e materiali grafici sono serviti localmente.
+
+I JSON generati non vanno modificati manualmente o sostituiti con mock. Gli importer in `scripts/import-mhw-data/` leggono la sorgente locale `../MHWorldData/source_data/`: la rigenerazione è separata dall’avvio e dalla pubblicazione dell’app.
+
+## Sviluppo
+
+Con Node.js 24 e npm:
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Aprire l'indirizzo indicato da Vite nel terminale. In sviluppo l'app è servita dal percorso `/`.
+`npm run build` controlla TypeScript e produce `dist/`; `npm run lint` verifica il codice e `npm test` esegue i test dei calcoli e del generatore. Per un’anteprima della build, eseguire `npm run preview` e aprire `/mhw-build-planner/` sull’indirizzo indicato da Vite.
 
-| Comando | Scopo |
-| --- | --- |
-| `npm run dev` | Server di sviluppo con aggiornamento automatico |
-| `npm run build` | Controllo TypeScript e build di produzione in `dist/` |
-| `npm run preview` | Anteprima locale della build di produzione |
-| `npm run lint` | Controlli ESLint |
-| `npm test` | Test dei calcoli, delle skill e del generatore |
+GitHub Actions pubblica automaticamente `dist/` su GitHub Pages dopo i push su `main`. La configurazione Vite usa `/` in sviluppo e `/mhw-build-planner/` in produzione, mantenendo compatibili i link condivisi.
 
-Per l'anteprima eseguire prima `npm run build`, poi `npm run preview` e aprire il percorso `/mhw-build-planner/` sull'indirizzo indicato nel terminale.
+## Crediti
 
-## Generatore e simulazione
+Questo è un progetto non ufficiale dedicato a Monster Hunter, proprietà di **Capcom**.
 
-Il generatore richiede un'arma selezionata, un rank e almeno una skill con il suo livello minimo. Il rank limita **solo le armature**; amuleti e gioielli vengono cercati nell'intero catalogo, assumendo copie illimitate dei gioielli. La ricerca avviene in un Web Worker, con limiti di tempo e di nodi esplorati. Se raggiunge un limite senza trovare build, non prova che la combinazione sia impossibile. I risultati soddisfano le skill richieste, senza una classifica per danno.
-
-La simulazione offensiva applica le skill attualmente supportate: Attack Boost, Critical Eye, Agitator, Weakness Exploit, Peak Performance, Resentment, Maximum Might, Latent Power e Critical Draw. Le condizioni manuali modificano la simulazione locale. Non è un calcolatore completo del danno: sharpness, moltiplicatori dei critici e formule di danno non sono simulati.
-
-I link condivisi contengono la configurazione dell'equipaggiamento. Le condizioni manuali della simulazione non fanno parte del payload. Il formato di sharing mantiene il percorso corrente dell'app e funziona anche sotto il percorso di GitHub Pages.
-
-## Struttura
-
-```text
-src/
-  components/       Builder, selettori e pannelli dell'interfaccia
-  engine/           Calcoli, generazione, simulazione e sharing
-  store/            Stato della build gestito con Zustand
-  types/            Tipi del dominio
-  data/             Accesso ai cataloghi
-    generated/      JSON reali prodotti dagli importer
-  workers/          Generazione delle build fuori dal thread principale
-  assets/           Font, icone e risorse grafiche
-scripts/import-mhw-data/  Importer dei dati locali
-tests/                   Test eseguiti con Node.js
-design/                  Campionario statico degli asset dell'interfaccia
-.github/workflows/       Deploy automatico su GitHub Pages
-```
-
-## Dati
-
-I cataloghi di armi, armature, amuleti, gioielli, skill e Set Bonuses sono già presenti in `src/data/generated/`. Non occorrono chiamate a un'API per usarli e non è necessario eseguire gli importer per avviare o pubblicare l'app.
-
-**Non modificare manualmente i JSON generati e non sostituirli con mock.** Gli script in `scripts/import-mhw-data/` leggono il progetto sorgente locale `../MHWorldData/source_data/` e scrivono i cataloghi. La rigenerazione richiede quella sorgente ed è un'operazione separata dal normale sviluppo; l'import delle armi dipende anche dai cataloghi skill e Set Bonuses già generati.
-
-## Asset e attribuzioni
-
-Monster Hunter è una proprietà di Capcom; questo è un progetto non ufficiale. Le origini delle risorse grafiche sono documentate in [src/assets/hunter/README.md](src/assets/hunter/README.md). Le icone provenienti da MHWorldData includono la relativa licenza MIT. Le licenze dei font sono incluse in [src/assets/fonts/](src/assets/fonts/).
+Le origini e le licenze degli asset sono documentate in [src/assets/hunter/README.md](src/assets/hunter/README.md), con le risorse del nuovo tema descritte in [ui-v3/README.md](src/assets/hunter/ui-v3/README.md). Le icone provenienti da MHWorldData includono la relativa licenza MIT. Le licenze dei font IM Fell English SC, Cinzel e della variante Guild Carved Display si trovano in [src/assets/fonts/](src/assets/fonts/).
