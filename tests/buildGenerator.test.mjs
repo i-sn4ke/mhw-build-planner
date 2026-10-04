@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { generateBuilds, generateBuildsForWeaponType, calculateBuildStats, deserializeBuild, serializeBuild, matchesWeaponElement, matchesEquipmentSearch, catalog } from './engineLoader.mjs'
+import { generateBuilds, generateBuildsForWeaponType, generateArmorBuilds, calculateBuildStats, deserializeBuild, serializeBuild, matchesWeaponElement, matchesEquipmentSearch, catalog } from './engineLoader.mjs'
 
 const slots = ['head', 'chest', 'arms', 'waist', 'legs']
 const skill = (skillId, level) => ({ skillId, level })
@@ -357,5 +357,75 @@ test('pruning agrees with exhaustive search on small deterministic catalogs', ()
     assert.notEqual(result.status, 'limit')
     assert.equal(result.builds.length > 0, exists, `example ${example}`)
     verify(result, input, data)
+  }
+})
+
+
+test('armor generation cannot borrow weapon skills, slots or set bonuses', () => {
+  const data = database({
+    weapons: [weapon({ skills: [skill('attack', 7)], slots: [{ size: 4 }], setBonusId: 'set' })],
+    armors: slots.map(slot => armor(slot, { setBonusId: slot === 'head' ? 'set' : undefined })),
+    decorations: [decoration('attack-jewel', 1, [skill('attack', 1)])],
+    setBonuses: [{ id: 'set', name: 'set', thresholds: [{ pieces: 2, skillId: 'attack' }] }],
+  })
+  const result = generateArmorBuilds({ rank: 'master', skills: [skill('attack', 1)] }, data)
+  assert.equal(result.builds.length, 0)
+  assert.equal(result.status, 'exhausted')
+})
+
+test('armor generation returns fewer results rather than alpha/beta duplicates', () => {
+  const data = database({
+    weapons: [],
+    armors: slots.flatMap(slot => ['α+', 'β+'].map(variant => armor(slot, {
+      id: `${slot}-${variant}`, name: `Family ${slot} ${variant}`, skills: [skill('attack', 1)],
+    }))),
+  })
+  const result = generateArmorBuilds({ rank: 'master', skills: [skill('attack', 5)], fixedArmor: { head: 'head-β+' } }, data)
+  assert.equal(result.builds.length, 1)
+  assert.equal(result.builds[0].build.weaponId, null)
+  assert.equal(result.builds[0].build.armor.head, 'head-β+')
+  assert.equal(result.builds[0].skills.attack.level, 5)
+})
+
+test('real catalog: armor-only variants satisfy skills and Secret caps independently', () => {
+  const data = catalog()
+  const input = { rank: 'master', skills: [skill('agitator', 7), skill('critical-eye', 7), skill('weakness-exploit', 3)] }
+  const result = generateArmorBuilds(input, data)
+  assert.ok(result.builds.length, result.status)
+  const layouts = new Set()
+  for (const candidate of result.builds) {
+    const build = deserializeBuild(candidate.build, data)
+    assert.equal(build.selectedWeapon, null)
+    assert.ok(build.decorations.every(entry => entry.location.type === 'armor'))
+    const pieces = Object.values(build.selectedArmor)
+    const stats = calculateBuildStats(pieces, null, [
+      ...pieces.map(piece => piece.skills), build.selectedCharm?.skills ?? [],
+      ...build.decorations.map(entry => entry.decoration.skills),
+    ], data.skills, data.setBonuses)
+    for (const required of input.skills) assert.ok(stats.skills[required.skillId].level >= required.level)
+    assert.ok(stats.skills.agitator.secretUnlocked)
+    assert.deepEqual(candidate.skills, stats.skills)
+    layouts.add(slots.map(slot => {
+      const piece = build.selectedArmor[slot]
+      return `${slot}:${piece.setBonusId ?? piece.name.replace(/\s+[αβ](?:\+)?$/u, '')}`
+    }).join('|'))
+  }
+  assert.equal(layouts.size, result.builds.length)
+})
+
+
+test('armor-only sampling explores earlier slots instead of only swapping legs', () => {
+  const data = catalog()
+  const result = generateArmorBuilds({ rank: 'master', skills: [skill('critical-eye', 7)] }, data)
+  assert.equal(result.builds.length, 3)
+  const byId = new Map(data.armors.map(piece => [piece.id, piece]))
+  const layouts = result.builds.map(({ build }) => slots.map(slot => {
+    const piece = byId.get(build.armor[slot])
+    return piece.setBonusId ?? piece.name.replace(/\s+[αβ](?:\+)?$/u, '')
+  }))
+  for (let a = 0; a < layouts.length; a++) {
+    for (let b = a + 1; b < layouts.length; b++) {
+      assert.ok(layouts[a].filter((family, index) => family !== layouts[b][index]).length >= 2)
+    }
   }
 })

@@ -14,6 +14,7 @@ interface BuildGeneratorPanelProps {
   weapon: Weapon | null
   selectedArmor: Partial<Record<ArmorSlot, ArmorPiece>>
   fixedArmorSlots: ReadonlySet<ArmorSlot>
+  onWeaponTypeChange: (type: WeaponType) => void
   onApply: (build: SavedBuildData) => void
 }
 
@@ -36,7 +37,7 @@ const armorSlotNames: Record<ArmorSlot, string> = {
 }
 const controlClass = 'rounded-md border border-hunter-border bg-hunter-ink px-3 py-2 text-sm text-hunter-text outline-none focus:border-hunter-gold disabled:opacity-50'
 
-function BuildGeneratorPanel({ weapon, selectedArmor, fixedArmorSlots, onApply }: BuildGeneratorPanelProps) {
+function BuildGeneratorPanel({ weapon, selectedArmor, fixedArmorSlots, onApply, onWeaponTypeChange }: BuildGeneratorPanelProps) {
   const [weaponType, setWeaponType] = useState<WeaponType>(weapon?.type ?? 'great-sword')
   const [rank, setRank] = useState<ArmorPiece['rank']>('master')
   const [requirements, setRequirements] = useState<SkillRequirement[]>([])
@@ -58,7 +59,7 @@ function BuildGeneratorPanel({ weapon, selectedArmor, fixedArmorSlots, onApply }
   })
   const rankMismatches = fixedPieces.filter(({ piece }) => piece.rank !== rank)
   const fixedArmorConfiguration = armorSlots.map((slot) => `${slot}:${fixedArmor[slot] ?? ''}`).join('|')
-  const requestConfiguration = `${weaponType}:${rank}:${fixedArmorConfiguration}`
+  const requestConfiguration = `${rank}:${fixedArmorConfiguration}`
 
   useEffect(() => () => {
     workerRef.current?.terminate()
@@ -109,7 +110,7 @@ function BuildGeneratorPanel({ weapon, selectedArmor, fixedArmorSlots, onApply }
         setError('Could not generate builds. Please try again.')
         cancel()
       }
-      worker.postMessage({ weaponType, rank, skills: requirements, fixedArmor })
+      worker.postMessage({ rank, skills: requirements, fixedArmor })
     } catch {
       setError('Could not start build generation. Please try again.')
       cancel()
@@ -117,17 +118,17 @@ function BuildGeneratorPanel({ weapon, selectedArmor, fixedArmorSlots, onApply }
   }
 
   return (
-    <section className="border-t border-hunter-border p-5" aria-labelledby="generator-title">
+    <section className="hunter-generator-content border-t border-hunter-border p-5" aria-labelledby="generator-title">
       <p className="text-sm text-hunter-muted">
-        Find up to 3 builds that meet your minimum skill levels using different weapons of the selected type.
+        Find up to 3 different armor layouts that meet every skill minimum without a weapon.
       </p>
-      <h3 className="mt-4 text-sm font-semibold">1. Choose weapon and rank</h3>
+      <h3 className="mt-4 text-sm font-semibold">1. Choose rank and manual weapon filter</h3>
       <div className="mt-2 grid gap-3 sm:grid-cols-2">
         <label className="block text-sm text-hunter-muted">
-          Weapon Type
+          Manual Weapon Type
           <select value={weaponType} disabled={running} onChange={(event) => {
             setWeaponType(event.target.value as WeaponType)
-            clearResult()
+            onWeaponTypeChange(event.target.value as WeaponType)
           }} className={`${controlClass} mt-1 block w-full`}>
             {weaponTypes.map((type) => <option key={type} value={type}>{weaponTypeNames[type]}</option>)}
           </select>
@@ -145,7 +146,7 @@ function BuildGeneratorPanel({ weapon, selectedArmor, fixedArmorSlots, onApply }
         </label>
       </div>
       <p className="mt-2 text-xs text-hunter-muted">
-        Armor uses this rank. Weapon rank is estimated from rarity (Low 1–4, High 5–8, Master 9–12). Charms and decorations use the full catalog, with unlimited decoration copies.
+        Armor uses this rank. Weapon type only presets the manual weapon selector; weapon skills, slots and set bonuses are excluded. Charms and decorations use the full catalog, with unlimited decoration copies.
       </p>
       <p className="mt-1 text-xs text-hunter-muted">
         Select armor in Equipment and check “Keep for generated builds” to hold those pieces fixed.
@@ -221,8 +222,8 @@ function BuildGeneratorPanel({ weapon, selectedArmor, fixedArmorSlots, onApply }
           <>
             <p>{result.builds.length} valid build{result.builds.length === 1 ? '' : 's'} found.</p>
             {result.status === 'limit' && <p className="mt-1 text-hunter-gold">Search limit reached. More solutions may exist; this does not mean the request is impossible.</p>}
-            {result.status === 'exhausted' && !result.builds.length && <p className="mt-1">No combination using the selected weapon type and armor rank meets all requested skills.</p>}
-            {!!result.builds.length && <p className="mt-1 text-xs">All results meet every minimum and use different weapons. Results are not ranked by damage.</p>}
+            {result.status === 'exhausted' && !result.builds.length && <p className="mt-1">No weapon-independent armor combination was found for these skills and rank.</p>}
+            {!!result.builds.length && <p className="mt-1 text-xs">All results meet every minimum without a weapon. Different armor families in each slot define a variant; alpha/beta changes alone do not. Results are not ranked by damage.</p>}
           </>
         )}
       </div>
@@ -233,6 +234,17 @@ function BuildGeneratorPanel({ weapon, selectedArmor, fixedArmorSlots, onApply }
             .map((id) => armorById.get(id!))
             .filter((armor): armor is ArmorPiece => armor !== undefined)
           const armorStats = calculateArmorStats(candidateArmor)
+          const reference = result.builds[0]
+          const comparing = index > 0
+          const changedSlots = armorSlots.filter((slot) => candidate.build.armor[slot] !== reference.build.armor[slot])
+          const charmChanged = candidate.build.charmId !== reference.build.charmId
+          const freeSlots = [
+            ...(candidateWeapon?.slots.map((slot, slotIndex) => ({ size: slot.size, used: candidate.build.decorations.some((entry) => entry.location.type === 'weapon' && entry.location.slotIndex === slotIndex) })) ?? []),
+            ...armorSlots.flatMap((armorSlot) => {
+              const piece = armorById.get(candidate.build.armor[armorSlot] ?? '')
+              return piece?.slots.map((slot, slotIndex) => ({ size: slot.size, used: candidate.build.decorations.some((entry) => entry.location.type === 'armor' && entry.location.slot === armorSlot && entry.location.slotIndex === slotIndex) })) ?? []
+            }),
+          ].filter((slot) => !slot.used)
           const requiredSkillIds = new Set(requirements.map((entry) => entry.skillId))
           const extraSkills = Object.entries(candidate.skills).flatMap(([skillId, value]) => {
             const definition = skillById.get(skillId)
@@ -244,14 +256,28 @@ function BuildGeneratorPanel({ weapon, selectedArmor, fixedArmorSlots, onApply }
           return (
             <article key={index} className="rounded-md border border-hunter-border bg-hunter-ink p-4">
               <h3 className="font-semibold">Build {index + 1}</h3>
+              <p className="mt-1 text-xs text-hunter-muted">{comparing ? 'Compared with Build 1' : result.builds.length > 1 ? 'Reference for comparison' : 'All requested skill minimums met'}</p>
+              {comparing && <p className="mt-2 text-xs text-hunter-gold">
+                {changedSlots.length} armor piece{changedSlots.length === 1 ? '' : 's'} changed{charmChanged ? ' · Different charm' : ''}
+              </p>}
               <ul className="mt-3 space-y-1 text-sm text-hunter-muted">
-                <li className="text-hunter-gold">{candidateWeapon?.name ?? 'Unknown weapon'} · Rarity {candidateWeapon?.rarity ?? '—'}</li>
+                <li className="text-hunter-gold">Weapon-independent · choose your weapon in Equipment</li>
                 {candidateWeapon && <li>Attack {candidateWeapon.attack} · Affinity {candidateWeapon.affinity > 0 ? '+' : ''}{candidateWeapon.affinity}%</li>}
                 {!!candidateWeapon?.elements.length && <li>{candidateWeapon.elements.map((element) => `${element.type} ${element.damage}${element.hidden ? ' (hidden)' : ''}`).join(' · ')}</li>}
-                {Object.entries(candidate.build.armor).map(([slot, id]) => <li key={slot}>{armorById.get(id!)?.name ?? id}</li>)}
-                <li>Charm: {candidate.build.charmId ? charmById.get(candidate.build.charmId)?.name : 'None'}</li>
+                {armorSlots.map((slot) => <li key={slot} className={comparing && changedSlots.includes(slot) ? 'text-hunter-gold' : ''}>
+                  {armorById.get(candidate.build.armor[slot] ?? '')?.name ?? 'None'}
+                  {comparing && changedSlots.includes(slot) && <span className="ml-2 text-xs">({armorSlotNames[slot]} changed)</span>}
+                </li>)}
+                <li className={comparing && charmChanged ? 'text-hunter-gold' : ''}>Charm: {candidate.build.charmId ? charmById.get(candidate.build.charmId)?.name : 'None'}{comparing && charmChanged ? ' (changed)' : ''}</li>
                 <li>{candidate.build.decorations.length} decorations</li>
               </ul>
+              <div className="mt-3 border-t border-hunter-border pt-3">
+                <h4 className="text-xs font-semibold uppercase tracking-wider text-hunter-muted">Free Decoration Slots</h4>
+                <p className="mt-1 text-sm text-hunter-text">{freeSlots.length ? [4, 3, 2, 1].flatMap((size) => {
+                  const count = freeSlots.filter((slot) => slot.size === size).length
+                  return count ? [`${count} × size ${size}`] : []
+                }).join(' · ') : 'No free slots'}</p>
+              </div>
               {!!candidate.build.decorations.length && (
                 <ul className="mt-2 space-y-1 text-xs text-hunter-muted">
                   {[...new Set(candidate.build.decorations.map((entry) => entry.decorationId))].map((id) => (
@@ -282,16 +308,22 @@ function BuildGeneratorPanel({ weapon, selectedArmor, fixedArmorSlots, onApply }
                 <h4 className="text-xs font-semibold uppercase tracking-wider text-hunter-muted">Extra Skills</h4>
                 {extraSkills.length ? (
                   <ul className="mt-1 space-y-1 text-sm text-hunter-text">
-                    {extraSkills.map(({ definition, level }) => (
-                      <li key={definition.id} className="flex justify-between gap-2">
-                        <span>{definition.name}</span><span className="shrink-0 text-hunter-gold">Lv {level}</span>
+                    {extraSkills.map(({ definition, level }) => {
+                      const previous = reference.skills[definition.id]?.level ?? 0
+                      const delta = level - previous
+                      return <li key={definition.id} className="flex flex-wrap justify-between gap-x-2">
+                        <SkillTooltip definition={definition} level={level} />
+                        <span className="text-hunter-gold">Lv {level}{comparing && delta !== 0 && <span className="ml-2 text-xs text-hunter-muted">({previous === 0 ? 'new' : `${delta > 0 ? '+' : ''}${delta} vs Build 1`})</span>}</span>
                       </li>
-                    ))}
+                    })}
                   </ul>
                 ) : <p className="mt-1 text-xs text-hunter-muted">None</p>}
+                {comparing && Object.entries(reference.skills).some(([id, value]) => !requiredSkillIds.has(id) && value.level > 0 && !(candidate.skills[id]?.level > 0)) && <p className="mt-2 text-xs text-hunter-muted">
+                  Not present here: {Object.entries(reference.skills).filter(([id, value]) => !requiredSkillIds.has(id) && value.level > 0 && !(candidate.skills[id]?.level > 0)).map(([id]) => skillById.get(id)?.name ?? id).join(', ')}
+                </p>}
               </div>
               <button type="button" className={`${controlClass} mt-4 w-full hover:border-hunter-gold`} onClick={() => {
-                onApply(candidate.build)
+                onApply({ ...candidate.build, weaponId: weapon?.id ?? null })
                 setAppliedIndex(index)
               }}>{appliedIndex === index ? 'Applied to Editor' : 'Apply to Editor'}</button>
             </article>

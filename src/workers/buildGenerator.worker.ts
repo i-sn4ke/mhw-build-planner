@@ -4,13 +4,13 @@ import { charms } from '../data/charms'
 import { decorations } from '../data/decorations'
 import { skills } from '../data/skills'
 import { setBonuses } from '../data/setBonuses'
-import { generateBuildsForWeaponType } from '../engine/buildGenerator'
+import { generateArmorBuilds } from '../engine/buildGenerator'
 import type { BuildGeneratorRequest, BuildGeneratorResponse } from '../types/buildGenerator'
 
-self.onmessage = (event: MessageEvent<BuildGeneratorRequest>) => {
+self.onmessage = (event: MessageEvent<Omit<BuildGeneratorRequest, 'weaponType'>>) => {
   let response: BuildGeneratorResponse
   try {
-    response = { result: generateBuildsForWeaponType(event.data, { armors, weapons, charms, decorations, skills, setBonuses }) }
+    response = { result: generateArmorBuilds(event.data, { armors, weapons, charms, decorations, skills, setBonuses }) }
   } catch (error) {
     response = { error: error instanceof Error ? error.message : 'Build generation failed.' }
   }

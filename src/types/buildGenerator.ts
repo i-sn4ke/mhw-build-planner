@@ -15,7 +15,7 @@ export interface BuildGeneratorRequest {
 }
 
 export interface FixedWeaponBuildGeneratorRequest {
-  weaponId: string
+  weaponId: string | null
   rank: ArmorPiece['rank']
   skills: SkillRequirement[]
   fixedArmor?: Partial<Record<ArmorSlot, string>>

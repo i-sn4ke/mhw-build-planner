@@ -14,7 +14,7 @@ for (const name of modules) {
   fs.writeFileSync(path.join(directory, `${name}.mjs`), compiled)
 }
 
-export const { generateBuilds, generateBuildsForWeaponType } = await import(pathToFileURL(path.join(directory, 'buildGenerator.mjs')))
+export const { generateBuilds, generateBuildsForWeaponType, generateArmorBuilds } = await import(pathToFileURL(path.join(directory, 'buildGenerator.mjs')))
 export const { calculateBuildStats } = await import(pathToFileURL(path.join(directory, 'buildCalculator.mjs')))
 export const { deserializeBuild, serializeBuild } = await import(pathToFileURL(path.join(directory, 'buildSerializer.mjs')))
 export const { matchesWeaponElement } = await import(pathToFileURL(path.join(directory, 'weaponFilters.mjs')))

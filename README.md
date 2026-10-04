@@ -16,11 +16,11 @@ Accanto all’equipaggiamento, il planner raccoglie attacco, affinity, difesa, r
 
 ## Dal requisito alla combinazione
 
-Il Build Generator parte dal **tipo di arma**, dal **rank** e dai livelli minimi delle skill richieste. Cerca fino a tre build valide e le presenta come alternative da applicare direttamente al builder. I risultati includono l’arma e usano armi diverse; la ricerca favorisce anche configurazioni di armature differenti, evitando di limitarsi alle sole varianti alfa e beta quando trova alternative.
+Il Build Generator parte dal **rank** e dai livelli minimi delle skill richieste. Cerca fino a tre configurazioni di armature, amuleto e gioielli che soddisfano le richieste senza contributi dell’arma. Favorisce famiglie diverse nei vari slot e non completa la lista con sole varianti alfa/beta. Il confronto evidenzia pezzi cambiati, skill extra e slot liberi. Applicare una proposta mantiene l’arma già scelta; il tipo di arma nel generatore serve solo a preimpostare il filtro del selettore manuale.
 
 È possibile partire da una build incompleta: i pezzi di armatura contrassegnati con **Keep for generated builds** restano fissati nei loro slot, mentre il generatore cerca il resto dell’equipaggiamento. Se un pezzo fissato appartiene a un rank diverso da quello richiesto, la generazione si ferma finché la selezione non viene allineata.
 
-Il rank filtra le armature e determina il gruppo di armi cercato, stimato dalla rarità: Low 1–4, High 5–8, Master 9–12. Amuleti e gioielli provengono dall’intero catalogo; i gioielli sono considerati disponibili in copie illimitate. Il generatore soddisfa i requisiti delle skill, senza ordinare i risultati per danno.
+Il rank filtra le armature. Skill, slot e bonus set dell’arma sono esclusi dalla ricerca, così l’arma può essere cambiata senza perdere i requisiti soddisfatti dalla proposta. Amuleti e gioielli provengono dall’intero catalogo; i gioielli sono considerati disponibili in copie illimitate. Il generatore soddisfa i requisiti delle skill, senza ordinare i risultati per danno.
 
 La ricerca avviene in un Web Worker, per mantenere reattiva l’interfaccia. Ha limiti di tempo e di combinazioni esplorate: una ricerca interrotta senza risultati non dimostra che la build sia impossibile.
 

@@ -225,6 +225,41 @@
   border-bottom: 1px solid #846443;
 }
 
+/* Generator controls and proposals use the planner's dark parchment. */
+.hunter-generator-content article,
+.hunter-generator-content .bg-hunter-inset {
+  border: 1px solid #846443;
+  border-radius: 2px;
+  background: linear-gradient(110deg, #17161355, #10100e88), var(--hunter-dark-parchment) center / 700px;
+  box-shadow: inset 0 0 0 2px #0d100b70, inset 0 1px #dfc69220;
+}
+.hunter-generator-content input,
+.hunter-generator-content select {
+  border: 1px solid #967447;
+  border-radius: 2px;
+  background: linear-gradient(#17161399, #10100ebb), var(--hunter-dark-parchment) center / 560px;
+  color: #f1e7d2;
+  box-shadow: inset 0 1px #e0c78a25;
+}
+.hunter-generator-content select option { background: #211e19; color: #f1e7d2; }
+.hunter-generator-content button:not([aria-label^="Skill details:"]) {
+  border: 1px solid #967447;
+  border-radius: 2px;
+  background: linear-gradient(110deg, #4b3926b0, #211b15dc), var(--hunter-dark-parchment) center / 420px;
+  color: #efdab0;
+  box-shadow: inset 0 0 0 2px #15110b, inset 0 3px #dfc69225, 0 2px 3px #0005;
+  text-shadow: 0 1px 2px #000;
+}
+.hunter-generator-content button:not([aria-label^="Skill details:"]):hover:not(:disabled) {
+  border-color: #d2af74;
+  filter: brightness(1.16);
+}
+.hunter-generator-content button:not([aria-label^="Skill details:"]):focus-visible {
+  outline: 2px solid #d2af74;
+  outline-offset: 3px;
+}
+.hunter-generator-content button:not([aria-label^="Skill details:"]):active:not(:disabled) { filter: brightness(.92); }
+
 /* An engraved guild title; the original Monster Hunter logo stays untouched. */
 .hunter-brand-title { position: relative; border-left-color: #967447; }
 .hunter-brand-title h1 {
@@ -265,14 +300,39 @@
   grid-template-columns: 180px minmax(0, 1fr) 180px;
   align-items: center;
   gap: 12px;
-  min-height: 210px;
+  min-height: clamp(200px, 19vw, 260px);
+  border: 0;
+  border-image: none;
+  box-shadow: none;
+  --hunter-header-art-inset: 1px;
+  background: none;
+}
+.hunter-header::after {
+  content: '';
+  position: absolute;
+  inset: var(--hunter-header-art-inset);
+  z-index: 0;
+  pointer-events: none;
   background-color: #151715;
   background-image: linear-gradient(90deg, #080b0870, #080b0820 24%, #080b0860 48%, #080b0830 72%, #080b0850), url('./assets/hunter/ui-v3/bestiary-header-zinogre-azure-v5.png');
   background-size: auto, cover;
-  /* Favor the upper artwork so Zinogre's raised muzzle clears the top rail. */
-  background-position: center, center 35%;
+  background-position: center, center 44%;
 }
-.hunter-header::before { display: none; }
+.hunter-header::before {
+  display: block;
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid #846443;
+  border-image: none;
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 2px #0d100b90, inset 0 1px #dfc69220;
+  background: none;
+  opacity: 1;
+  filter: none;
+  z-index: 2;
+  pointer-events: none;
+}
 .hunter-header .hunter-brand-title {
   min-width: 0;
   padding-left: 0;
@@ -330,7 +390,7 @@
 }
 .hunter-editor-toolbar button:active { filter: brightness(.92); }
 @media (min-width: 640px) and (max-width: 1023px) {
-  .hunter-header { grid-template-columns: 160px minmax(0, 1fr) 160px; min-height: 190px; }
+  .hunter-header { grid-template-columns: 160px minmax(0, 1fr) 160px; min-height: 200px; }
   .hunter-header .hunter-logo { width: 130px; }
   .hunter-brand-title h1 { font-size: clamp(1.4375rem, 3.5vw, 2rem); }
   .hunter-editor-toolbar button, .hunter-editor-toolbar .hunter-generate-action { font-size: .625rem; padding: 6px; }
@@ -347,6 +407,9 @@
     gap: 12px 8px;
     min-height: 290px;
     align-items: start;
+    --hunter-header-art-inset: 1px;
+  }
+  .hunter-header::after {
     background-position: center, center 68%;
     background-size: auto, auto 150px;
     background-repeat: no-repeat;

@@ -7,6 +7,7 @@ import { matchesEquipmentSearch } from '../engine/equipmentFilters'
 import { matchesWeaponElement } from '../engine/weaponFilters'
 
 interface WeaponSelectorProps {
+  initialType?: Weapon['type']
   weapons: Weapon[]
   skills: SkillDefinition[]
   onSelect: (weapon: Weapon) => void
@@ -31,13 +32,14 @@ const weaponTypeNames: Record<Weapon['type'], string> = {
 }
 
 function WeaponSelector({
+  initialType,
   weapons,
   skills,
   onSelect,
   onClose,
 }: WeaponSelectorProps) {
   const [search, setSearch] = useState('')
-  const [typeFilter, setTypeFilter] = useState('all')
+  const [typeFilter, setTypeFilter] = useState<string>(initialType ?? 'all')
   const [rarityFilter, setRarityFilter] = useState('all')
   const [elementFilter, setElementFilter] = useState('all')
 

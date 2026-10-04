@@ -91,6 +91,7 @@ function App() {
   const [selectorSlot, setSelectorSlot] =
     useState<ArmorSlotType | null>(null)
 
+  const [manualWeaponType, setManualWeaponType] = useState<(typeof weaponDefinitions)[number]['type']>('great-sword')
   const [isWeaponSelectorOpen, setIsWeaponSelectorOpen] =
     useState(false)
 
@@ -300,8 +301,9 @@ const buildStats = calculateBuildStats(
       <main className="hunter-main">
 
         <details ref={generatorRef} id="build-generator" onToggle={(event) => setGeneratorOpen(event.currentTarget.open)} className="hunter-generator mb-5 rounded-lg border border-hunter-border bg-hunter-panel">
-          <summary id="generator-title" className="cursor-pointer px-5 py-4 font-semibold">Build Generator <span className="ml-2 text-xs font-normal text-hunter-muted">Choose a weapon type, rank and required skills</span></summary>
+          <summary id="generator-title" className="cursor-pointer px-5 py-4 font-semibold">Build Generator <span className="ml-2 text-xs font-normal text-hunter-muted">Choose rank and required skills</span></summary>
         <BuildGeneratorPanel
+          onWeaponTypeChange={setManualWeaponType}
           weapon={selectedWeapon}
           selectedArmor={selectedArmor}
           fixedArmorSlots={fixedArmorSlots}
@@ -554,6 +556,7 @@ const buildStats = calculateBuildStats(
 
 {isWeaponSelectorOpen && (
   <WeaponSelector
+    initialType={manualWeaponType}
     weapons={weaponDefinitions}
     skills={skills}
     onSelect={(weapon) => {

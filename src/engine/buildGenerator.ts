@@ -22,6 +22,7 @@ export interface GeneratorDatabase {
 interface SearchLimits {
   maxNodes?: number
   maxTimeMs?: number
+  distinctArmorLayouts?: boolean
 }
 
 interface SearchSlot {
@@ -70,9 +71,9 @@ export function generateBuilds(
   const fallbackBuilds: BuildGeneratorResult['builds'] = []
   const seenArmorLayouts = new Set<string>()
   const seenArmorCombinations = new Set<string>()
-  const weapon = database.weapons.find((entry) => entry.id === request.weaponId)
+  const weapon = request.weaponId === null ? null : database.weapons.find((entry) => entry.id === request.weaponId)
   const definitions = new Map(database.skills.map((entry) => [entry.id, entry]))
-  if (!weapon || !['low', 'high', 'master'].includes(request.rank) || !request.skills.length) {
+  if ((request.weaponId !== null && !weapon) || !['low', 'high', 'master'].includes(request.rank) || !request.skills.length) {
     throw new Error('Choose a weapon, armor rank and at least one required skill.')
   }
   const fixedArmor = validateFixedArmor(request.fixedArmor, request.rank, database)
@@ -147,7 +148,7 @@ export function generateBuilds(
 
     const builds = [
       ...selected.map((entry) => entry.build),
-      ...fallbackBuilds.slice(0, 3 - selected.length),
+      ...(limits.distinctArmorLayouts ? [] : fallbackBuilds.slice(0, 3 - selected.length)),
     ]
 
     return {
@@ -215,8 +216,8 @@ export function generateBuilds(
     suffixSkills[index] = add(groupMax[index], suffixSkills[index + 1])
     suffixSlots[index] = add(groupSlots[index], suffixSlots[index + 1])
   }
-  const weaponValues = vector(weapon.skills)
-  const weaponSlots = Array.from({ length: 5 }, (_, size) => weapon.slots.filter((slot) => slot.size === size).length)
+  const weaponValues = vector(weapon?.skills ?? [])
+  const weaponSlots = Array.from({ length: 5 }, (_, size) => (weapon?.slots ?? []).filter((slot) => slot.size === size).length)
   const possible = (depth: number, values: number[], slots: number[], setCounts: Map<string, number>) => {
     let upper = add(values, suffixSkills[depth])
     const capacities = add(slots, suffixSlots[depth])
@@ -228,7 +229,7 @@ export function generateBuilds(
     return meets(upper)
   }
   const initialSetCounts = new Map<string, number>()
-  if (weapon.setBonusId) initialSetCounts.set(weapon.setBonusId, 1)
+  if (weapon?.setBonusId) initialSetCounts.set(weapon.setBonusId, 1)
   if (!possible(0, add(weaponValues, charmMax), weaponSlots, initialSetCounts)) return finish()
 
   const failedDecorationStates = new Set<string>()
@@ -261,16 +262,17 @@ export function generateBuilds(
 
   function searchArmor(depth: number, values: number[], slotCounts: number[], setCounts: Map<string, number>, pieces: ArmorPiece[], charm: Charm | null) {
     if (!visit() || !possible(depth, values, slotCounts, setCounts)) return
+    const layoutsBeforeBranch = layoutBuilds.length
     if (depth === 5) {
-      const bonusSkills = getActiveSetBonusSkills(calculateSetBonuses(pieces, weapon!, database.setBonuses))
+      const bonusSkills = getActiveSetBonusSkills(calculateSetBonuses(pieces, weapon ?? null, database.setBonuses))
       const slots: SearchSlot[] = [
-        ...weapon!.slots.map((slot, slotIndex) => ({ size: slot.size, location: { type: 'weapon' as const, slotIndex } })),
+        ...(weapon?.slots ?? []).map((slot, slotIndex) => ({ size: slot.size, location: { type: 'weapon' as const, slotIndex } })),
         ...pieces.flatMap((armor) => armor.slots.map((slot, slotIndex) => ({ size: slot.size, location: { type: 'armor' as const, slot: armor.slot, slotIndex } }))),
       ].sort((a, b) => a.size - b.size)
       const equipped = fillDecorations(add(values, vector(bonusSkills)), slots)
       if (!equipped) return
-      const stats = calculateBuildStats(pieces, weapon!, [
-        weapon!.skills, ...pieces.map((armor) => armor.skills), charm?.skills ?? [],
+      const stats = calculateBuildStats(pieces, weapon ?? null, [
+        weapon?.skills ?? [], ...pieces.map((armor) => armor.skills), charm?.skills ?? [],
         ...equipped.map((entry) => entry.decoration.skills),
       ], database.skills, database.setBonuses)
       if ([...required].some(([id, level]) => (stats.skills[id]?.level ?? 0) < level)) {
@@ -288,7 +290,7 @@ export function generateBuilds(
       })
       const candidate = { build: serializeBuild({
         selectedArmor: Object.fromEntries(pieces.map((armor) => [armor.slot, armor])),
-        selectedWeapon: weapon!, selectedCharm: charm, decorations: equipped,
+        selectedWeapon: weapon ?? null, selectedCharm: charm, decorations: equipped,
       }), skills: stats.skills }
       const layoutKey = armorLayout.join('|')
       if (seenArmorLayouts.has(layoutKey)) {
@@ -306,6 +308,9 @@ export function generateBuilds(
       if (armor.setBonusId) nextSets.set(armor.setBonusId, (nextSets.get(armor.setBonusId) ?? 0) + 1)
       searchArmor(depth + 1, add(values, vector(armor.skills)), nextSlots, nextSets, [...pieces, armor], charm)
       if (limited || layoutBuilds.length >= maxLayoutCandidates) return
+      // Reserve candidate space for earlier slots instead of filling the pool
+      // with leg swaps under the first four armor pieces.
+      if (limits.distinctArmorLayouts && layoutBuilds.length - layoutsBeforeBranch >= Math.max(3, Math.floor(maxLayoutCandidates / 2 ** depth))) return
     }
   }
   for (const charm of charms) {
@@ -421,4 +426,13 @@ export function generateBuildsForWeaponType(
     visitedNodes,
     elapsedMs: performance.now() - started,
   }
+}
+
+/** Armor, charm and decorations satisfy every requirement without weapon contributions. */
+export function generateArmorBuilds(
+  request: Omit<BuildGeneratorRequest, 'weaponType'>,
+  database: GeneratorDatabase,
+  limits: SearchLimits = {},
+): BuildGeneratorResult {
+  return generateBuilds({ ...request, weaponId: null }, database, { ...limits, distinctArmorLayouts: true })
 }
