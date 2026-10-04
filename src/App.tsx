@@ -16,6 +16,7 @@ import CharmSelector from './components/CharmSelector'
 import WeaponSelector from './components/WeaponSelector'
 import BuildGeneratorPanel from './components/BuildGeneratorPanel'
 import hunterLogo from './assets/hunter/monster-hunter-logo.png'
+import { HunterStatIcon } from './components/EquipmentIcon'
 
 import {calculateBuildStats,} from './engine/buildCalculator'
 
@@ -48,6 +49,8 @@ function App() {
     (state) => state.selectedArmor,
   )
   const [fixedArmorSlots, setFixedArmorSlots] = useState<Set<ArmorSlotType>>(() => new Set())
+  const generatorRef = useRef<HTMLDetailsElement>(null)
+  const [generatorOpen, setGeneratorOpen] = useState(false)
 
   const setArmor = useBuildStore(
     (state) => state.setArmor,
@@ -252,6 +255,21 @@ const buildStats = calculateBuildStats(
           <p>WORLD + ICEBORNE</p>
         </div>
         <div className="hunter-editor-toolbar flex flex-wrap items-center justify-end gap-3">
+            <button
+              type="button"
+              className="hunter-generate-action"
+              aria-expanded={generatorOpen}
+              aria-controls="build-generator"
+              onClick={() => {
+                if (generatorRef.current) {
+                  generatorRef.current.open = !generatorRef.current.open
+                  if (generatorRef.current.open) generatorRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                }
+              }}
+            >
+              <HunterStatIcon name="attack" />
+              <span>Generate Build</span>
+            </button>
             {buildFingerprint && (
               <p className="mt-2 font-mono text-xs text-hunter-muted">
                 Build ID: {buildFingerprint.slice(0, 12)}
@@ -281,7 +299,7 @@ const buildStats = calculateBuildStats(
 
       <main className="hunter-main">
 
-        <details open className="hunter-generator mb-5 rounded-lg border border-hunter-border bg-hunter-panel">
+        <details ref={generatorRef} id="build-generator" onToggle={(event) => setGeneratorOpen(event.currentTarget.open)} className="hunter-generator mb-5 rounded-lg border border-hunter-border bg-hunter-panel">
           <summary id="generator-title" className="cursor-pointer px-5 py-4 font-semibold">Build Generator <span className="ml-2 text-xs font-normal text-hunter-muted">Choose a weapon type, rank and required skills</span></summary>
         <BuildGeneratorPanel
           weapon={selectedWeapon}

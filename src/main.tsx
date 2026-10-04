@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import './hunter-assets.css'
 import './hunter-fonts.css'
+import './equipment-skin.css'
 import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(

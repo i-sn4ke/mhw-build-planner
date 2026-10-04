@@ -1,4 +1,11 @@
 @font-face {
+  font-family: 'Guild Carved Display';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./assets/fonts/guild-carved-display.ttf') format('truetype');
+}
+@font-face {
   font-family: 'IM Fell English SC';
   font-style: normal;
   font-weight: 400;

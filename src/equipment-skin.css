@@ -1,0 +1,306 @@
+/* Shared guild materials. Remove its main.tsx import to disable this skin. */
+.hunter-planner {
+  --hunter-dark-parchment: url('./assets/hunter/ui-v3/dark-parchment-v1.png');
+}
+.hunter-panel {
+  isolation: isolate;
+  padding: 14px 18px 20px;
+  border: 1px solid #503c27;
+  background-color: #28241e;
+  background-image: linear-gradient(115deg, #221f1b33, #13131055), var(--hunter-dark-parchment);
+  background-size: auto, 700px;
+  box-shadow: inset 0 0 22px #0008, 0 4px 12px #0005;
+}
+.hunter-panel::before {
+  content: '';
+  display: block;
+  position: absolute;
+  inset: -2px;
+  width: auto;
+  height: auto;
+  border: 0;
+  border-image: url('./assets/hunter/ui-v3/equipment-frame-v3.png') 320 / 36px / 0 stretch;
+  background: none;
+  filter: saturate(.65) brightness(.82);
+  pointer-events: none;
+  z-index: 2;
+}
+.hunter-panel > h2, .hunter-panel > div:first-child > h2, .hunter-panel .hunter-panel-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  padding: 7px 8px 12px;
+  min-height: 0;
+  border-bottom: 1px solid #9b7548;
+  background: none;
+  color: #efdab0;
+  font-size: 1.125rem;
+  text-shadow: 0 2px 2px #000;
+  text-transform: none;
+}
+.hunter-panel > h2::after, .hunter-panel > div:first-child > h2::after, .hunter-panel .hunter-panel-heading::after {
+  position: static;
+  display: block;
+  flex: 1;
+  min-width: 0;
+  max-width: 280px;
+  width: auto;
+  content: '';
+  height: 32px;
+  background: #b08963;
+  mask-image: url('./assets/hunter/ui-v3/tribal-heading-glyphs-v1.png'), linear-gradient(to right, #000 0%, #000 25%, transparent 100%);
+  mask-size: 280px 220px, 100% 100%;
+  mask-position: -7px var(--hunter-glyph-offset, -17px), center;
+  mask-repeat: no-repeat;
+  mask-composite: intersect;
+  filter: none;
+  opacity: .85;
+}
+.hunter-stats { --hunter-glyph-offset: -59px; }
+.hunter-simulation { --hunter-glyph-offset: -103px; }
+.hunter-skills { --hunter-glyph-offset: -143px; }
+.hunter-set-bonuses { --hunter-glyph-offset: -183px; }
+.hunter-panel > :not(h2):not(h3):not(:first-child) { background-color: transparent; }
+.hunter-equipment .hunter-equipment-row, .hunter-equipment .hunter-weapon-row {
+  margin-bottom: 7px;
+  border: 1px solid #846443;
+  border-image: none;
+  border-radius: 2px;
+  padding: 10px 9px;
+  background-color: #191815;
+  background-image: linear-gradient(100deg, #17161370, #10100e99), var(--hunter-dark-parchment);
+  background-size: auto, 560px;
+  background-clip: padding-box;
+  box-shadow: inset 0 0 0 2px #0d100b90, inset 0 1px #dfc69220, 0 2px 3px #0006;
+}
+.hunter-equipment .hunter-equipment-row + .hunter-equipment-row { border-top-width: 1px; }
+.hunter-equipment .hunter-weapon-row { border-color: #b0894f; }
+.hunter-equipment .hunter-equipment-icon {
+  border: 1px solid #987346;
+  border-image: none;
+  border-radius: 2px;
+  padding: 7px;
+  background: linear-gradient(135deg, #302c25, #111310);
+  box-shadow: inset 0 0 0 3px #0a0e0b, 0 1px 3px #0008;
+}
+.hunter-equipment .hunter-armor-content p, .hunter-equipment .hunter-charm-row p,
+.hunter-equipment .hunter-weapon-row p, .hunter-equipment .hunter-armor-content label {
+  font-family: Georgia, 'Times New Roman', serif;
+  line-height: 1.45;
+}
+.hunter-equipment .hunter-armor-content button > p:first-child { color: #f1e7d2; }
+.hunter-equipment .hunter-armor-content button > p:nth-child(2) { color: #b7ad97; }
+.hunter-equipment .hunter-armor-content button > p:nth-child(3) { color: #d4ba85; }
+.hunter-equipment .hunter-armor-content > button:hover { background-color: #9b75481a; }
+.hunter-equipment .hunter-armor-slots button {
+  border: 1px solid #8e7858;
+  border-radius: 2px;
+  background: linear-gradient(#3b3b30, #24291f);
+  box-shadow: inset 0 1px #d7c09725;
+}
+.hunter-equipment .hunter-armor-slots button:hover { border-color: #dcc18c; background: #4b4331; }
+.hunter-equipment .hunter-weapon-row > div:first-child button:not([title]),
+.hunter-equipment .hunter-charm-row > div:first-child button:not([title]) {
+  border: 1px solid #967447;
+  border-image: none;
+  border-radius: 2px;
+  padding: 5px 9px;
+  color: #ead8b3;
+  background: linear-gradient(#3b372b, #1c231b);
+  box-shadow: inset 0 1px #e0c78a25, 0 1px 3px #0008;
+}
+.hunter-equipment .hunter-weapon-row > div:first-child button:not([title]):hover,
+.hunter-equipment .hunter-charm-row > div:first-child button:not([title]):hover { background: #4b4130; }
+.hunter-equipment input[type='checkbox'] { accent-color: #c0a36b; }
+.hunter-equipment .hunter-equipment-row:last-child { margin-bottom: 0; }
+
+/* Dark parchment bases and quieter inset rows keep the copper seams distinct. */
+.hunter-panel:is(.hunter-stats, .hunter-simulation, .hunter-skills, .hunter-set-bonuses) > :not(h2):not(h3):not(:first-child) {
+  background: transparent;
+}
+.hunter-stats > p, .hunter-simulation > p { padding-top: 4px; }
+.hunter-skills > div:last-child, .hunter-skills > p,
+.hunter-set-bonuses > div:last-child, .hunter-set-bonuses > p { padding-top: 8px; }
+.hunter-stats > details, .hunter-stats > div:last-child,
+.hunter-conditions, .hunter-contributions, .hunter-simulation > details {
+  border-top: 1px solid #846443;
+}
+.hunter-resistances { border-left-color: #846443; }
+.hunter-skill-row, .hunter-simulation dl > div {
+  border: 1px solid #846443;
+  border-radius: 2px;
+  background: linear-gradient(100deg, #17161370, #10100e99), var(--hunter-dark-parchment) center / 560px;
+  box-shadow: inset 0 0 0 2px #0d100b90, inset 0 1px #dfc69220;
+}
+.hunter-skills .hunter-skill-row { margin-bottom: 7px; padding-left: 9px; padding-right: 9px; }
+.hunter-skills .hunter-skill-row:last-child { margin-bottom: 0; }
+.hunter-simulation dl > div + div { border-left: 1px solid #846443; }
+.hunter-simulation > dl { gap: 7px; }
+.hunter-set-bonuses::after { z-index: 0; opacity: .1; }
+.hunter-set-bonuses > * { position: relative; z-index: 1; }
+.hunter-panel input[type='checkbox'] { accent-color: #c0a36b; }
+.hunter-panel select {
+  border: 1px solid #967447;
+  background: linear-gradient(#303027, #171d16);
+  box-shadow: inset 0 1px #e0c78a25;
+}
+.hunter-condition-grid > button {
+  border: 1px solid #967447;
+  border-image: none;
+  padding: 5px 9px;
+  background: linear-gradient(#3b372b, #1c231b);
+  box-shadow: inset 0 1px #e0c78a25, 0 1px 3px #0008;
+}
+.hunter-generator {
+  border: 1px solid #846443;
+  border-image: none;
+  background: linear-gradient(115deg, #221f1b33, #13131055), var(--hunter-dark-parchment) center / 700px;
+  box-shadow: inset 0 0 22px #0008, 0 4px 12px #0005;
+}
+.hunter-generator > summary {
+  padding: 10px 14px;
+  color: #efdab0;
+  text-shadow: 0 2px 2px #000;
+  border-bottom: 1px solid #846443;
+}
+
+/* An engraved guild title; the original Monster Hunter logo stays untouched. */
+.hunter-brand-title { position: relative; border-left-color: #967447; }
+.hunter-brand-title h1 {
+  font-family: 'Guild Carved Display', 'Cinzel', Georgia, serif;
+  font-weight: 400;
+  font-synthesis: none;
+  text-transform: uppercase;
+  letter-spacing: .035em;
+  color: #edcf92;
+  background-image: linear-gradient(#f1e3bbbd, #c8ae78b0), url('./assets/hunter/parchment.png');
+  background-size: auto, 380px;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 1px #000);
+  text-shadow: none;
+}
+.hunter-brand-title p { color: #d7bd8d; text-shadow: 0 1px 2px #000; }
+.hunter-brand-title::after {
+  content: '';
+  position: absolute;
+  left: 18px;
+  right: 0;
+  bottom: -24px;
+  height: 20px;
+  background: #b08963;
+  mask-image: url('./assets/hunter/ui-v3/tribal-title-divider-v1.png'), linear-gradient(to right, transparent, #000 20%, #000 80%, transparent);
+  mask-size: 200px auto, 100% 100%;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-composite: intersect;
+  opacity: .8;
+  pointer-events: none;
+}
+
+/* Approved bestiary banner: artwork stays separate from live text and actions. */
+.hunter-header {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr) 180px;
+  align-items: center;
+  gap: 12px;
+  min-height: 210px;
+  background-color: #151715;
+  background-image: linear-gradient(90deg, #080b0870, #080b0820 24%, #080b0860 48%, #080b0830 72%, #080b0850), url('./assets/hunter/ui-v3/bestiary-header-zinogre-azure-v5.png');
+  background-size: auto, cover;
+  /* Favor the upper artwork so Zinogre's raised muzzle clears the top rail. */
+  background-position: center, center 35%;
+}
+.hunter-header::before { display: none; }
+.hunter-header .hunter-brand-title {
+  min-width: 0;
+  padding-left: 0;
+  border-left: 0;
+  text-align: center;
+}
+.hunter-brand-title p { font-size: .5625rem; letter-spacing: .18em; }
+.hunter-brand-title::after {
+  left: 50%;
+  right: auto;
+  width: 200px;
+  transform: translateX(-50%);
+}
+.hunter-header .hunter-editor-toolbar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  width: auto;
+  max-width: 180px;
+  margin-left: 0;
+}
+.hunter-editor-toolbar button,
+.hunter-editor-toolbar .hunter-generate-action {
+  border: 6px solid transparent;
+  border-image: url('./assets/hunter/ui-v3/bestiary-button-rim.svg') 24 / 6px / 0 stretch;
+  padding: 6px 9px;
+  max-width: 100%;
+  min-height: 40px;
+  font-size: .6875rem;
+  line-height: 1.3;
+  color: #f1e2be;
+  background-color: #141b19;
+  background-image: linear-gradient(110deg, #222724e8, #0e1514f5), url('./assets/hunter/parchment.png');
+  background-size: auto, 220px;
+  background-clip: padding-box;
+  box-shadow: inset 0 1px #ead0a030, inset 0 -2px #0008, 0 3px 5px #0008;
+  text-shadow: 0 2px 2px #000;
+}
+.hunter-editor-toolbar .hunter-generate-action {
+  gap: 6px;
+  background-color: #482519;
+  background-image: linear-gradient(110deg, #6a3524df, #311b15f2), url('./assets/hunter/parchment.png');
+}
+.hunter-generate-action .hunter-stat-icon { width: 18px; height: 18px; }
+.hunter-editor-toolbar button span { color: inherit; }
+.hunter-editor-toolbar button:hover {
+  background-color: #141b19;
+  background-image: linear-gradient(110deg, #222724e8, #0e1514f5), url('./assets/hunter/parchment.png');
+  color: #fff0ca;
+  filter: brightness(1.12);
+}
+.hunter-editor-toolbar .hunter-generate-action:hover {
+  background-image: linear-gradient(110deg, #6a3524df, #311b15f2), url('./assets/hunter/parchment.png');
+}
+.hunter-editor-toolbar button:active { filter: brightness(.92); }
+@media (min-width: 640px) and (max-width: 1023px) {
+  .hunter-header { grid-template-columns: 160px minmax(0, 1fr) 160px; min-height: 190px; }
+  .hunter-header .hunter-logo { width: 130px; }
+  .hunter-brand-title h1 { font-size: clamp(1.4375rem, 3.5vw, 2rem); }
+  .hunter-editor-toolbar button, .hunter-editor-toolbar .hunter-generate-action { font-size: .625rem; padding: 6px; }
+}
+@media (max-width: 639px) {
+  .hunter-panel { padding: 12px 9px 14px; }
+  .hunter-panel::before { border-image-width: 28px; }
+  .hunter-equipment .hunter-equipment-row, .hunter-equipment .hunter-weapon-row { padding: 8px 6px; }
+  .hunter-equipment .hunter-equipment-icon { padding: 5px; }
+  .hunter-panel > h2, .hunter-panel > div:first-child > h2, .hunter-panel .hunter-panel-heading { font-size: .9375rem; gap: 8px; }
+  .hunter-brand-title::after { left: 50%; bottom: -20px; width: 180px; height: 16px; mask-size: 180px auto, 100% 100%; }
+  .hunter-header {
+    grid-template-columns: minmax(0, 1fr) 150px;
+    gap: 12px 8px;
+    min-height: 290px;
+    align-items: start;
+    background-position: center, center 68%;
+    background-size: auto, auto 150px;
+    background-repeat: no-repeat;
+  }
+  .hunter-header .hunter-logo { justify-self: start; }
+  .hunter-header .hunter-editor-toolbar { grid-column: 2; grid-row: 1; justify-self: end; }
+  .hunter-header .hunter-brand-title { grid-column: 1 / -1; grid-row: 2; align-self: end; margin-bottom: 16px; }
+  .hunter-brand-title p { font-size: .5rem; }
+  .hunter-editor-toolbar button, .hunter-editor-toolbar .hunter-generate-action {
+    border-width: 5px;
+    border-image-width: 5px;
+    padding: 5px 6px;
+    font-size: .625rem;
+    gap: 5px;
+  }
+  .hunter-generate-action .hunter-stat-icon { width: 16px; height: 16px; }
+}

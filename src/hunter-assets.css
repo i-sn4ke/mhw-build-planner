@@ -227,3 +227,29 @@
 .hunter-resistances { border-left-color: #9d754b; }
 
 :focus-visible { outline-color: #f0c97d; }
+
+/* Keep the generator action while preserving the original board composition. */
+.hunter-editor-toolbar { max-width: 420px; }
+.hunter-editor-toolbar .hunter-generate-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 8px solid transparent;
+  border-image: var(--hunter-menu-frame) 115 / 8px / 0 stretch;
+  padding: 10px 14px;
+  color: #f2dfb7;
+  background: linear-gradient(#642d1ced, #371b13f5), url('./assets/hunter/parchment.png') center / 300px;
+  background-clip: padding-box;
+  box-shadow: inset 0 1px #e8cc8855, 0 3px 6px #0007;
+  text-transform: none;
+}
+.hunter-generate-action .hunter-stat-icon { color: #ead0a0; }
+.hunter-generator:not([open]) { display: none; }
+@media (max-width: 1023px) {
+  .hunter-header { flex-wrap: wrap; }
+  .hunter-editor-toolbar { max-width: none; width: 100%; }
+}
+@media (max-width: 639px) {
+  .hunter-editor-toolbar .hunter-generate-action { padding: 5px 10px; border-width: 6px; border-image-width: 6px; }
+}
