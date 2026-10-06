@@ -241,7 +241,6 @@
   color: #f1e7d2;
   box-shadow: inset 0 1px #e0c78a25;
 }
-.hunter-generator-content select option { background: #211e19; color: #f1e7d2; }
 .hunter-generator-content button:not([aria-label^="Skill details:"]) {
   border: 1px solid #967447;
   border-radius: 2px;
@@ -442,3 +441,57 @@
   .hunter-equipment .hunter-item-summary, .hunter-equipment .hunter-slot-empty { min-height: 2.625rem; }
 }
 .hunter-equipment .hunter-item-summary { align-items: flex-start; }
+
+/* Native dropdown popups need explicit colors as well as the closed control. */
+:is(.hunter-planner, .hunter-dialog) select {
+  color-scheme: dark;
+  color: #f1e7d2;
+  background-color: #191815;
+  background-image: linear-gradient(#17161399, #10100ebb), url('./assets/hunter/ui-v3/dark-parchment-v1.png');
+  background-size: auto, 560px;
+  border: 1px solid #967447;
+  border-radius: 2px;
+  font-family: 'Cinzel', Georgia, serif;
+  box-shadow: inset 0 1px #e0c78a25;
+}
+:is(.hunter-planner, .hunter-dialog) select option,
+:is(.hunter-planner, .hunter-dialog) select optgroup {
+  color: #f1e7d2;
+  background-color: #211e19;
+  font-family: inherit;
+}
+
+.hunter-damage { --hunter-glyph-offset: -103px; }
+.hunter-damage > summary.hunter-panel-heading { list-style: none; flex-wrap: wrap; }
+.hunter-damage > summary::-webkit-details-marker { display: none; }
+.hunter-damage > summary.hunter-panel-heading::before { content: '+'; color: #b08963; }
+.hunter-damage[open] > summary.hunter-panel-heading::before { content: '−'; }
+.hunter-damage-content { padding: 4px 8px 0; }
+.hunter-damage-results > div {
+  border: 1px solid #846443;
+  background: linear-gradient(#17161366, #10100e88), var(--hunter-dark-parchment);
+  background-size: auto, 560px;
+}
+.hunter-planner [role="tabpanel"][hidden] {
+  display: none;
+}
+
+.hunter-view-tabs > button {
+  padding: 10px 18px;
+  border: 1px solid #846443;
+  border-radius: 3px;
+  color: #cabb9f;
+  background: linear-gradient(#171613aa, #171613aa), var(--hunter-dark-parchment);
+  font-family: 'Cinzel', Georgia, serif;
+}
+
+.hunter-view-tabs > button[aria-selected="true"] {
+  color: #f1dfb8;
+  border-color: #bc925b;
+  box-shadow: inset 0 -2px #bc925b;
+}
+
+.hunter-view-tabs > button:focus-visible {
+  outline: 2px solid #e0bd82;
+  outline-offset: 3px;
+}

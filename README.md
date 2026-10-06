@@ -1,66 +1,92 @@
 # Monster Hunter: World + Iceborne Build Planner
 
-Un banco di lavoro per preparare la prossima caccia: scegliere l’equipaggiamento, capire quali abilità si attivano e trovare combinazioni che rispettino le skill desiderate.
+Plan a build, check your skills, and find equipment that fits the way you want to play.
 
-Il planner riunisce armi, armature, amuleti e gioielli di **Monster Hunter: World e Iceborne** in un’interfaccia ispirata ai bestiari e ai menu del gioco. Pergamena scura, cornici in bronzo, glifi tribali e illustrazioni di Rathalos e Zinogre accompagnano un builder pensato per confrontare le scelte senza perdere di vista la build complessiva.
+This is a browser-based build planner for **Monster Hunter: World and Iceborne**, with a Monster Hunter-inspired interface and a full local equipment catalog. No account or backend is needed.
 
-**[Apri il planner](https://i-sn4ke.github.io/mhw-build-planner/)**
+**[Try the planner](https://i-sn4ke.github.io/mhw-build-planner/)**
 
-## La build, pezzo per pezzo
+## Build your own setup
 
-Il builder manuale permette di combinare un’arma, i cinque pezzi di armatura, un amuleto e i gioielli compatibili con gli slot disponibili. Le icone identificano gli slot e aprono i rispettivi selettori; il colore segue la rarità del pezzo. Il nome dello slot resta disponibile al passaggio del mouse e da tastiera.
+Choose a weapon, five armor pieces, a charm, and decorations. Click an equipment icon to open its selector, then search by equipment name or by the skills it provides. Filters cover weapon type, armor rank, rarity, elements, status effects, and decoration slot size, depending on what you are selecting.
 
-I selettori consentono di cercare sia per nome dell’equipaggiamento sia per abilità conferite. Filtri dedicati aiutano a restringere il catalogo per rank, tipo di arma, rarità, elemento, stato o dimensione dello slot, secondo il pezzo cercato. I tooltip delle skill mostrano la descrizione e l’effetto al livello conferito dall’oggetto, anche prima di equipaggiarlo.
+Skill tooltips show what each skill does at the relevant level. The planner keeps your equipment, base stats, active skills, set bonuses, and decoration slots together, including Secret skill caps and Inheritance.
 
-Accanto all’equipaggiamento, il planner raccoglie attacco, affinity, difesa, resistenze, elementi e stati dell’arma e utilizzo degli slot. I pannelli Skills e Set Bonuses ricostruiscono le abilità della build, comprese le soglie dei bonus di set, i limiti sbloccati dalle Secret skill e l’effetto di Inheritance.
+## Generate builds
 
-## Dal requisito alla combinazione
+Pick an armor rank and the minimum skill levels you want. The generator looks for up to three armor, charm, and decoration combinations that meet those requirements, preferring different armor set layouts over small alpha/beta variations. You can compare changed pieces, extra skills, and unused slots before applying a result.
 
-Il Build Generator parte dal **rank** e dai livelli minimi delle skill richieste. Cerca fino a tre configurazioni di armature, amuleto e gioielli che soddisfano le richieste senza contributi dell’arma. Favorisce famiglie diverse nei vari slot e non completa la lista con sole varianti alfa/beta. Il confronto evidenzia pezzi cambiati, skill extra e slot liberi. Applicare una proposta mantiene l’arma già scelta; il tipo di arma nel generatore serve solo a preimpostare il filtro del selettore manuale.
+Already have a few pieces in mind? Mark them with **Keep for generated builds** and the generator will fill the remaining armor slots. Fixed pieces must match the selected rank.
 
-È possibile partire da una build incompleta: i pezzi di armatura contrassegnati con **Keep for generated builds** restano fissati nei loro slot, mentre il generatore cerca il resto dell’equipaggiamento. Se un pezzo fissato appartiene a un rank diverso da quello richiesto, la generazione si ferma finché la selezione non viene allineata.
+Generated builds meet your skill requirements without relying on a weapon's skills, slots, or set bonuses. Applying a result keeps your equipped weapon, so you can change weapons later without losing the skills supplied by the generated setup. The weapon type selector in the generator only presets the manual weapon filter.
 
-Il rank filtra le armature. Skill, slot e bonus set dell’arma sono esclusi dalla ricerca, così l’arma può essere cambiata senza perdere i requisiti soddisfatti dalla proposta. Amuleti e gioielli provengono dall’intero catalogo; i gioielli sono considerati disponibili in copie illimitate. Il generatore soddisfa i requisiti delle skill, senza ordinare i risultati per danno.
+A few things to keep in mind:
 
-La ricerca avviene in un Web Worker, per mantenere reattiva l’interfaccia. Ha limiti di tempo e di combinazioni esplorate: una ricerca interrotta senza risultati non dimostra che la build sia impossibile.
+- Rank filters armor; charms and decorations come from the full catalog.
+- Decorations are treated as available in unlimited copies.
+- Results satisfy skill requirements and are not ranked by damage.
+- The search runs in a background worker and has limits. If it stops without results, that does not necessarily mean no valid build exists.
 
-## Leggere gli effetti delle skill
+## Check attack and affinity
 
-Le statistiche di base e la simulazione offensiva sono presentate separatamente. Le prime descrivono l’equipaggiamento senza upgrade, augment o bonus delle skill; la seconda applica gli effetti supportati ad attacco e affinity.
+The **Attack / Affinity** panel shows how supported skills affect your equipped weapon. You can toggle conditions such as monster rage, weak spots, wounds, health, and stamina requirements to see their contributions.
 
-Le condizioni manuali permettono di osservare come cambiano i valori contro un punto debole, con una ferita, durante l’ira del mostro o in particolari condizioni di salute e stamina. Sono supportate Attack Boost, Critical Eye, Agitator, Weakness Exploit, Peak Performance, Resentment, Maximum Might, Latent Power e Critical Draw.
+Supported skills include Attack Boost, Critical Eye, Agitator, Weakness Exploit, Peak Performance, Resentment, Maximum Might, Latent Power, and Critical Draw.
 
-La simulazione aiuta a leggere i contributi delle abilità, ma non rappresenta un calcolo completo del danno: sharpness, moltiplicatori dei colpi critici e formule dei singoli attacchi non vengono simulati.
+Base stats remain separate from this simulation: they describe the equipment without skill effects, upgrades, or augments.
 
-## Condividere una build
+## Try the damage simulator
 
-Una build può essere condivisa tramite un link generato dal pulsante **Share Build**. Il destinatario ritrova arma, armature, amuleto e gioielli nell’editor, senza account o salvataggi sul server.
+The **Damage Simulator** has its own tab and uses your current build. This first version supports **Long Sword**, five basic attacks, and the ordinary parts of **Great Jagras, Rathian, and Rathalos**.
 
-La configurazione viaggia nel parametro `?b=<payload>` dell’URL. Le condizioni manuali della simulazione e i vincoli locali del generatore non fanno parte della build condivisa.
+Choose a monster, body part, sharpness, and Spirit level to compare normal, critical (or feeble), and average hit damage. Physical and elemental damage are shown separately. Weakness Exploit follows the selected part automatically; manual conditions are shared with Attack / Affinity. Switching tabs preserves your build and simulation selections.
 
-## Dati e tecnologia
+The calculation also supports Critical Boost, elemental attack skills, Free Elem, Non-elemental Boost, and Critical Element / True Critical Element. Average damage accounts for affinity; it is not DPS.
 
-L’app utilizza cataloghi reali importati localmente: armi, armature, amuleti, gioielli, skill e Set Bonuses sono già inclusi in `src/data/generated/`. Calcoli e generazione avvengono nel browser, senza backend né chiamate a un’API per consultare i cataloghi.
+This is a limited single-hit simulator. It assumes unbroken parts and a quest damage multiplier of 1. It does not cover combos, Helmbreaker or Iai attacks, status procs, augments, custom upgrades, awakened abilities, items, food, mantles, or every skill effect. Sharpness is selected manually rather than checked against the weapon. The panel includes calculation details and limitations, and the [data sources](scripts/import-mhw-data/sources/README.md) document where the values come from.
 
-Il progetto è una SPA sviluppata con **React, TypeScript, Vite, Tailwind CSS e Zustand**. I componenti dell’interfaccia si trovano in `src/components/`, i calcoli e lo sharing in `src/engine/`, lo stato del builder in `src/store/` e il lavoro del generatore in `src/workers/`. Font, icone e materiali grafici sono serviti localmente.
+## Share a build
 
-I JSON generati non vanno modificati manualmente o sostituiti con mock. Gli importer in `scripts/import-mhw-data/` leggono la sorgente locale `../MHWorldData/source_data/`: la rigenerazione è separata dall’avvio e dalla pubblicazione dell’app.
+Click **Share Build** to copy a link containing your weapon, armor, charm, and decorations. Anyone opening it gets the same setup in the editor.
 
-## Sviluppo
+Builds are encoded in the URL's `?b=<payload>` parameter. Simulation choices and generator constraints stay local and are not included in shared links.
 
-Con Node.js 24 e npm:
+## Run locally
+
+Use Node.js 24 and npm:
 
 ```sh
 npm ci
 npm run dev
 ```
 
-`npm run build` controlla TypeScript e produce `dist/`; `npm run lint` verifica il codice e `npm test` esegue i test dei calcoli e del generatore. Per un’anteprima della build, eseguire `npm run preview` e aprire `/mhw-build-planner/` sull’indirizzo indicato da Vite.
+Other commands:
 
-GitHub Actions pubblica automaticamente `dist/` su GitHub Pages dopo i push su `main`. La configurazione Vite usa `/` in sviluppo e `/mhw-build-planner/` in produzione, mantenendo compatibili i link condivisi.
+```sh
+npm run build    # Check TypeScript and build into dist/
+npm run preview  # Preview the production build
+npm run lint     # Check code style and common errors
+npm test         # Run calculation and generator tests
+```
 
-## Crediti
+For the production preview, open `/mhw-build-planner/` at the address printed by Vite. Development uses `/`; production uses `/mhw-build-planner/`. GitHub Actions deploys to GitHub Pages after pushes to `main`.
 
-Questo è un progetto non ufficiale dedicato a Monster Hunter, proprietà di **Capcom**.
+## About the project
 
-Le origini e le licenze degli asset sono documentate in [src/assets/hunter/README.md](src/assets/hunter/README.md), con le risorse del nuovo tema descritte in [ui-v3/README.md](src/assets/hunter/ui-v3/README.md). Le icone provenienti da MHWorldData includono la relativa licenza MIT. Le licenze dei font IM Fell English SC, Cinzel e della variante Guild Carved Display si trovano in [src/assets/fonts/](src/assets/fonts/).
+Built with **React, TypeScript, Vite, Tailwind CSS, and Zustand**. Equipment data, fonts, icons, and artwork are bundled locally. Calculations and build generation run in the browser without catalog API requests.
+
+The main code lives in:
+
+- `src/components/` — interface components
+- `src/engine/` — build calculations, generation, simulation, and sharing
+- `src/store/` — equipped build state
+- `src/workers/` — background build search
+- `src/data/generated/` — imported game catalogs
+
+Generated JSON files should be updated through the importers in `scripts/import-mhw-data/`, not edited by hand or replaced with mock data. The importers use the local `../MHWorldData/source_data/` directory; you do not need it just to run or build the app.
+
+## Credits
+
+This is an unofficial fan project. **Monster Hunter belongs to Capcom.**
+
+Asset sources and licenses are documented in [the artwork credits](src/assets/hunter/README.md) and [the current theme credits](src/assets/hunter/ui-v3/README.md). Icons from MHWorldData include their MIT license. Licenses for IM Fell English SC, Cinzel, and Guild Carved Display are included in [the fonts directory](src/assets/fonts/).

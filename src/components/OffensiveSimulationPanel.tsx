@@ -1,23 +1,19 @@
-import { useState } from 'react'
 import type { Weapon } from '../types/armor'
 import type { CalculatedSkills } from '../types/calculatedSkill'
-import type { SkillSimulationConditions } from '../types/skillSimulation'
-import { defaultSimulationConditions, simulateOffensiveSkills, supportedOffensiveSkills } from '../engine/skillEffects'
+import SimulationConditions, { type SimulationConditionsProps } from './SimulationConditions'
+import { simulateOffensiveSkills, supportedOffensiveSkills } from '../engine/skillEffects'
 import { skills as definitions } from '../data/skills'
 import SkillTooltip from './SkillTooltip'
 import { HunterStatIcon } from './EquipmentIcon'
 
 const skillById = new Map(definitions.map((definition) => [definition.id, definition]))
-const controlClass = 'mt-1 block w-full rounded-md border border-hunter-border bg-hunter-ink px-2 py-2 text-sm text-hunter-text focus:border-hunter-gold'
 const percentage = (value: number) => `${value > 0 ? '+' : ''}${value}%`
 
-function OffensiveSimulationPanel({ weapon, skills }: { weapon: Weapon | null; skills: CalculatedSkills }) {
-  const [conditions, setConditions] = useState(defaultSimulationConditions)
+function OffensiveSimulationPanel({ weapon, skills, conditions, setConditions }: { weapon: Weapon | null; skills: CalculatedSkills } & SimulationConditionsProps) {
   const offense = simulateOffensiveSkills(weapon, skills, conditions)
   const unsupported = Object.entries(skills).filter(([id, skill]) =>
     skill.level > 0 && !supportedOffensiveSkills.has(id) && id !== 'inheritance' && !skillById.get(id)?.unlocksSkillId,
   )
-  const update = <K extends keyof SkillSimulationConditions>(key: K, value: SkillSimulationConditions[K]) => setConditions((current) => ({ ...current, [key]: value }))
 
   return (
     <section className="hunter-panel hunter-simulation min-w-0 rounded-lg border border-hunter-gold/60 bg-hunter-panel p-4 sm:p-5" aria-label="Attack / Affinity Simulation">
@@ -35,45 +31,7 @@ function OffensiveSimulationPanel({ weapon, skills }: { weapon: Weapon | null; s
       </dl>
       {offense.uncappedAffinity > 100 && <p className="mt-1 text-xs text-hunter-muted">Affinity before cap: {percentage(offense.uncappedAffinity)}. Effective affinity is capped at 100%.</p>}
 
-      <fieldset disabled={!weapon} className="hunter-conditions mt-4 grid gap-3 sm:grid-cols-2 disabled:opacity-50">
-        <legend className="mb-2 text-sm font-semibold">Manual Conditions</legend>
-        <div className="hunter-condition-grid">
-        <label className="hunter-target block text-sm text-hunter-muted">
-          Target (Weakness Exploit)
-          <select aria-label="Target (Weakness Exploit)" value={conditions.target} onChange={(event) => update('target', event.target.value as SkillSimulationConditions['target'])} className={controlClass}>
-            <option value="normal">Normal hit</option>
-            <option value="weak">Weak spot</option>
-            <option value="wounded-weak">Wounded weak spot</option>
-          </select>
-        </label>
-        <label className="hunter-health block text-sm text-hunter-muted">
-          Health (Peak Performance / Resentment)
-          <select aria-label="Health (Peak Performance / Resentment)" value={conditions.health} onChange={(event) => update('health', event.target.value as SkillSimulationConditions['health'])} className={controlClass}>
-            <option value="normal">Normal</option>
-            <option value="full">Full health</option>
-            <option value="recoverable">Recoverable damage (red health)</option>
-          </select>
-        </label>
-        <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" checked={conditions.monsterEnraged} onChange={(event) => update('monsterEnraged', event.target.checked)} className="accent-hunter-gold" />
-          Monster enraged (Agitator)
-        </label>
-        <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" checked={conditions.maximumMightActive} onChange={(event) => update('maximumMightActive', event.target.checked)} className="accent-hunter-gold" />
-          Maximum Might requirement met
-        </label>
-        <p className="text-xs text-hunter-muted sm:col-span-2">Includes any required stamina duration; no timer is simulated.</p>
-        <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" checked={conditions.latentPowerActive} onChange={(event) => update('latentPowerActive', event.target.checked)} className="accent-hunter-gold" />
-          Latent Power active
-        </label>
-        <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" checked={conditions.drawAttack} onChange={(event) => update('drawAttack', event.target.checked)} className="accent-hunter-gold" />
-          Draw attack (Critical Draw)
-        </label>
-        <button type="button" onClick={() => setConditions(defaultSimulationConditions())} className="rounded-md border border-hunter-border px-3 py-2 text-xs text-hunter-muted hover:border-hunter-gold">Reset Conditions</button>
-        </div>
-      </fieldset>
+      <SimulationConditions conditions={conditions} setConditions={setConditions} disabled={!weapon} />
 
       {!!offense.contributions.length && (
         <div className="hunter-contributions mt-4 grid gap-2 sm:grid-cols-2">

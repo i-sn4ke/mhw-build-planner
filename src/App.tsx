@@ -8,6 +8,9 @@ import ArmorSlot from './components/ArmorSlot'
 import SkillPanel from './components/SkillPanel'
 import StatsPanel from './components/StatsPanel'
 import OffensiveSimulationPanel from './components/OffensiveSimulationPanel'
+import DamageSimulationPanel from './components/DamageSimulationPanel'
+import SimulationConditions from './components/SimulationConditions'
+import { defaultSimulationConditions } from './engine/skillEffects'
 import CharmStatsPanel from './components/CharmStatsPanel'
 import DecorationSelector from './components/DecorationSelector'
 import WeaponStatsPanel from './components/WeaponStatsPanel'
@@ -49,6 +52,8 @@ function App() {
     (state) => state.selectedArmor,
   )
   const [fixedArmorSlots, setFixedArmorSlots] = useState<Set<ArmorSlotType>>(() => new Set())
+  const [activeView, setActiveView] = useState<'planner' | 'simulator'>('planner')
+  const [conditions, setConditions] = useState(defaultSimulationConditions)
   const generatorRef = useRef<HTMLDetailsElement>(null)
   const [generatorOpen, setGeneratorOpen] = useState(false)
 
@@ -262,7 +267,14 @@ const buildStats = calculateBuildStats(
               aria-expanded={generatorOpen}
               aria-controls="build-generator"
               onClick={() => {
-                if (generatorRef.current) {
+                if (activeView === 'simulator') {
+                  setActiveView('planner')
+                  requestAnimationFrame(() => {
+                    if (!generatorRef.current) return
+                    generatorRef.current.open = true
+                    generatorRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                  })
+                } else if (generatorRef.current) {
                   generatorRef.current.open = !generatorRef.current.open
                   if (generatorRef.current.open) generatorRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
                 }
@@ -299,6 +311,22 @@ const buildStats = calculateBuildStats(
       </header>
 
       <main className="hunter-main">
+        <div className="hunter-view-tabs mb-5 flex gap-2" role="tablist" aria-label="Planner views">
+          {(['planner', 'simulator'] as const).map((view, index) => (
+            <button key={view} id={view + '-tab'} type="button" role="tab" aria-selected={activeView === view} aria-controls={view + '-view'} tabIndex={activeView === view ? 0 : -1}
+              onClick={() => setActiveView(view)}
+              onKeyDown={(event) => {
+                if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return
+                event.preventDefault()
+                const next = event.key === 'Home' ? 'planner' : event.key === 'End' ? 'simulator' : index === 0 ? 'simulator' : 'planner'
+                setActiveView(next)
+                document.getElementById(next + '-tab')?.focus()
+              }}>
+              {view === 'planner' ? 'Build Planner' : 'Damage Simulator'}
+            </button>
+          ))}
+        </div>
+        <div id="planner-view" role="tabpanel" aria-labelledby="planner-tab" hidden={activeView !== 'planner'}>
 
         <details ref={generatorRef} id="build-generator" onToggle={(event) => setGeneratorOpen(event.currentTarget.open)} className="hunter-generator mb-5 rounded-lg border border-hunter-border bg-hunter-panel">
           <summary id="generator-title" className="cursor-pointer px-5 py-4 font-semibold">Build Generator <span className="ml-2 text-xs font-normal text-hunter-muted">Choose rank and required skills</span></summary>
@@ -462,13 +490,27 @@ const buildStats = calculateBuildStats(
               armorPieces={armorPieces}
               decorations={decorations}
             />
-            <OffensiveSimulationPanel weapon={selectedWeapon} skills={buildStats.skills} />
+            <OffensiveSimulationPanel weapon={selectedWeapon} skills={buildStats.skills} conditions={conditions} setConditions={setConditions} />
             
           </aside>
         </div>
         <div className="hunter-bottom-grid mt-5 grid items-start gap-5 lg:grid-cols-[minmax(0,46fr)_minmax(0,54fr)]">
           <SkillPanel skills={buildStats.skills} />
           <SetBonusPanel setBonuses={activeSetBonuses} skills={skills} />
+        </div>
+        </div>
+        <div id="simulator-view" role="tabpanel" aria-labelledby="simulator-tab" hidden={activeView !== 'simulator'}>
+          <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,40fr)_minmax(0,60fr)]">
+            <section className="hunter-panel hunter-simulation min-w-0" aria-labelledby="simulation-build-title">
+              <h2 id="simulation-build-title" className="hunter-panel-heading">Current Build</h2>
+              <p className="mt-3 font-semibold text-hunter-gold">{selectedWeapon?.name ?? 'No weapon selected'}</p>
+              <p className="mt-2 text-sm text-hunter-muted">Uses the equipment and skills from Build Planner. Conditions are shared between both views; simulation selections stay available when switching tabs.</p>
+              <button type="button" className="mt-3 rounded-md border border-hunter-border px-3 py-2 text-sm" onClick={() => setActiveView('planner')}>Edit Build</button>
+              <SimulationConditions conditions={conditions} setConditions={setConditions} disabled={!selectedWeapon || selectedWeapon.type !== 'long-sword'} automaticTarget />
+              <p className="mt-2 text-xs text-hunter-muted">Weakness Exploit is calculated from the selected monster part. Conditions and simulation choices are local and are not saved in shared links.</p>
+            </section>
+            <DamageSimulationPanel weapon={selectedWeapon} skills={buildStats.skills} conditions={conditions} />
+          </div>
         </div>
       </main>
       </div>

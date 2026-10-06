@@ -1,0 +1,389 @@
+{
+  "monsters": [
+    {
+      "id": "great-jagras",
+      "name": "Great Jagras",
+      "source": "https://mhworld.kiranico.com/en/monsters/zJ1Sb/great-jagras",
+      "enrageMultiplier": 1.1,
+      "parts": [
+        {
+          "id": "head",
+          "name": "Head",
+          "sever": 80,
+          "elements": {
+            "fire": 30,
+            "water": 0,
+            "thunder": 20,
+            "ice": 15,
+            "dragon": 10
+          }
+        },
+        {
+          "id": "neck",
+          "name": "Neck",
+          "sever": 65,
+          "elements": {
+            "fire": 20,
+            "water": 0,
+            "thunder": 10,
+            "ice": 5,
+            "dragon": 5
+          }
+        },
+        {
+          "id": "body",
+          "name": "Body",
+          "sever": 50,
+          "elements": {
+            "fire": 20,
+            "water": 0,
+            "thunder": 10,
+            "ice": 5,
+            "dragon": 0
+          }
+        },
+        {
+          "id": "back",
+          "name": "Back",
+          "sever": 45,
+          "elements": {
+            "fire": 15,
+            "water": 0,
+            "thunder": 5,
+            "ice": 5,
+            "dragon": 0
+          }
+        },
+        {
+          "id": "left-foreleg",
+          "name": "Left Foreleg",
+          "sever": 65,
+          "elements": {
+            "fire": 25,
+            "water": 0,
+            "thunder": 15,
+            "ice": 10,
+            "dragon": 5
+          }
+        },
+        {
+          "id": "right-foreleg",
+          "name": "Right Foreleg",
+          "sever": 65,
+          "elements": {
+            "fire": 25,
+            "water": 0,
+            "thunder": 15,
+            "ice": 10,
+            "dragon": 5
+          }
+        },
+        {
+          "id": "left-hindleg",
+          "name": "Left Hindleg",
+          "sever": 45,
+          "elements": {
+            "fire": 15,
+            "water": 0,
+            "thunder": 5,
+            "ice": 0,
+            "dragon": 0
+          }
+        },
+        {
+          "id": "right-hindleg",
+          "name": "Right Hindleg",
+          "sever": 45,
+          "elements": {
+            "fire": 15,
+            "water": 0,
+            "thunder": 5,
+            "ice": 0,
+            "dragon": 0
+          }
+        },
+        {
+          "id": "tail",
+          "name": "Tail",
+          "sever": 45,
+          "elements": {
+            "fire": 15,
+            "water": 0,
+            "thunder": 5,
+            "ice": 0,
+            "dragon": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "rathian",
+      "name": "Rathian",
+      "source": "https://mhworld.kiranico.com/en/monsters/Rz9Tb/rathian",
+      "enrageMultiplier": 1.1,
+      "parts": [
+        {
+          "id": "head",
+          "name": "Head",
+          "sever": 70,
+          "elements": {
+            "fire": 0,
+            "water": 15,
+            "thunder": 20,
+            "ice": 15,
+            "dragon": 30
+          }
+        },
+        {
+          "id": "neck",
+          "name": "Neck",
+          "sever": 40,
+          "elements": {
+            "fire": 0,
+            "water": 0,
+            "thunder": 5,
+            "ice": 0,
+            "dragon": 15
+          }
+        },
+        {
+          "id": "body",
+          "name": "Body",
+          "sever": 35,
+          "elements": {
+            "fire": 0,
+            "water": 5,
+            "thunder": 10,
+            "ice": 5,
+            "dragon": 20
+          }
+        },
+        {
+          "id": "back",
+          "name": "Back",
+          "sever": 35,
+          "elements": {
+            "fire": 0,
+            "water": 5,
+            "thunder": 10,
+            "ice": 5,
+            "dragon": 20
+          }
+        },
+        {
+          "id": "left-wing",
+          "name": "Left Wing",
+          "sever": 55,
+          "elements": {
+            "fire": 0,
+            "water": 10,
+            "thunder": 15,
+            "ice": 10,
+            "dragon": 25
+          }
+        },
+        {
+          "id": "right-wing",
+          "name": "Right Wing",
+          "sever": 55,
+          "elements": {
+            "fire": 0,
+            "water": 10,
+            "thunder": 15,
+            "ice": 10,
+            "dragon": 25
+          }
+        },
+        {
+          "id": "left-leg",
+          "name": "Left Leg",
+          "sever": 40,
+          "elements": {
+            "fire": 0,
+            "water": 0,
+            "thunder": 5,
+            "ice": 0,
+            "dragon": 15
+          }
+        },
+        {
+          "id": "right-leg",
+          "name": "Right Leg",
+          "sever": 40,
+          "elements": {
+            "fire": 0,
+            "water": 0,
+            "thunder": 5,
+            "ice": 0,
+            "dragon": 15
+          }
+        },
+        {
+          "id": "tail",
+          "name": "Tail",
+          "sever": 45,
+          "elements": {
+            "fire": 0,
+            "water": 5,
+            "thunder": 10,
+            "ice": 5,
+            "dragon": 20
+          }
+        }
+      ]
+    },
+    {
+      "id": "rathalos",
+      "name": "Rathalos",
+      "source": "https://mhworld.kiranico.com/en/monsters/BnetX/rathalos",
+      "enrageMultiplier": 1.1,
+      "parts": [
+        {
+          "id": "head",
+          "name": "Head",
+          "sever": 65,
+          "elements": {
+            "fire": 0,
+            "water": 15,
+            "thunder": 20,
+            "ice": 15,
+            "dragon": 30
+          }
+        },
+        {
+          "id": "neck",
+          "name": "Neck",
+          "sever": 35,
+          "elements": {
+            "fire": 0,
+            "water": 5,
+            "thunder": 10,
+            "ice": 5,
+            "dragon": 20
+          }
+        },
+        {
+          "id": "body",
+          "name": "Body",
+          "sever": 25,
+          "elements": {
+            "fire": 0,
+            "water": 5,
+            "thunder": 10,
+            "ice": 5,
+            "dragon": 20
+          }
+        },
+        {
+          "id": "back",
+          "name": "Back",
+          "sever": 25,
+          "elements": {
+            "fire": 0,
+            "water": 5,
+            "thunder": 10,
+            "ice": 5,
+            "dragon": 20
+          }
+        },
+        {
+          "id": "left-wing",
+          "name": "Left Wing",
+          "sever": 50,
+          "elements": {
+            "fire": 0,
+            "water": 10,
+            "thunder": 15,
+            "ice": 10,
+            "dragon": 25
+          }
+        },
+        {
+          "id": "right-wing",
+          "name": "Right Wing",
+          "sever": 50,
+          "elements": {
+            "fire": 0,
+            "water": 10,
+            "thunder": 15,
+            "ice": 10,
+            "dragon": 25
+          }
+        },
+        {
+          "id": "left-leg",
+          "name": "Left Leg",
+          "sever": 35,
+          "elements": {
+            "fire": 0,
+            "water": 0,
+            "thunder": 5,
+            "ice": 0,
+            "dragon": 15
+          }
+        },
+        {
+          "id": "right-leg",
+          "name": "Right Leg",
+          "sever": 35,
+          "elements": {
+            "fire": 0,
+            "water": 0,
+            "thunder": 5,
+            "ice": 0,
+            "dragon": 15
+          }
+        },
+        {
+          "id": "tail",
+          "name": "Tail",
+          "sever": 45,
+          "elements": {
+            "fire": 0,
+            "water": 5,
+            "thunder": 10,
+            "ice": 5,
+            "dragon": 20
+          }
+        }
+      ]
+    }
+  ],
+  "attacks": [
+    {
+      "id": "step-slash",
+      "name": "Step Slash",
+      "motionValue": 24,
+      "elementMultiplier": 1,
+      "drawEligible": true
+    },
+    {
+      "id": "overhead-slash",
+      "name": "Overhead Slash",
+      "motionValue": 21,
+      "elementMultiplier": 1,
+      "drawEligible": false
+    },
+    {
+      "id": "thrust",
+      "name": "Thrust",
+      "motionValue": 12,
+      "elementMultiplier": 1,
+      "drawEligible": false
+    },
+    {
+      "id": "rising-slash",
+      "name": "Rising Slash",
+      "motionValue": 18,
+      "elementMultiplier": 1,
+      "drawEligible": false
+    },
+    {
+      "id": "fade-slash",
+      "name": "Fade Slash",
+      "motionValue": 22,
+      "elementMultiplier": 1,
+      "drawEligible": false
+    }
+  ]
+}
