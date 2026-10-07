@@ -1,0 +1,708 @@
+{
+  "retrievedAt": "2026-10-08",
+  "translations": {
+    "weapons": {
+      "3236": {
+        "english": "Fatalis Blade",
+        "name": "Lama Fatalis",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/jqHy9fvw/fatalis-blade",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/jqHy9fvw/lama-fatalis"
+      },
+      "3237": {
+        "english": "Black Fatalis Blade",
+        "name": "Lama nera Fatalis",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/g3HqlfMK/black-fatalis-blade",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/g3HqlfMK/lama-nera-fatalis"
+      },
+      "3238": {
+        "english": "Dark Claw",
+        "name": "Artiglio oscuro",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/rqu9ZHra/dark-claw",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/rqu9ZHra/artiglio-oscuro"
+      },
+      "3239": {
+        "english": "Dark Claw \"Demise\"",
+        "name": "Artiglio oscuro \"funesto\"",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/N5u5ECxA/dark-claw-demise",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/N5u5ECxA/artiglio-oscuro-funesto"
+      },
+      "3240": {
+        "english": "Fatalis Sickle",
+        "name": "Falce di Fatalis",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/RLuQpSYg/fatalis-sickle",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/RLuQpSYg/falce-di-fatalis"
+      },
+      "3241": {
+        "english": "Fatalis Zaggespanon",
+        "name": "Zaggespanon Fatalis",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/zDuXMHD3/fatalis-zaggespanon",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/zDuXMHD3/zaggespanon-fatalis"
+      },
+      "3242": {
+        "english": "Fatalis Sword",
+        "name": "Spada drago nero",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/jkiy9fvQ/fatalis-sword",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/jkiy9fvQ/spada-drago-nero"
+      },
+      "3243": {
+        "english": "True Fatalis Sword",
+        "name": "Spada drago ebano",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/gPiqlfMj/true-fatalis-sword",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/gPiqlfMj/spada-drago-ebano"
+      },
+      "3244": {
+        "english": "Fatalis Dual Blades",
+        "name": "Doppie lame Fatalis",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/RRFQpSY3/fatalis-dual-blades",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/RRFQpSY3/doppie-lame-fatalis"
+      },
+      "3245": {
+        "english": "Fatalis Dual Skies",
+        "name": "Doppi cieli Fatalis",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/z2FXMHDa/fatalis-dual-skies",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/z2FXMHDa/doppi-cieli-fatalis"
+      },
+      "3246": {
+        "english": "Fatalis Buster",
+        "name": "Distruttore Fatalis",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/VRCp8fqR/fatalis-buster",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/VRCp8fqR/distruttore-fatalis"
+      },
+      "3247": {
+        "english": "Fatalis Demolisher",
+        "name": "Demolitore Fatalis",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/EzCkwfA7/fatalis-demolisher",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/EzCkwfA7/demolitore-fatalis"
+      },
+      "3248": {
+        "english": "Fatalis Menace",
+        "name": "Minaccia di Fatalis",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/jYfy9fvj/fatalis-menace",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/jYfy9fvj/minaccia-di-fatalis"
+      },
+      "3249": {
+        "english": "Fatalis Menace Wailer",
+        "name": "Lamento minaccioso Fatalis",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/gKfqlfM7/fatalis-menace-wailer",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/gKfqlfM7/lamento-minaccioso-fatalis"
+      },
+      "3250": {
+        "english": "Fatalis Lance",
+        "name": "Lancia drago nero",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/y2cWoi5M/fatalis-lance",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/y2cWoi5M/lancia-drago-nero"
+      },
+      "3251": {
+        "english": "True Fatalis Lance",
+        "name": "Lancia drago ebano",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/ZRckgf2w/true-fatalis-lance",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/ZRckgf2w/lancia-drago-ebano"
+      },
+      "3252": {
+        "english": "Fatalis Gunlance",
+        "name": "Lancia-fucile drago nero",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/5aSvbfPM/fatalis-gunlance",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/5aSvbfPM/lancia-fucile-drago-nero"
+      },
+      "3253": {
+        "english": "True Fatalis Gunlance",
+        "name": "Lancia-fucile drago ebano",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/VwSp8fqk/true-fatalis-gunlance",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/VwSp8fqk/lancia-fucile-drago-ebano"
+      },
+      "3254": {
+        "english": "Fatalis End",
+        "name": "Fine del drago nero",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/b9U6vcog/fatalis-end",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/b9U6vcog/fine-del-drago-nero"
+      },
+      "3255": {
+        "english": "True Fatalis End",
+        "name": "Fine del drago ebano",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/GeUqDfM3/true-fatalis-end",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/GeUqDfM3/fine-del-drago-ebano"
+      },
+      "3256": {
+        "english": "Fatalis Charger",
+        "name": "Carica drago nero",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/gBTqlfMJ/fatalis-charger",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/gBTqlfMJ/carica-drago-nero"
+      },
+      "3257": {
+        "english": "True Fatalis Charger",
+        "name": "Carica drago ebano",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/yKTWoi5y/true-fatalis-charger",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/yKTWoi5y/carica-drago-ebano"
+      },
+      "3258": {
+        "english": "Fatalis Glaive",
+        "name": "Falcione Fatalis",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/PRs2Esk9/fatalis-glaive",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/PRs2Esk9/falcione-fatalis"
+      },
+      "3259": {
+        "english": "True Fatalis Dyaus",
+        "name": "Dyaus drago ebano",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/l6s4WU9D/true-fatalis-dyaus",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/l6s4WU9D/dyaus-drago-ebano"
+      },
+      "3260": {
+        "english": "Fatalis Pit",
+        "name": "Fossa Fatalis",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/bat6vcoY/fatalis-pit",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/bat6vcoY/fossa-fatalis"
+      },
+      "3261": {
+        "english": "Fatalis Depths",
+        "name": "Profondità Fatalis",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/G6tqDfMy/fatalis-depths",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/G6tqDfMy/profondita-fatalis"
+      },
+      "3262": {
+        "english": "Vor Cannon",
+        "name": "Cannone Vor",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/klIXAHpp/vor-cannon",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/klIXAHpp/cannone-vor"
+      },
+      "3263": {
+        "english": "Vor Buster",
+        "name": "Distruttore Vor",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/jPIy9fvl/vor-buster",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/jPIy9fvl/distruttore-vor"
+      },
+      "3264": {
+        "english": "Bow of Rack & Ruin",
+        "name": "Arco dolo e ruina",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/56hvbfPV/bow-of-rack-ruin",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/56hvbfPV/arco-dolo-e-ruina"
+      },
+      "3265": {
+        "english": "Bow of Vice & Violence",
+        "name": "Arco vizio e violenza",
+        "sourceEn": "https://mhworld.kiranico.com/en/weapons/Vvhp8fqb/bow-of-vice-violence",
+        "sourceIt": "https://mhworld.kiranico.com/it/weapons/Vvhp8fqb/arco-vizio-e-violenza"
+      }
+    },
+    "armor": {
+      "1556": {
+        "english": "Passionate Headdress α+",
+        "name": "Copricapo passionale α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1557": {
+        "english": "Passionate Body α+",
+        "name": "Corpo passionale α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1558": {
+        "english": "Passionate Arms α+",
+        "name": "Braccia passionali α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1559": {
+        "english": "Passionate Belt α+",
+        "name": "Cintura passionale α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1560": {
+        "english": "Passionate Leggings α+",
+        "name": "Calze passionali α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1561": {
+        "english": "Demonlord Hair α+",
+        "name": "Capelli signore oscuro α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1562": {
+        "english": "Demonlord Cloak α+",
+        "name": "Mantello signore oscuro α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1563": {
+        "english": "Demonlord Blackarm α+",
+        "name": "Braccia signore oscuro α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1564": {
+        "english": "Demonlord Leather Belt α+",
+        "name": "Cintura signore oscuro α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1565": {
+        "english": "Demonlord Boots α+",
+        "name": "Scarpe signore oscuro α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1566": {
+        "english": "Azure Age Hair α+",
+        "name": "Capelli epoca celeste α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1567": {
+        "english": "Azure Age Haori α+",
+        "name": "Haori epoca celeste α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1568": {
+        "english": "Azure Age Sleeve α+",
+        "name": "Guanti epoca celeste α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1569": {
+        "english": "Azure Age Obi α+",
+        "name": "Obi epoca celeste α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1570": {
+        "english": "Azure Age Geta α+",
+        "name": "Geta epoca celeste α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1571": {
+        "english": "Dragonhead α+",
+        "name": "Testa di drago α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1572": {
+        "english": "Dragonhide α+",
+        "name": "Pelle di drago α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1573": {
+        "english": "Dragonclaws α+",
+        "name": "Artigli di drago α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1574": {
+        "english": "Dragonbarbs α+",
+        "name": "Spine di drago α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1575": {
+        "english": "Dragonfeet α+",
+        "name": "Piedi di drago α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1576": {
+        "english": "Dragonhead β+",
+        "name": "Testa di drago β+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1577": {
+        "english": "Dragonhide β+",
+        "name": "Pelle di drago β+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1578": {
+        "english": "Dragonclaws β+",
+        "name": "Artigli di drago β+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1579": {
+        "english": "Dragonbarbs β+",
+        "name": "Spine di drago β+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1580": {
+        "english": "Dragonfeet β+",
+        "name": "Piedi di drago β+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1581": {
+        "english": "Tentacle Cowl  γ+",
+        "name": "Bautta di Namielle γ+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1582": {
+        "english": "Tentacle Cloak  γ+",
+        "name": "Mantello di Namielle γ+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1583": {
+        "english": "Tentacle Gloves  γ+",
+        "name": "Guanti di Namielle γ+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1584": {
+        "english": "Tentacle Coil  γ+",
+        "name": "Spira di Namielle γ+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1585": {
+        "english": "Tentacle Greaves  γ+",
+        "name": "Schinieri di Namielle γ+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1586": {
+        "english": "Rimeguard Helm  γ+",
+        "name": "Elmo di Velkhana γ+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1587": {
+        "english": "Rimeguard Mail γ+",
+        "name": "Cotta di Velkhana γ+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1588": {
+        "english": "Rimeguard Vambraces  γ+",
+        "name": "Parabraccia di Velkhana γ+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1589": {
+        "english": "Rimeguard Coil  γ+",
+        "name": "Spira di Velkhana γ+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1590": {
+        "english": "Rimeguard Greaves  γ+",
+        "name": "Schinieri di Velkhana γ+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1591": {
+        "english": "Artemis Head α+",
+        "name": "Testa di Artemis α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1592": {
+        "english": "Artemis Mail α+",
+        "name": "Cotta di Artemis α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1593": {
+        "english": "Artemis Guards α+",
+        "name": "Parabraccia di Artemis α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1594": {
+        "english": "Artemis Coil α+",
+        "name": "Spira di Artemis α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "1595": {
+        "english": "Artemis Greaves α+",
+        "name": "Schinieri di Artemis α+",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      }
+    },
+    "charms": {
+      "attack-charm-v": {
+        "english": "Attack Charm V",
+        "name": "Amuleto attacco V",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "windproof-charm-v": {
+        "english": "Windproof Charm V",
+        "name": "Amuleto paravento V",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "survival-charm-i": {
+        "english": "Survival Charm I",
+        "name": "Amuleto sopravvivenza I",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "survival-charm-ii": {
+        "english": "Survival Charm II",
+        "name": "Amuleto sopravvivenza II",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "survival-charm-iii": {
+        "english": "Survival Charm III",
+        "name": "Amuleto sopravvivenza III",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "masters-charm-v": {
+        "english": "Master's Charm V",
+        "name": "Amuleto esperto V",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "evasion-charm-v": {
+        "english": "Evasion Charm V",
+        "name": "Amuleto evasione V",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "handicraft-charm-v": {
+        "english": "Handicraft Charm V",
+        "name": "Amuleto artigiano V",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "earplugs-charm-v": {
+        "english": "Earplugs Charm V",
+        "name": "Amuleto udito V",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "exploiter-charm-iii": {
+        "english": "Exploiter Charm III",
+        "name": "Amuleto abuso III",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "grit-charm-v": {
+        "english": "Grit Charm V",
+        "name": "Amuleto grinta V",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "unscathed-charm-iii": {
+        "english": "Unscathed Charm III",
+        "name": "Amuleto illeso III",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "critical-charm-iii": {
+        "english": "Critical Charm III",
+        "name": "Amuleto critico III",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      },
+      "shaver-charm": {
+        "english": "Shaver Charm",
+        "name": "Amuleto graffiante",
+        "sourceEn": "https://mhworld.kiranico.com/en/armorseries",
+        "sourceIt": "https://mhworld.kiranico.com/it/armorseries"
+      }
+    },
+    "decorations": {
+      "guardian-jewel-2": {
+        "english": "Guardian Jewel 2",
+        "name": "Gioiello guardiano 2",
+        "sourceEn": "https://mhworld.kiranico.com/en/decorations",
+        "sourceIt": "https://mhworld.kiranico.com/it/decorations"
+      },
+      "cooling-jewel-2": {
+        "english": "Cooling Jewel 2",
+        "name": "Gioiello anticalore 2",
+        "sourceEn": "https://mhworld.kiranico.com/en/decorations",
+        "sourceIt": "https://mhworld.kiranico.com/it/decorations"
+      },
+      "survival-jewel-1": {
+        "english": "Survival Jewel 1",
+        "name": "Gioiello sopravvivenza 1",
+        "sourceEn": "https://mhworld.kiranico.com/en/items/ev24j/survival-jewel-1",
+        "sourceIt": "https://mhworld.kiranico.com/it/items/ev24j/survival-jewel-1"
+      },
+      "warming-jewel-2": {
+        "english": "Warming Jewel 2",
+        "name": "Gioiello riscaldante 2",
+        "sourceEn": "https://mhworld.kiranico.com/en/items/o1WRL/warming-jewel-2",
+        "sourceIt": "https://mhworld.kiranico.com/it/items/o1WRL/warming-jewel-2"
+      },
+      "diversion-jewel-3": {
+        "english": "Diversion Jewel 3",
+        "name": "Gioiello provocatore 3",
+        "sourceEn": "https://mhworld.kiranico.com/en/items/lz1gV/diversion-jewel-3",
+        "sourceIt": "https://mhworld.kiranico.com/it/items/lz1gV/diversion-jewel-3"
+      },
+      "acrobat-jewel-3": {
+        "english": "Acrobat Jewel 3",
+        "name": "Gioiello atterraggio perfetto 3",
+        "sourceEn": "https://mhworld.kiranico.com/en/items/oO64a/acrobat-jewel-3",
+        "sourceIt": "https://mhworld.kiranico.com/it/items/oO64a/acrobat-jewel-3"
+      },
+      "shaver-jewel-3": {
+        "english": "Shaver Jewel 3",
+        "name": "Gioiello potenziamento rampino 3",
+        "sourceEn": "https://mhworld.kiranico.com/en/items/l0NLA/shaver-jewel-3",
+        "sourceIt": "https://mhworld.kiranico.com/it/items/l0NLA/shaver-jewel-3"
+      }
+    },
+    "skills": {
+      "clutch-claw-boost": {
+        "english": "Clutch Claw Boost",
+        "name": "Potenziamento rampino",
+        "sourceEn": "https://mhworld.kiranico.com/skilltrees/bkBXA/clutch-claw-boost",
+        "sourceIt": "https://mhworld.kiranico.com/it/skilltrees/bkBXA/potenziamento-rampino"
+      },
+      "coldproof": {
+        "english": "Coldproof",
+        "name": "Antifreddo",
+        "sourceEn": "https://mhworld.kiranico.com/en/skilltrees",
+        "sourceIt": "https://mhworld.kiranico.com/it/skilltrees"
+      },
+      "provoker": {
+        "english": "Provoker",
+        "name": "Provocatore",
+        "sourceEn": "https://mhworld.kiranico.com/en/skilltrees",
+        "sourceIt": "https://mhworld.kiranico.com/it/skilltrees"
+      },
+      "safe-landing": {
+        "english": "Safe Landing",
+        "name": "Atterraggio perfetto",
+        "sourceEn": "https://mhworld.kiranico.com/en/skilltrees",
+        "sourceIt": "https://mhworld.kiranico.com/it/skilltrees"
+      }
+    },
+    "setBonuses": {
+      "new-world": {
+        "english": "New World",
+        "name": "Nuovo Mondo",
+        "sourceEn": "https://mhworld.kiranico.com/skilltrees/bRx1L/new-world",
+        "sourceIt": "https://mhworld.kiranico.com/it/skilltrees/bRx1L/nuovo-mondo"
+      },
+      "fatalis-legend": {
+        "english": "Fatalis Legend",
+        "name": "Leggenda del Fatalis",
+        "sourceEn": "https://mhworld.kiranico.com/en/skilltrees/Lz6WL/fatalis-legend",
+        "sourceIt": "https://mhworld.kiranico.com/it/skilltrees/Lz6WL/leggenda-del-fatalis"
+      },
+      "fun-fright-blessing": {
+        "english": "Fun Fright Blessing",
+        "name": "Benedizione brivido brioso",
+        "sourceEn": "https://mhworld.kiranico.com/skilltrees/LllYL/fun-fright-blessing",
+        "sourceIt": "https://mhworld.kiranico.com/it/skilltrees/LllYL/benedizione-brivido-brioso"
+      },
+      "sizzling-blessing": {
+        "english": "Sizzling Blessing",
+        "name": "Benedizione sfrigolante",
+        "sourceEn": "https://mhworld.kiranico.com/skilltrees/bwdom/sizzling-blessing",
+        "sourceIt": "https://mhworld.kiranico.com/it/skilltrees/bwdom/benedizione-sfrigolante"
+      }
+    }
+  },
+  "unresolved": {
+    "weapons": [],
+    "armor": [],
+    "charms": [],
+    "decorations": [],
+    "skills": [
+      "Inheritance",
+      "Transcendance",
+      "Fun Fright's Gift",
+      "Fun Fright's Gratitude",
+      "Sizzling Gift",
+      "Sizzling Gratitude"
+    ],
+    "setBonuses": []
+  },
+  "skillDescriptions": {
+    "clutch-claw-boost": {
+      "englishName": "Clutch Claw Boost",
+      "description": "Gli attacchi con il rampino artiglio feriscono i mostri più facilmente e hanno più probabilità di far cadere munizioni.",
+      "levelEffect": "Attiva gli effetti dell'abilità.",
+      "sourceEn": "https://mhworld.kiranico.com/en/skilltrees/bkBXA/clutch-claw-boost",
+      "sourceIt": "https://mhworld.kiranico.com/it/skilltrees/bkBXA/clutch-claw-boost",
+      "sourceSetThreshold": 1
+    },
+    "coldproof": {
+      "englishName": "Coldproof",
+      "description": "Annulla gli effetti causati dalle basse temperature.",
+      "levelEffect": "Attiva gli effetti dell'abilità.",
+      "sourceEn": "https://mhworld.kiranico.com/en/skilltrees/b3YGL/coldproof",
+      "sourceIt": "https://mhworld.kiranico.com/it/skilltrees/b3YGL/coldproof",
+      "sourceSetThreshold": 1
+    },
+    "provoker": {
+      "englishName": "Provoker",
+      "description": "Incrementa la capacità di attirare l’attenzione quando si attacca un mostro.",
+      "levelEffect": "Attiva gli effetti dell'abilità.",
+      "sourceEn": "https://mhworld.kiranico.com/en/skilltrees/mWx4L/provoker",
+      "sourceIt": "https://mhworld.kiranico.com/it/skilltrees/mWx4L/provoker",
+      "sourceSetThreshold": 1
+    },
+    "safe-landing": {
+      "englishName": "Safe Landing",
+      "description": "Riduce il tempo necessario a recuperare dopo essere stati respinti dall’attacco di un mostro, ad arma estratta.",
+      "levelEffect": "Attiva gli effetti dell'abilità.",
+      "sourceEn": "https://mhworld.kiranico.com/en/skilltrees/bKvoA/safe-landing",
+      "sourceIt": "https://mhworld.kiranico.com/it/skilltrees/bKvoA/safe-landing",
+      "sourceSetThreshold": 1
+    },
+    "inheritance": {
+      "englishName": "Inheritance",
+      "description": "Rimuove il limite di livello delle abilità Maestro.",
+      "levelEffect": "Rimuove il limite di livello delle abilità Maestro.",
+      "sourceEn": "https://mhworld.kiranico.com/en/skilltrees/Lz6WL/fatalis-legend",
+      "sourceIt": "https://mhworld.kiranico.com/it/skilltrees/Lz6WL/fatalis-legend",
+      "sourceSetThreshold": 2
+    },
+    "transcendance": {
+      "englishName": "Transcendance",
+      "description": "Attiva Acutezza/Risparmia munizioni. Salute e resistenza +100 a inizio missione o dopo uno svenimento. (Non cumulabile.)",
+      "levelEffect": "Attiva Acutezza/Risparmia munizioni. Salute e resistenza +100 a inizio missione o dopo uno svenimento. (Non cumulabile.)",
+      "sourceEn": "https://mhworld.kiranico.com/en/skilltrees/Lz6WL/fatalis-legend",
+      "sourceIt": "https://mhworld.kiranico.com/it/skilltrees/Lz6WL/fatalis-legend",
+      "sourceSetThreshold": 4
+    },
+    "fun-frights-gift": {
+      "englishName": "Fun Fright's Gift",
+      "description": "Incrementa la probabilità di ottenere ricompense speciali del festival brivido brioso. (Non ha effetto quando ti unisci a una missione in corso.)",
+      "levelEffect": "Incrementa la probabilità di ottenere ricompense speciali del festival brivido brioso. (Non ha effetto quando ti unisci a una missione in corso.)",
+      "sourceEn": "https://mhworld.kiranico.com/en/skilltrees/LllYL/fun-fright-blessing",
+      "sourceIt": "https://mhworld.kiranico.com/it/skilltrees/LllYL/fun-fright-blessing",
+      "sourceSetThreshold": 3
+    },
+    "fun-frights-gratitude": {
+      "englishName": "Fun Fright's Gratitude",
+      "description": "Incrementa di molto la probabilità di ottenere ricompense speciali del festival brivido brioso. (Non ha effetto quando ti unisci a una missione in corso.)",
+      "levelEffect": "Incrementa di molto la probabilità di ottenere ricompense speciali del festival brivido brioso. (Non ha effetto quando ti unisci a una missione in corso.)",
+      "sourceEn": "https://mhworld.kiranico.com/en/skilltrees/LllYL/fun-fright-blessing",
+      "sourceIt": "https://mhworld.kiranico.com/it/skilltrees/LllYL/fun-fright-blessing",
+      "sourceSetThreshold": 5
+    },
+    "sizzling-gift": {
+      "englishName": "Sizzling Gift",
+      "description": "Incrementa la probabilità di ottenere ricompense speciali del festival spezie sfrigolanti. (Non ha effetto quando ti unisci a una missione in corso.)",
+      "levelEffect": "Incrementa la probabilità di ottenere ricompense speciali del festival spezie sfrigolanti. (Non ha effetto quando ti unisci a una missione in corso.)",
+      "sourceEn": "https://mhworld.kiranico.com/en/skilltrees/bwdom/sizzling-blessing",
+      "sourceIt": "https://mhworld.kiranico.com/it/skilltrees/bwdom/sizzling-blessing",
+      "sourceSetThreshold": 3
+    },
+    "sizzling-gratitude": {
+      "englishName": "Sizzling Gratitude",
+      "description": "Incrementa di molto la probabilità di ottenere ricompense speciali del festival spezie sfrigolanti. (Non ha effetto quando ti unisci a una missione in corso.)",
+      "levelEffect": "Incrementa di molto la probabilità di ottenere ricompense speciali del festival spezie sfrigolanti. (Non ha effetto quando ti unisci a una missione in corso.)",
+      "sourceEn": "https://mhworld.kiranico.com/en/skilltrees/bwdom/sizzling-blessing",
+      "sourceIt": "https://mhworld.kiranico.com/it/skilltrees/bwdom/sizzling-blessing",
+      "sourceSetThreshold": 5
+    }
+  }
+}

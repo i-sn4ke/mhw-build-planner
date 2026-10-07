@@ -1,0 +1,363 @@
+{
+  "weapons": {
+    "3236": {
+      "name": "Lama Fatalis"
+    },
+    "3237": {
+      "name": "Lama nera Fatalis"
+    },
+    "3238": {
+      "name": "Artiglio oscuro"
+    },
+    "3239": {
+      "name": "Artiglio oscuro \"funesto\""
+    },
+    "3240": {
+      "name": "Falce di Fatalis"
+    },
+    "3241": {
+      "name": "Zaggespanon Fatalis"
+    },
+    "3242": {
+      "name": "Spada drago nero"
+    },
+    "3243": {
+      "name": "Spada drago ebano"
+    },
+    "3244": {
+      "name": "Doppie lame Fatalis"
+    },
+    "3245": {
+      "name": "Doppi cieli Fatalis"
+    },
+    "3246": {
+      "name": "Distruttore Fatalis"
+    },
+    "3247": {
+      "name": "Demolitore Fatalis"
+    },
+    "3248": {
+      "name": "Minaccia di Fatalis"
+    },
+    "3249": {
+      "name": "Lamento minaccioso Fatalis"
+    },
+    "3250": {
+      "name": "Lancia drago nero"
+    },
+    "3251": {
+      "name": "Lancia drago ebano"
+    },
+    "3252": {
+      "name": "Lancia-fucile drago nero"
+    },
+    "3253": {
+      "name": "Lancia-fucile drago ebano"
+    },
+    "3254": {
+      "name": "Fine del drago nero"
+    },
+    "3255": {
+      "name": "Fine del drago ebano"
+    },
+    "3256": {
+      "name": "Carica drago nero"
+    },
+    "3257": {
+      "name": "Carica drago ebano"
+    },
+    "3258": {
+      "name": "Falcione Fatalis"
+    },
+    "3259": {
+      "name": "Dyaus drago ebano"
+    },
+    "3260": {
+      "name": "Fossa Fatalis"
+    },
+    "3261": {
+      "name": "Profondità Fatalis"
+    },
+    "3262": {
+      "name": "Cannone Vor"
+    },
+    "3263": {
+      "name": "Distruttore Vor"
+    },
+    "3264": {
+      "name": "Arco dolo e ruina"
+    },
+    "3265": {
+      "name": "Arco vizio e violenza"
+    }
+  },
+  "armor": {
+    "1556": {
+      "name": "Copricapo passionale α+"
+    },
+    "1557": {
+      "name": "Corpo passionale α+"
+    },
+    "1558": {
+      "name": "Braccia passionali α+"
+    },
+    "1559": {
+      "name": "Cintura passionale α+"
+    },
+    "1560": {
+      "name": "Calze passionali α+"
+    },
+    "1561": {
+      "name": "Capelli signore oscuro α+"
+    },
+    "1562": {
+      "name": "Mantello signore oscuro α+"
+    },
+    "1563": {
+      "name": "Braccia signore oscuro α+"
+    },
+    "1564": {
+      "name": "Cintura signore oscuro α+"
+    },
+    "1565": {
+      "name": "Scarpe signore oscuro α+"
+    },
+    "1566": {
+      "name": "Capelli epoca celeste α+"
+    },
+    "1567": {
+      "name": "Haori epoca celeste α+"
+    },
+    "1568": {
+      "name": "Guanti epoca celeste α+"
+    },
+    "1569": {
+      "name": "Obi epoca celeste α+"
+    },
+    "1570": {
+      "name": "Geta epoca celeste α+"
+    },
+    "1571": {
+      "name": "Testa di drago α+"
+    },
+    "1572": {
+      "name": "Pelle di drago α+"
+    },
+    "1573": {
+      "name": "Artigli di drago α+"
+    },
+    "1574": {
+      "name": "Spine di drago α+"
+    },
+    "1575": {
+      "name": "Piedi di drago α+"
+    },
+    "1576": {
+      "name": "Testa di drago β+"
+    },
+    "1577": {
+      "name": "Pelle di drago β+"
+    },
+    "1578": {
+      "name": "Artigli di drago β+"
+    },
+    "1579": {
+      "name": "Spine di drago β+"
+    },
+    "1580": {
+      "name": "Piedi di drago β+"
+    },
+    "1581": {
+      "name": "Bautta di Namielle γ+"
+    },
+    "1582": {
+      "name": "Mantello di Namielle γ+"
+    },
+    "1583": {
+      "name": "Guanti di Namielle γ+"
+    },
+    "1584": {
+      "name": "Spira di Namielle γ+"
+    },
+    "1585": {
+      "name": "Schinieri di Namielle γ+"
+    },
+    "1586": {
+      "name": "Elmo di Velkhana γ+"
+    },
+    "1587": {
+      "name": "Cotta di Velkhana γ+"
+    },
+    "1588": {
+      "name": "Parabraccia di Velkhana γ+"
+    },
+    "1589": {
+      "name": "Spira di Velkhana γ+"
+    },
+    "1590": {
+      "name": "Schinieri di Velkhana γ+"
+    },
+    "1591": {
+      "name": "Testa di Artemis α+"
+    },
+    "1592": {
+      "name": "Cotta di Artemis α+"
+    },
+    "1593": {
+      "name": "Parabraccia di Artemis α+"
+    },
+    "1594": {
+      "name": "Spira di Artemis α+"
+    },
+    "1595": {
+      "name": "Schinieri di Artemis α+"
+    }
+  },
+  "charms": {
+    "attack-charm-v": {
+      "name": "Amuleto attacco V"
+    },
+    "windproof-charm-v": {
+      "name": "Amuleto paravento V"
+    },
+    "survival-charm-i": {
+      "name": "Amuleto sopravvivenza I"
+    },
+    "survival-charm-ii": {
+      "name": "Amuleto sopravvivenza II"
+    },
+    "survival-charm-iii": {
+      "name": "Amuleto sopravvivenza III"
+    },
+    "masters-charm-v": {
+      "name": "Amuleto esperto V"
+    },
+    "evasion-charm-v": {
+      "name": "Amuleto evasione V"
+    },
+    "handicraft-charm-v": {
+      "name": "Amuleto artigiano V"
+    },
+    "earplugs-charm-v": {
+      "name": "Amuleto udito V"
+    },
+    "exploiter-charm-iii": {
+      "name": "Amuleto abuso III"
+    },
+    "grit-charm-v": {
+      "name": "Amuleto grinta V"
+    },
+    "unscathed-charm-iii": {
+      "name": "Amuleto illeso III"
+    },
+    "critical-charm-iii": {
+      "name": "Amuleto critico III"
+    },
+    "shaver-charm": {
+      "name": "Amuleto graffiante"
+    }
+  },
+  "decorations": {
+    "guardian-jewel-2": {
+      "name": "Gioiello guardiano 2"
+    },
+    "cooling-jewel-2": {
+      "name": "Gioiello anticalore 2"
+    },
+    "survival-jewel-1": {
+      "name": "Gioiello sopravvivenza 1"
+    },
+    "warming-jewel-2": {
+      "name": "Gioiello riscaldante 2"
+    },
+    "diversion-jewel-3": {
+      "name": "Gioiello provocatore 3"
+    },
+    "acrobat-jewel-3": {
+      "name": "Gioiello atterraggio perfetto 3"
+    },
+    "shaver-jewel-3": {
+      "name": "Gioiello potenziamento rampino 3"
+    }
+  },
+  "skills": {
+    "clutch-claw-boost": {
+      "name": "Potenziamento rampino",
+      "description": "Gli attacchi con il rampino artiglio feriscono i mostri più facilmente e hanno più probabilità di far cadere munizioni.",
+      "levels": {
+        "1": "Gli attacchi con il rampino artiglio feriscono i mostri più facilmente e hanno più probabilità di far cadere munizioni."
+      }
+    },
+    "coldproof": {
+      "name": "Antifreddo",
+      "description": "Annulla gli effetti causati dalle basse temperature.",
+      "levels": {
+        "1": "Annulla gli effetti causati dalle basse temperature."
+      }
+    },
+    "provoker": {
+      "name": "Provocatore",
+      "description": "Incrementa la capacità di attirare l’attenzione quando si attacca un mostro.",
+      "levels": {
+        "1": "Incrementa la capacità di attirare l’attenzione quando si attacca un mostro."
+      }
+    },
+    "safe-landing": {
+      "name": "Atterraggio perfetto",
+      "description": "Riduce il tempo necessario a recuperare dopo essere stati respinti dall’attacco di un mostro, ad arma estratta.",
+      "levels": {
+        "1": "Riduce il tempo necessario a recuperare dopo essere stati respinti dall’attacco di un mostro, ad arma estratta."
+      }
+    },
+    "inheritance": {
+      "description": "Rimuove il limite di livello delle abilità Maestro.",
+      "levels": {
+        "1": "Rimuove il limite di livello delle abilità Maestro."
+      }
+    },
+    "transcendance": {
+      "description": "Attiva Acutezza/Risparmia munizioni. Salute e resistenza +100 a inizio missione o dopo uno svenimento. (Non cumulabile.)",
+      "levels": {
+        "1": "Attiva Acutezza/Risparmia munizioni. Salute e resistenza +100 a inizio missione o dopo uno svenimento. (Non cumulabile.)"
+      }
+    },
+    "fun-frights-gift": {
+      "description": "Incrementa la probabilità di ottenere ricompense speciali del festival brivido brioso. (Non ha effetto quando ti unisci a una missione in corso.)",
+      "levels": {
+        "1": "Incrementa la probabilità di ottenere ricompense speciali del festival brivido brioso. (Non ha effetto quando ti unisci a una missione in corso.)"
+      }
+    },
+    "fun-frights-gratitude": {
+      "description": "Incrementa di molto la probabilità di ottenere ricompense speciali del festival brivido brioso. (Non ha effetto quando ti unisci a una missione in corso.)",
+      "levels": {
+        "1": "Incrementa di molto la probabilità di ottenere ricompense speciali del festival brivido brioso. (Non ha effetto quando ti unisci a una missione in corso.)"
+      }
+    },
+    "sizzling-gift": {
+      "description": "Incrementa la probabilità di ottenere ricompense speciali del festival spezie sfrigolanti. (Non ha effetto quando ti unisci a una missione in corso.)",
+      "levels": {
+        "1": "Incrementa la probabilità di ottenere ricompense speciali del festival spezie sfrigolanti. (Non ha effetto quando ti unisci a una missione in corso.)"
+      }
+    },
+    "sizzling-gratitude": {
+      "description": "Incrementa di molto la probabilità di ottenere ricompense speciali del festival spezie sfrigolanti. (Non ha effetto quando ti unisci a una missione in corso.)",
+      "levels": {
+        "1": "Incrementa di molto la probabilità di ottenere ricompense speciali del festival spezie sfrigolanti. (Non ha effetto quando ti unisci a una missione in corso.)"
+      }
+    }
+  },
+  "setBonuses": {
+    "new-world": {
+      "name": "Nuovo Mondo"
+    },
+    "fatalis-legend": {
+      "name": "Leggenda del Fatalis"
+    },
+    "fun-fright-blessing": {
+      "name": "Benedizione brivido brioso"
+    },
+    "sizzling-blessing": {
+      "name": "Benedizione sfrigolante"
+    }
+  }
+}

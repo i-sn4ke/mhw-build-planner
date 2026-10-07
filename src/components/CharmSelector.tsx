@@ -1,3 +1,5 @@
+import { getSearchText } from '../i18n/catalog'
+import { useTranslation } from '../i18n/useTranslation'
 import EquipmentSkillList from './EquipmentSkillList'
 import EquipmentOption from './EquipmentOption'
 import { useMemo, useState } from 'react'
@@ -17,6 +19,7 @@ function CharmSelector({
   onSelect,
   onClose,
 }: CharmSelectorProps) {
+  const { t } = useTranslation()
   const [search, setSearch] = useState('')
 
   const skillNames = useMemo(
@@ -24,7 +27,7 @@ function CharmSelector({
       new Map(
         skills.map((skill) => [
           skill.id,
-          skill.name,
+          getSearchText(skill.name),
         ]),
       ),
     [skills],
@@ -42,7 +45,7 @@ function CharmSelector({
           return true
         }
 
-        const matchesName = charm.name
+        const matchesName = getSearchText(charm.name)
           .toLowerCase()
           .includes(normalizedSearch)
 
@@ -68,13 +71,10 @@ function CharmSelector({
       <div className="hunter-dialog flex max-h-[80vh] w-full max-w-2xl flex-col rounded-lg border border-hunter-border bg-hunter-panel">
         <div className="flex items-center justify-between border-b border-hunter-border px-5 py-4">
           <div>
-            <h2 className="text-lg font-semibold text-hunter-text">
-              Select Charm
-            </h2>
+            <h2 className="text-lg font-semibold text-hunter-text">{' '}{t("Select Charm")}{' '}</h2>
 
             <p className="mt-1 text-sm text-hunter-muted">
-              {filteredCharms.length} charm
-              {filteredCharms.length === 1 ? '' : 's'}
+              {t(filteredCharms.length === 1 ? '{0} charm' : '{0} charms', [filteredCharms.length])}
             </p>
           </div>
 
@@ -94,7 +94,7 @@ function CharmSelector({
             onChange={(event) =>
               setSearch(event.target.value)
             }
-            placeholder="Search charms or skills..."
+            placeholder={t("Search charms or skills...")}
             className="w-full rounded-md border border-hunter-border bg-hunter-ink px-3 py-2 text-sm text-hunter-text outline-none placeholder:text-hunter-muted focus:border-hunter-gold"
           />
         </div>
@@ -102,17 +102,13 @@ function CharmSelector({
         <div className="min-h-0 overflow-y-auto p-4">
           {filteredCharms.length === 0 ? (
             <div className="py-10 text-center">
-              <p className="text-sm text-hunter-muted">
-                No charms found.
-              </p>
+              <p className="text-sm text-hunter-muted">{' '}{t("No charms found.")}{' '}</p>
 
               <button
                 type="button"
                 onClick={() => setSearch('')}
                 className="mt-3 text-sm text-hunter-gold transition hover:text-hunter-text"
-              >
-                Clear search
-              </button>
+              >{' '}{t("Clear search")}{' '}</button>
             </div>
           ) : (
             <div className="space-y-2">
@@ -126,11 +122,10 @@ function CharmSelector({
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <div className="font-medium text-hunter-text">
-                        {charm.name}
+                        {t(charm.name)}
                       </div>
 
-                      <div className="mt-1 text-sm text-hunter-muted">
-                        Rarity {charm.rarity}
+                      <div className="mt-1 text-sm text-hunter-muted">{' '}{t("Rarity")}{' '}{charm.rarity}
                       </div>
                     </div>
                   </div>

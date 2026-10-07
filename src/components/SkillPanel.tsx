@@ -1,3 +1,4 @@
+import { useTranslation } from '../i18n/useTranslation'
 import { skills as skillDefinitions } from '../data/skills'
 import type { CalculatedSkills } from '../types/calculatedSkill'
 import SkillTooltip from './SkillTooltip'
@@ -7,6 +8,7 @@ interface SkillPanelProps {
 }
 
 function SkillPanel({ skills }: SkillPanelProps) {
+  const { t } = useTranslation()
   const entries = Object.entries(skills)
 
   const skillDefinitionById = new Map(
@@ -16,15 +18,11 @@ function SkillPanel({ skills }: SkillPanelProps) {
   return (
     <div className="hunter-panel hunter-skills rounded-lg border border-hunter-border bg-hunter-panel p-5">
       <div className="mb-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wider text-hunter-muted">
-          Skills
-        </h2>
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-hunter-muted">{' '}{t("Skills")}{' '}</h2>
       </div>
 
       {entries.length === 0 ? (
-        <p className="text-sm text-hunter-muted">
-          No skills yet.
-        </p>
+        <p className="text-sm text-hunter-muted">{' '}{t("No skills yet.")}{' '}</p>
       ) : (
         <div className="space-y-2">
           {entries.map(([skillId, calculatedSkill]) => {
@@ -53,8 +51,7 @@ function SkillPanel({ skills }: SkillPanelProps) {
                     <SkillTooltip definition={definition} level={calculatedSkill.level} className="text-sm text-hunter-text" />
                   ) : <span className="text-sm text-hunter-text">{skillId}</span>}
 
-                  <span className="shrink-0 text-sm font-semibold text-hunter-gold">
-                    Lv {calculatedSkill.level} /{' '}
+                  <span className="shrink-0 text-sm font-semibold text-hunter-gold">{t("Lv")}{' '}{calculatedSkill.level} /{' '}
                     {calculatedSkill.currentMaxLevel}
                   </span>
                 </div>
@@ -65,16 +62,13 @@ function SkillPanel({ skills }: SkillPanelProps) {
                 </div>
 
                 {secretLocked && (
-                  <div className="mt-1 text-xs text-hunter-muted">
-                    🔒 Secret cap:{' '}
+                  <div className="mt-1 text-xs text-hunter-muted">{' '}{t("🔒 Secret cap:")}{' '}
                     {calculatedSkill.absoluteMaxLevel}
                   </div>
                 )}
 
                 {secretUnlocked && (
-                  <div className="mt-1 text-xs text-hunter-gold">
-                    🔓 Secret unlocked
-                  </div>
+                  <div className="mt-1 text-xs text-hunter-gold">{' '}{t("🔓 Secret unlocked")}{' '}</div>
                 )}
               </div>
             )

@@ -1,3 +1,5 @@
+import { getSearchText } from '../i18n/catalog'
+import { useTranslation } from '../i18n/useTranslation'
 import EquipmentSkillList from './EquipmentSkillList'
 import EquipmentOption from './EquipmentOption'
 import { useMemo, useState } from 'react'
@@ -23,11 +25,12 @@ function DecorationSelector({
   onRemove,
   onClose,
 }: DecorationSelectorProps) {
+  const { t } = useTranslation()
   const [search, setSearch] = useState('')
   const [slotFilter, setSlotFilter] = useState<number | 'all'>('all')
 
   const skillNameById = useMemo(
-    () => new Map(skills.map((skill) => [skill.id, skill.name])),
+    () => new Map(skills.map((skill) => [skill.id, getSearchText(skill.name)])),
     [skills],
   )
 
@@ -42,7 +45,7 @@ function DecorationSelector({
           decoration.slotSize === slotFilter,
       )
       .filter((decoration) =>
-        decoration.name.toLowerCase().includes(normalizedSearch) ||
+        getSearchText(decoration.name).toLowerCase().includes(normalizedSearch) ||
         decoration.skills.some((skill) =>
           (skillNameById.get(skill.skillId) ?? skill.skillId)
             .toLowerCase()
@@ -57,13 +60,9 @@ function DecorationSelector({
       <div className="hunter-dialog w-full max-w-2xl rounded-xl border border-hunter-border bg-hunter-panel shadow-2xl">
         <div className="flex items-center justify-between border-b border-hunter-border px-6 py-4">
           <div>
-            <h2 className="text-lg font-semibold">
-              Select Decoration
-            </h2>
+            <h2 className="text-lg font-semibold">{' '}{t("Select Decoration")}{' '}</h2>
 
-            <p className="mt-1 text-sm text-hunter-muted">
-              Choose a decoration for a size {slotSize} slot
-            </p>
+            <p className="mt-1 text-sm text-hunter-muted">{' '}{t("Choose a decoration for a size")}{' '}{slotSize}{' '}{t("slot")}{' '}</p>
           </div>
 
           <button
@@ -81,7 +80,7 @@ function DecorationSelector({
               type="search"
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder="Search decorations or skills..."
+              placeholder={t("Search decorations or skills...")}
               className="min-w-0 flex-1 rounded-lg border border-hunter-border bg-hunter-inset px-4 py-2 text-sm text-hunter-text outline-none transition placeholder:text-hunter-muted focus:border-hunter-gold"
             />
 
@@ -96,21 +95,19 @@ function DecorationSelector({
               }}
               className="rounded-lg border border-hunter-border bg-hunter-inset px-3 py-2 text-sm text-hunter-text outline-none transition focus:border-hunter-gold"
             >
-              <option value="all">All slots</option>
+              <option value="all">{t("All slots")}</option>
 
               {[1, 2, 3, 4]
                 .filter((size) => size <= slotSize)
                 .map((size) => (
-                  <option key={size} value={size}>
-                    Slot {size}
+                  <option key={size} value={size}>{' '}{t("Slot")}{' '}{size}
                   </option>
                 ))}
             </select>
           </div>
 
           <p className="mt-2 text-xs text-hunter-muted">
-            {filteredDecorations.length} decorations
-          </p>
+            {filteredDecorations.length}{' '}{t("decorations")}{' '}</p>
         </div>
 
         <div className="max-h-[60vh] overflow-y-auto p-4">
@@ -119,15 +116,11 @@ function DecorationSelector({
               type="button"
               onClick={onRemove}
               className="mb-3 w-full rounded-lg border border-hunter-border bg-hunter-inset p-4 text-left text-sm text-hunter-muted transition hover:border-red-400 hover:text-red-400"
-            >
-              Remove decoration
-            </button>
+            >{' '}{t("Remove decoration")}{' '}</button>
           )}
 
           {filteredDecorations.length === 0 ? (
-            <p className="p-4 text-center text-hunter-muted">
-              No decorations match the current filters.
-            </p>
+            <p className="p-4 text-center text-hunter-muted">{' '}{t("No decorations match the current filters.")}{' '}</p>
           ) : (
             <div className="space-y-2">
               {filteredDecorations.map((decoration) => (
@@ -140,11 +133,10 @@ function DecorationSelector({
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="font-medium text-hunter-text">
-                        {decoration.name}
+                        {t(decoration.name)}
                       </p>
 
-                      <p className="mt-1 text-xs text-hunter-muted">
-                        Slot size {decoration.slotSize}
+                      <p className="mt-1 text-xs text-hunter-muted">{' '}{t("Slot size")}{' '}{decoration.slotSize}
                       </p>
                     </div>
 

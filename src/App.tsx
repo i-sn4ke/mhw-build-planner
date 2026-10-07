@@ -1,3 +1,4 @@
+import { useTranslation, useLanguage } from './i18n/useTranslation'
 import type { Decoration } from './types/decoration'
 
 import { useEffect, useRef, useState } from 'react'
@@ -48,6 +49,9 @@ import type {
 } from './types/armor'
 
 function App() {
+  const { t, language } = useTranslation()
+  const setLanguage = useLanguage((state) => state.setLanguage)
+  useEffect(() => { document.documentElement.lang = language }, [language])
   const selectedArmor = useBuildStore(
     (state) => state.selectedArmor,
   )
@@ -257,10 +261,17 @@ const buildStats = calculateBuildStats(
       <header className="hunter-header">
         <img src={hunterLogo} alt="Monster Hunter" className="hunter-logo" />
         <div className="hunter-brand-title">
-          <h1>Build Planner</h1>
-          <p>WORLD + ICEBORNE</p>
+          <h1>{t("Build Planner")}</h1>
+          <p>{t("WORLD + ICEBORNE")}</p>
         </div>
         <div className="hunter-editor-toolbar flex flex-wrap items-center justify-end gap-3">
+            <label className="hunter-language-control text-xs text-hunter-muted">
+              {t('Language')}
+              <select aria-label={t('Language')} value={language} onChange={(event) => setLanguage(event.target.value === 'it' ? 'it' : 'en')} className="ml-2 px-2 py-1">
+                <option value="en">EN</option>
+                <option value="it">IT</option>
+              </select>
+            </label>
             <button
               type="button"
               className="hunter-generate-action"
@@ -281,37 +292,30 @@ const buildStats = calculateBuildStats(
               }}
             >
               <HunterStatIcon name="attack" />
-              <span>Generate Build</span>
+              <span>{t("Generate Build")}</span>
             </button>
             {buildFingerprint && (
-              <p className="mt-2 font-mono text-xs text-hunter-muted">
-                Build ID: {buildFingerprint.slice(0, 12)}
+              <p className="mt-2 font-mono text-xs text-hunter-muted">{' '}{t("Build ID:")}{' '}{buildFingerprint.slice(0, 12)}
               </p>
             )}
             {shareStatus === 'copied' && (
-              <span className="text-sm text-hunter-muted">
-                Link copied!
-              </span>
+              <span className="text-sm text-hunter-muted">{' '}{t("Link copied!")}{' '}</span>
             )}
 
             {shareStatus === 'error' && (
-              <span className="text-sm text-red-400">
-                Could not copy link.
-              </span>
+              <span className="text-sm text-red-400">{' '}{t("Could not copy link.")}{' '}</span>
             )}
 
             <button
               type="button"
               onClick={handleShareBuild}
               className="rounded-md border border-hunter-gold px-4 py-2 text-sm font-semibold text-hunter-gold transition hover:bg-hunter-gold hover:text-hunter-ink"
-            >
-              Share Build
-            </button>
+            >{' '}{t("Share Build")}{' '}</button>
         </div>
       </header>
 
       <main className="hunter-main">
-        <div className="hunter-view-tabs mb-5 flex gap-2" role="tablist" aria-label="Planner views">
+        <div className="hunter-view-tabs mb-5 flex gap-2" role="tablist" aria-label={t("Planner views")}>
           {(['planner', 'simulator'] as const).map((view, index) => (
             <button key={view} id={view + '-tab'} type="button" role="tab" aria-selected={activeView === view} aria-controls={view + '-view'} tabIndex={activeView === view ? 0 : -1}
               onClick={() => setActiveView(view)}
@@ -322,14 +326,14 @@ const buildStats = calculateBuildStats(
                 setActiveView(next)
                 document.getElementById(next + '-tab')?.focus()
               }}>
-              {view === 'planner' ? 'Build Planner' : 'Damage Simulator'}
+              {view === 'planner' ? t("Build Planner") : t("Damage Simulator")}
             </button>
           ))}
         </div>
         <div id="planner-view" role="tabpanel" aria-labelledby="planner-tab" hidden={activeView !== 'planner'}>
 
         <details ref={generatorRef} id="build-generator" onToggle={(event) => setGeneratorOpen(event.currentTarget.open)} className="hunter-generator mb-5 rounded-lg border border-hunter-border bg-hunter-panel">
-          <summary id="generator-title" className="cursor-pointer px-5 py-4 font-semibold">Build Generator <span className="ml-2 text-xs font-normal text-hunter-muted">Choose rank and required skills</span></summary>
+          <summary id="generator-title" className="cursor-pointer px-5 py-4 font-semibold">{t("Build Generator")} <span className="ml-2 text-xs font-normal text-hunter-muted">{t("Choose rank and required skills")}</span></summary>
         <BuildGeneratorPanel
           onWeaponTypeChange={setManualWeaponType}
           weapon={selectedWeapon}
@@ -352,9 +356,7 @@ const buildStats = calculateBuildStats(
           <section aria-labelledby="equipment-title" className="hunter-panel hunter-equipment min-w-0">
 
   <div className="mb-3">
-    <h2 id="equipment-title" className="text-sm font-semibold uppercase tracking-wider text-hunter-muted">
-      Equipment
-    </h2>
+    <h2 id="equipment-title" className="text-sm font-semibold uppercase tracking-wider text-hunter-muted">{' '}{t("Equipment")}{' '}</h2>
   </div>
 
   <WeaponStatsPanel
@@ -502,12 +504,12 @@ const buildStats = calculateBuildStats(
         <div id="simulator-view" role="tabpanel" aria-labelledby="simulator-tab" hidden={activeView !== 'simulator'}>
           <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,40fr)_minmax(0,60fr)]">
             <section className="hunter-panel hunter-simulation min-w-0" aria-labelledby="simulation-build-title">
-              <h2 id="simulation-build-title" className="hunter-panel-heading">Current Build</h2>
-              <p className="mt-3 font-semibold text-hunter-gold">{selectedWeapon?.name ?? 'No weapon selected'}</p>
-              <p className="mt-2 text-sm text-hunter-muted">Uses the equipment and skills from Build Planner. Conditions are shared between both views; simulation selections stay available when switching tabs.</p>
-              <button type="button" className="mt-3 rounded-md border border-hunter-border px-3 py-2 text-sm" onClick={() => setActiveView('planner')}>Edit Build</button>
+              <h2 id="simulation-build-title" className="hunter-panel-heading">{t("Current Build")}</h2>
+              <p className="mt-3 font-semibold text-hunter-gold">{t(selectedWeapon?.name ?? 'No weapon selected')}</p>
+              <p className="mt-2 text-sm text-hunter-muted">{t("Uses the equipment and skills from Build Planner. Conditions are shared between both views; simulation selections stay available when switching tabs.")}</p>
+              <button type="button" className="mt-3 rounded-md border border-hunter-border px-3 py-2 text-sm" onClick={() => setActiveView('planner')}>{t("Edit Build")}</button>
               <SimulationConditions conditions={conditions} setConditions={setConditions} disabled={!selectedWeapon || selectedWeapon.type !== 'long-sword'} automaticTarget />
-              <p className="mt-2 text-xs text-hunter-muted">Weakness Exploit is calculated from the selected monster part. Conditions and simulation choices are local and are not saved in shared links.</p>
+              <p className="mt-2 text-xs text-hunter-muted">{t("Weakness Exploit is calculated from the selected monster part. Conditions and simulation choices are local and are not saved in shared links.")}</p>
             </section>
             <DamageSimulationPanel weapon={selectedWeapon} skills={buildStats.skills} conditions={conditions} />
           </div>

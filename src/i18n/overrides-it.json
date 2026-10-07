@@ -1,0 +1,9 @@
+{
+  "skills": {
+    "sizzling-gift": { "name": "Dono sfrigolante" },
+    "sizzling-gratitude": { "name": "Benedizione sfrigolante" }
+  },
+  "setBonuses": {
+    "sizzling-blessing": { "name": "Benedizione sfrigolante" }
+  }
+}

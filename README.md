@@ -6,6 +6,8 @@ This is a browser-based build planner for **Monster Hunter: World and Iceborne**
 
 **[Try the planner](https://i-sn4ke.github.io/mhw-build-planner/)**
 
+Available in **English and Italian**. Use the EN / IT selector to switch languages; your choice is remembered in this browser. Equipment names and skill descriptions use the Italian translations bundled with MHWorldData. Entries missing a translation stay in English, and searches accept names in either language.
+
 ## Build your own setup
 
 Choose a weapon, five armor pieces, a charm, and decorations. Click an equipment icon to open its selector, then search by equipment name or by the skills it provides. Filters cover weapon type, armor rank, rarity, elements, status effects, and decoration slot size, depending on what you are selecting.
@@ -84,6 +86,8 @@ The main code lives in:
 - `src/data/generated/` — imported game catalogs
 
 Generated JSON files should be updated through the importers in `scripts/import-mhw-data/`, not edited by hand or replaced with mock data. The importers use the local `../MHWorldData/source_data/` directory; you do not need it just to run or build the app.
+
+Italian game text is imported separately with `node scripts/import-mhw-data/import-localization.mjs` into `src/i18n/generated/it.json`, using the existing catalog IDs. Interface translations live in `src/i18n/messages-it.json`. Language changes affect displayed text only; build calculations and shared links use the same catalog IDs.
 
 ## Credits
 

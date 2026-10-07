@@ -241,7 +241,7 @@
   color: #f1e7d2;
   box-shadow: inset 0 1px #e0c78a25;
 }
-.hunter-generator-content button:not([aria-label^="Skill details:"]) {
+.hunter-generator-content button:not([data-skill-tooltip]) {
   border: 1px solid #967447;
   border-radius: 2px;
   background: linear-gradient(110deg, #4b3926b0, #211b15dc), var(--hunter-dark-parchment) center / 420px;
@@ -249,15 +249,15 @@
   box-shadow: inset 0 0 0 2px #15110b, inset 0 3px #dfc69225, 0 2px 3px #0005;
   text-shadow: 0 1px 2px #000;
 }
-.hunter-generator-content button:not([aria-label^="Skill details:"]):hover:not(:disabled) {
+.hunter-generator-content button:not([data-skill-tooltip]):hover:not(:disabled) {
   border-color: #d2af74;
   filter: brightness(1.16);
 }
-.hunter-generator-content button:not([aria-label^="Skill details:"]):focus-visible {
+.hunter-generator-content button:not([data-skill-tooltip]):focus-visible {
   outline: 2px solid #d2af74;
   outline-offset: 3px;
 }
-.hunter-generator-content button:not([aria-label^="Skill details:"]):active:not(:disabled) { filter: brightness(.92); }
+.hunter-generator-content button:not([data-skill-tooltip]):active:not(:disabled) { filter: brightness(.92); }
 
 /* An engraved guild title; the original Monster Hunter logo stays untouched. */
 .hunter-brand-title { position: relative; border-left-color: #967447; }

@@ -1,3 +1,4 @@
+import { useTranslation } from '../i18n/useTranslation'
 import type { ArmorSlot, WeaponType } from '../types/armor'
 
 const icons = import.meta.glob<string>('../assets/hunter/icons/*.svg', {
@@ -16,6 +17,7 @@ const weaponIconNames: Record<WeaponType, string> = {
 }
 
 function EquipmentIcon({ category, rarity, onSelect }: { category: ArmorSlot | WeaponType | 'charm'; rarity?: number; onSelect?: () => void }) {
+  const { t } = useTranslation()
   const name = category in armorIconNames ? armorIconNames[category as ArmorSlot]
     : category === 'charm' ? 'charm' : weaponIconNames[category as WeaponType]
   const source = icons[`../assets/hunter/icons/ic_equipment_${name}_base.svg`]
@@ -24,7 +26,7 @@ function EquipmentIcon({ category, rarity, onSelect }: { category: ArmorSlot | W
   const Tag = onSelect ? 'button' : 'span'
   return <Tag className={`hunter-equipment-icon ${onSelect ? 'hunter-slot-button' : ''} ${rarity === undefined ? 'hunter-icon-empty' : ''} ${rarity !== undefined && rarity >= 10 ? 'hunter-icon-master' : ''}`}
     type={onSelect ? 'button' : undefined} onClick={onSelect}
-    style={{ color: rarityColors[rarity ?? 0] ?? rarityColors[0] }} role={onSelect ? undefined : 'img'} aria-label={onSelect ? `Select ${slotLabel.toLowerCase()}` : `${slotLabel} slot`} tabIndex={0} data-slot-label={slotLabel}
+    style={{ color: rarityColors[rarity ?? 0] ?? rarityColors[0] }} role={onSelect ? undefined : 'img'} aria-label={onSelect ? t("Select {0}", [slotLabel.toLowerCase()]) : t("{0} slot", [slotLabel])} tabIndex={0} data-slot-label={t(slotLabel)}
     dangerouslySetInnerHTML={{ __html: source ?? '' }} />
 }
 

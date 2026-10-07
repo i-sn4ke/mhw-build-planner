@@ -1,3 +1,5 @@
+import { getSearchText } from '../i18n/catalog'
+import { useTranslation } from '../i18n/useTranslation'
 import EquipmentSkillList from './EquipmentSkillList'
 import EquipmentOption from './EquipmentOption'
 import { useMemo, useState } from 'react'
@@ -38,6 +40,7 @@ function WeaponSelector({
   onSelect,
   onClose,
 }: WeaponSelectorProps) {
+  const { t } = useTranslation()
   const [search, setSearch] = useState('')
   const [typeFilter, setTypeFilter] = useState<string>(initialType ?? 'all')
   const [rarityFilter, setRarityFilter] = useState('all')
@@ -62,7 +65,7 @@ function WeaponSelector({
   )
 
   const skillNameById = useMemo(
-    () => new Map(skills.map((skill) => [skill.id, skill.name])),
+    () => new Map(skills.map((skill) => [skill.id, getSearchText(skill.name)])),
     [skills],
   )
 
@@ -73,7 +76,7 @@ function WeaponSelector({
 
     return weapons
       .filter((weapon) => {
-        const matchesSearch = matchesEquipmentSearch(weapon, normalizedSearch, skillNameById)
+        const matchesSearch = matchesEquipmentSearch({ ...weapon, name: getSearchText(weapon.name) }, normalizedSearch, skillNameById)
 
         const matchesType =
           typeFilter === 'all' ||
@@ -120,13 +123,10 @@ function WeaponSelector({
       <div className="hunter-dialog flex max-h-[80vh] w-full max-w-2xl flex-col rounded-lg border border-hunter-border bg-hunter-panel">
         <div className="flex items-center justify-between border-b border-hunter-border px-5 py-4">
           <div>
-            <h2 className="text-lg font-semibold text-hunter-text">
-              Select Weapon
-            </h2>
+            <h2 className="text-lg font-semibold text-hunter-text">{' '}{t("Select Weapon")}{' '}</h2>
 
             <p className="mt-1 text-sm text-hunter-muted">
-              {filteredWeapons.length} weapon
-              {filteredWeapons.length === 1 ? '' : 's'}
+              {t(filteredWeapons.length === 1 ? '{0} weapon' : '{0} weapons', [filteredWeapons.length])}
             </p>
           </div>
 
@@ -146,80 +146,71 @@ function WeaponSelector({
             onChange={(event) =>
               setSearch(event.target.value)
             }
-            placeholder="Search weapons or skills..."
+            placeholder={t("Search weapons or skills...")}
             className="w-full rounded-md border border-hunter-border bg-hunter-ink px-3 py-2 text-sm text-hunter-text outline-none placeholder:text-hunter-muted focus:border-hunter-gold"
           />
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <select
-              aria-label="Weapon type"
+              aria-label={t("Weapon type")}
               value={typeFilter}
               onChange={(event) =>
                 setTypeFilter(event.target.value)
               }
               className="w-full rounded-md border border-hunter-border bg-hunter-ink px-3 py-2 text-sm text-hunter-text outline-none focus:border-hunter-gold"
             >
-              <option value="all">
-                All weapon types
-              </option>
+              <option value="all">{' '}{t("All weapon types")}{' '}</option>
 
               {weaponTypes.map((type) => (
                 <option key={type} value={type}>
-                  {weaponTypeNames[type]}
+                  {t(weaponTypeNames[type])}
                 </option>
               ))}
             </select>
 
             <select
-              aria-label="Weapon rarity"
+              aria-label={t("Weapon rarity")}
               value={rarityFilter}
               onChange={(event) =>
                 setRarityFilter(event.target.value)
               }
               className="w-full rounded-md border border-hunter-border bg-hunter-ink px-3 py-2 text-sm text-hunter-text outline-none focus:border-hunter-gold"
             >
-              <option value="all">
-                All rarities
-              </option>
+              <option value="all">{' '}{t("All rarities")}{' '}</option>
 
               {rarities.map((rarity) => (
                 <option
                   key={rarity}
                   value={rarity}
-                >
-                  Rarity {rarity}
+                >{' '}{t("Rarity")}{' '}{rarity}
                 </option>
               ))}
             </select>
           </div>
 
-          <label className="block text-sm text-hunter-muted">
-            Element / Status
-            <select
-              aria-label="Element / Status"
+          <label className="block text-sm text-hunter-muted">{' '}{t("Element / Status")}{' '}<select
+              aria-label={t("Element / Status")}
               value={elementFilter}
               onChange={(event) => setElementFilter(event.target.value)}
               className="mt-1 w-full rounded-md border border-hunter-border bg-hunter-ink px-3 py-2 text-sm text-hunter-text outline-none focus:border-hunter-gold"
             >
-              <option value="all">Any element / status</option>
-              <optgroup label="Elements">
-                <option value="fire">Fire</option>
-                <option value="water">Water</option>
-                <option value="thunder">Thunder</option>
-                <option value="ice">Ice</option>
-                <option value="dragon">Dragon</option>
+              <option value="all">{t("Any element / status")}</option>
+              <optgroup label={t("Elements")}>
+                <option value="fire">{t("Fire")}</option>
+                <option value="water">{t("Water")}</option>
+                <option value="thunder">{t("Thunder")}</option>
+                <option value="ice">{t("Ice")}</option>
+                <option value="dragon">{t("Dragon")}</option>
               </optgroup>
-              <optgroup label="Status">
-                <option value="poison">Poison</option>
-                <option value="paralysis">Paralysis</option>
-                <option value="sleep">Sleep</option>
-                <option value="blast">Blast</option>
+              <optgroup label={t("Status")}>
+                <option value="poison">{t("Poison")}</option>
+                <option value="paralysis">{t("Paralysis")}</option>
+                <option value="sleep">{t("Sleep")}</option>
+                <option value="blast">{t("Blast")}</option>
               </optgroup>
             </select>
             {elementFilter !== 'all' && (
-              <span className="mt-1 block text-xs text-hunter-muted">
-                Hidden elements and statuses are excluded.
-              </span>
+              <span className="mt-1 block text-xs text-hunter-muted">{' '}{t("Hidden elements and statuses are excluded.")}{' '}</span>
             )}
           </label>
 
@@ -228,26 +219,20 @@ function WeaponSelector({
               type="button"
               onClick={clearFilters}
               className="text-left text-sm text-hunter-gold transition hover:text-hunter-text"
-            >
-              Clear filters
-            </button>
+            >{' '}{t("Clear filters")}{' '}</button>
           )}
         </div>
 
         <div className="min-h-0 overflow-y-auto p-4">
           {filteredWeapons.length === 0 ? (
             <div className="py-10 text-center">
-              <p className="text-sm text-hunter-muted">
-                No weapons found.
-              </p>
+              <p className="text-sm text-hunter-muted">{' '}{t("No weapons found.")}{' '}</p>
 
               <button
                 type="button"
                 onClick={clearFilters}
                 className="mt-3 text-sm text-hunter-gold transition hover:text-hunter-text"
-              >
-                Clear filters
-              </button>
+              >{' '}{t("Clear filters")}{' '}</button>
             </div>
           ) : (
             <div className="space-y-2">
@@ -261,23 +246,21 @@ function WeaponSelector({
                   <div className="flex items-center justify-between gap-4">
                     <div className="min-w-0">
                       <div className="break-words font-medium text-hunter-text">
-                        {weapon.name}
+                        {t(weapon.name)}
                       </div>
 
                       <div className="mt-1 text-sm text-hunter-muted">
-                        {weaponTypeNames[weapon.type]} · Rarity{' '}
+                        {t(weaponTypeNames[weapon.type])} {t("· Rarity")}{' '}{' '}
                         {weapon.rarity}
                       </div>
                     </div>
 
                     <div className="shrink-0 text-right text-sm">
                       <div className="text-hunter-text">
-                        {weapon.attack} Attack
-                      </div>
+                        {weapon.attack}{' '}{t("Attack")}{' '}</div>
 
                       <div className="mt-1 text-hunter-muted">
-                        {weapon.affinity}% Affinity
-                      </div>
+                        {weapon.affinity}{t("% Affinity")}{' '}</div>
                     </div>
                   </div>
 
@@ -288,14 +271,14 @@ function WeaponSelector({
                           key={`${weapon.id}-element-${index}`}
                           className="inline-flex flex-wrap items-center gap-1 rounded bg-hunter-panel px-2 py-1 text-xs text-hunter-text"
                         >
-                          <span>{element.type}</span>
+                          <span>{t(element.type)}</span>
                           <span className="font-semibold text-hunter-gold">{element.damage}</span>
-                          {element.hidden && <span className="text-hunter-muted">Hidden</span>}
+                          {element.hidden && <span className="text-hunter-muted">{t("Hidden")}</span>}
                         </span>
                       ))}
                     </div>
                   ) : (
-                    <p className="mt-3 text-xs text-hunter-muted">Element / Status: None</p>
+                    <p className="mt-3 text-xs text-hunter-muted">{t("Element / Status: None")}</p>
                   )}
 
                   <EquipmentSkillList skills={weapon.skills} />

@@ -1,3 +1,4 @@
+import { useTranslation } from '../i18n/useTranslation'
 import type { Weapon } from '../types/armor'
 
 const huntingHornNotes: Record<string, { name: string; color: string }> = {
@@ -22,18 +23,17 @@ function formatElementType(type: string) {
 }
 
 function WeaponDetails({ weapon }: { weapon: Weapon }) {
+  const { t } = useTranslation()
   return (
     <div className="space-y-4">
       {weapon.type === 'gunlance' && weapon.shelling && (
         <div className="flex items-center justify-between gap-4">
-          <span className="text-sm text-hunter-muted">
-            Shelling
-          </span>
+          <span className="text-sm text-hunter-muted">{' '}{t("Shelling")}{' '}</span>
 
           <span className="text-right font-semibold text-hunter-text">
-            {formatElementType(weapon.shelling)}
+            {t(formatElementType(weapon.shelling))}
             {weapon.shellingLevel !== undefined && (
-              <> · Lv {weapon.shellingLevel}</>
+              <> {t("· Lv")} {weapon.shellingLevel}</>
             )}
           </span>
         </div>
@@ -42,12 +42,10 @@ function WeaponDetails({ weapon }: { weapon: Weapon }) {
       {(weapon.type === 'switch-axe' ||
         weapon.type === 'charge-blade') && weapon.phial && (
         <div className="flex items-center justify-between gap-4">
-          <span className="text-sm text-hunter-muted">
-            Phial
-          </span>
+          <span className="text-sm text-hunter-muted">{' '}{t("Phial")}{' '}</span>
 
           <span className="text-right font-semibold text-hunter-text">
-            {formatElementType(weapon.phial)}
+            {t(formatElementType(weapon.phial))}
             {weapon.phialPower !== undefined && (
               <> ({weapon.phialPower})</>
             )}
@@ -57,23 +55,19 @@ function WeaponDetails({ weapon }: { weapon: Weapon }) {
 
       {weapon.type === 'insect-glaive' && weapon.kinsectBonus && (
         <div className="flex items-center justify-between gap-4">
-          <span className="text-sm text-hunter-muted">
-            Kinsect Bonus
-          </span>
+          <span className="text-sm text-hunter-muted">{' '}{t("Kinsect Bonus")}{' '}</span>
 
           <span className="text-right font-semibold text-hunter-text">
-            {formatElementType(
+            {t(formatElementType(
               weapon.kinsectBonus.replace(/_/g, ' / '),
-            )}
+            ))}
           </span>
         </div>
       )}
 
       {weapon.type === 'hunting-horn' && weapon.notes && (
         <div>
-          <p className="mb-2 text-sm text-hunter-muted">
-            Notes
-          </p>
+          <p className="mb-2 text-sm text-hunter-muted">{' '}{t("Notes")}{' '}</p>
 
           <div className="flex flex-wrap gap-2">
             {Array.from(weapon.notes).map((code, index) => {
@@ -91,7 +85,7 @@ function WeaponDetails({ weapon }: { weapon: Weapon }) {
                       style={{ backgroundColor: note.color }}
                     />
                   )}
-                  {note?.name ?? code}
+                  {t(note?.name ?? code)}
                 </span>
               )
             })}
@@ -101,9 +95,7 @@ function WeaponDetails({ weapon }: { weapon: Weapon }) {
 
       {weapon.elements.length > 0 && (
         <div>
-          <p className="mb-2 text-sm text-hunter-muted">
-            Element / Status
-          </p>
+          <p className="mb-2 text-sm text-hunter-muted">{' '}{t("Element / Status")}{' '}</p>
 
           <div className="space-y-1">
             {weapon.elements.map((element, index) => (
@@ -112,11 +104,9 @@ function WeaponDetails({ weapon }: { weapon: Weapon }) {
                 className="flex items-center justify-between rounded bg-hunter-inset px-3 py-2"
               >
                 <span className="text-sm text-hunter-text">
-                  {formatElementType(element.type)}
+                  {t(formatElementType(element.type))}
                   {element.hidden && (
-                    <span className="ml-2 text-xs text-hunter-muted">
-                      Hidden
-                    </span>
+                    <span className="ml-2 text-xs text-hunter-muted">{t("Hidden")}</span>
                   )}
                 </span>
 

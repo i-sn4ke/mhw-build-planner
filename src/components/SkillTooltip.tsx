@@ -1,3 +1,4 @@
+import { useTranslation } from '../i18n/useTranslation'
 import { useEffect, useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import type { SkillDefinition } from '../types/skillDefinition'
@@ -10,6 +11,7 @@ interface SkillTooltipProps {
 }
 
 function SkillTooltip({ definition, level, className = '' }: SkillTooltipProps) {
+  const { t } = useTranslation()
   const id = useId()
   const [open, setOpen] = useState(false)
   const containerRef = useRef<HTMLSpanElement>(null)
@@ -59,7 +61,8 @@ function SkillTooltip({ definition, level, className = '' }: SkillTooltipProps) 
     <span ref={containerRef} className="relative inline-block min-w-0" onMouseEnter={show} onMouseLeave={() => setOpen(false)}>
       <button
         type="button"
-        aria-label={`Skill details: ${definition.name}`}
+        data-skill-tooltip="true"
+        aria-label={t("Skill details: {0}", [definition.name])}
         aria-describedby={open ? id : undefined}
         onFocus={show}
         onBlur={() => setOpen(false)}
@@ -67,18 +70,18 @@ function SkillTooltip({ definition, level, className = '' }: SkillTooltipProps) 
         onKeyDown={(event) => { if (event.key === 'Escape') setOpen(false) }}
         className={`rounded text-left underline decoration-dotted underline-offset-4 outline-none hover:text-hunter-gold focus-visible:ring-1 focus-visible:ring-hunter-gold ${className}`}
       >
-        <span>{definition.name}</span>
+        <span>{t(definition.name)}</span>
       </button>
       {open && createPortal(
         <span ref={tooltipRef} id={id} role="tooltip" style={position} className="hunter-skill-tooltip fixed z-[70] block w-80 max-w-[calc(100vw-2rem)] max-h-[70vh] overflow-y-auto rounded-md border border-hunter-trim bg-hunter-ink p-3 text-left text-xs font-normal leading-relaxed text-hunter-text shadow-xl">
-          <span className="block font-semibold text-hunter-gold">{definition.name}</span>
-          <span className="mt-1 block">{definition.description || 'No description available.'}</span>
-          <span className="mt-2 block">Lv {level}: {effect ?? 'No level effect description available.'}</span>
+          <span className="block font-semibold text-hunter-gold">{t(definition.name)}</span>
+          <span className="mt-1 block">{t(definition.description || 'No description available.')}</span>
+          <span className="mt-2 block">{t("Lv")} {level}: {t(effect ?? 'No level effect description available.')}</span>
           <span className="mt-2 block text-hunter-muted">
             {supportedOffensiveSkills.has(definition.id)
-              ? 'Included in attack / affinity simulation when its conditions are met.'
-              : capSkill ? 'Skill cap unlocks are included in the build calculation.'
-                : 'This skill is not included in the current attack / affinity simulation.'}
+              ? t("Included in attack / affinity simulation when its conditions are met.")
+              : capSkill ? t("Skill cap unlocks are included in the build calculation.")
+                : t("This skill is not included in the current attack / affinity simulation.")}
           </span>
         </span>, document.body,
       )}

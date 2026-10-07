@@ -1,3 +1,4 @@
+import { useTranslation } from '../i18n/useTranslation'
 import type { ActiveSetBonus } from '../engine/setBonuses'
 import type { SkillDefinition } from '../types/skillDefinition'
 
@@ -10,6 +11,7 @@ function SetBonusPanel({
   setBonuses,
   skills,
 }: SetBonusPanelProps) {
+  const { t } = useTranslation()
   const getSkillName = (skillId: string) => {
     return (
       skills.find((skill) => skill.id === skillId)?.name ??
@@ -19,26 +21,21 @@ function SetBonusPanel({
 
   return (
     <div className="hunter-panel hunter-set-bonuses rounded-lg border border-hunter-border bg-hunter-panel p-5">
-      <h2 className="text-sm font-semibold uppercase tracking-wider text-hunter-muted">
-        Set Bonuses
-      </h2>
+      <h2 className="text-sm font-semibold uppercase tracking-wider text-hunter-muted">{' '}{t("Set Bonuses")}{' '}</h2>
 
       {setBonuses.length === 0 ? (
-        <p className="mt-3 text-sm text-hunter-muted">
-          No active set bonuses.
-        </p>
+        <p className="mt-3 text-sm text-hunter-muted">{' '}{t("No active set bonuses.")}{' '}</p>
       ) : (
         <div className="mt-4 space-y-4">
           {setBonuses.map((setBonus) => (
             <div key={setBonus.id}>
               <div className="flex items-center justify-between">
                 <span className="font-medium text-hunter-text">
-                  {setBonus.name}
+                  {t(setBonus.name)}
                 </span>
 
                 <span className="text-sm text-hunter-muted">
-                  {setBonus.pieces} pieces
-                </span>
+                  {t(setBonus.pieces === 1 ? '{0} piece' : '{0} pieces', [setBonus.pieces])}</span>
               </div>
 
               <div className="mt-3 space-y-2">
@@ -68,8 +65,7 @@ function SetBonusPanel({
                             : 'text-hunter-muted'
                         }
                       >
-                        {threshold.pieces} pieces
-                      </span>
+                        {t(threshold.pieces === 1 ? '{0} piece' : '{0} pieces', [threshold.pieces])}</span>
 
                       <span
                         className={
@@ -78,7 +74,7 @@ function SetBonusPanel({
                             : 'text-hunter-muted'
                         }
                       >
-                        {getSkillName(threshold.skillId)}
+                        {t(getSkillName(threshold.skillId))}
                       </span>
                     </div>
                   )
