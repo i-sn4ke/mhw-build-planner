@@ -515,6 +515,17 @@ const buildStats = calculateBuildStats(
           </div>
         </div>
       </main>
+      <footer className="mt-5 text-center text-xs leading-relaxed text-[#493626]">
+        {t('Unofficial fan project. Monster Hunter belongs to Capcom.')} ·{' '}
+        <a
+          href="https://github.com/gatheringhallstudios/MHWorldData"
+          target="_blank"
+          rel="noreferrer"
+          className="underline underline-offset-2 hover:text-[#24180f]"
+        >
+          MHWorldData
+        </a>
+      </footer>
       </div>
 
       {selectorSlot && (
