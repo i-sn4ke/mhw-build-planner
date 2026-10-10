@@ -262,8 +262,8 @@
 /* An engraved guild title; the original Monster Hunter logo stays untouched. */
 .hunter-brand-title { position: relative; border-left-color: #967447; }
 .hunter-brand-title h1 {
-  font-family: 'Guild Carved Display', 'Cinzel', Georgia, serif;
-  font-weight: 400;
+  font-family: 'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  font-weight: 700;
   font-synthesis: none;
   text-transform: uppercase;
   letter-spacing: .035em;

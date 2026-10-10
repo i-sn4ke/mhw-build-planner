@@ -1,4 +1,11 @@
 @font-face {
+  font-family: 'Cinzel Decorative';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('./assets/fonts/cinzel-decorative-bold.ttf') format('truetype');
+}
+@font-face {
   font-family: 'Guild Carved Display';
   font-style: normal;
   font-weight: 400;
