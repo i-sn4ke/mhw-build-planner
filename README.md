@@ -20,6 +20,8 @@ Pick an armor rank and the minimum skill levels you want. The generator looks fo
 
 Already have a few pieces in mind? Mark them with **Keep for generated builds** and the generator will fill the remaining armor slots. Fixed pieces must match the selected rank.
 
+Enable **Exclude Fatalis armor** to generate builds without any Fatalis armor pieces. If a Fatalis piece is fixed, remove its **Keep for generated builds** check or turn off the filter before generating.
+
 Generated builds meet your skill requirements without relying on a weapon's skills, slots, or set bonuses. Applying a result keeps your equipped weapon, so you can change weapons later without losing the skills supplied by the generated setup. The weapon type selector in the generator only presets the manual weapon filter.
 
 A few things to keep in mind:

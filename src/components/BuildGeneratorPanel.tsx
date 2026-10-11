@@ -10,6 +10,7 @@ import { charms } from '../data/charms'
 import { decorations } from '../data/decorations'
 import { weapons } from '../data/weapons'
 import { calculateArmorStats } from '../engine/buildCalculator'
+import { isFatalisArmor } from '../engine/equipmentFilters'
 import SkillTooltip from './SkillTooltip'
 
 interface BuildGeneratorPanelProps {
@@ -43,6 +44,7 @@ function BuildGeneratorPanel({ weapon, selectedArmor, fixedArmorSlots, onApply, 
   const { t } = useTranslation()
   const [weaponType, setWeaponType] = useState<WeaponType>(weapon?.type ?? 'great-sword')
   const [rank, setRank] = useState<ArmorPiece['rank']>('master')
+  const [excludeFatalis, setExcludeFatalis] = useState(false)
   const [requirements, setRequirements] = useState<SkillRequirement[]>([])
   const [newSkillQuery, setNewSkillQuery] = useState('')
   const [storedRunning, setRunning] = useState(false)
@@ -61,8 +63,9 @@ function BuildGeneratorPanel({ weapon, selectedArmor, fixedArmorSlots, onApply, 
     return piece && fixedArmorSlots.has(slot) ? [{ slot, piece }] : []
   })
   const rankMismatches = fixedPieces.filter(({ piece }) => piece.rank !== rank)
+  const excludedFixedPieces = excludeFatalis ? fixedPieces.filter(({ piece }) => isFatalisArmor(piece)) : []
   const fixedArmorConfiguration = armorSlots.map((slot) => `${slot}:${fixedArmor[slot] ?? ''}`).join('|')
-  const requestConfiguration = `${rank}:${fixedArmorConfiguration}`
+  const requestConfiguration = `${rank}:${excludeFatalis}:${fixedArmorConfiguration}`
 
   useEffect(() => () => {
     workerRef.current?.terminate()
@@ -95,7 +98,7 @@ function BuildGeneratorPanel({ weapon, selectedArmor, fixedArmorSlots, onApply, 
     clearResult()
   }
   const generate = () => {
-    if (!requirements.length || running || rankMismatches.length) return
+    if (!requirements.length || running || rankMismatches.length || excludedFixedPieces.length) return
     clearResult()
     setSearchConfiguration(requestConfiguration)
     setRunning(true)
@@ -113,7 +116,7 @@ function BuildGeneratorPanel({ weapon, selectedArmor, fixedArmorSlots, onApply, 
         setError('Could not generate builds. Please try again.')
         cancel()
       }
-      worker.postMessage({ rank, skills: requirements, fixedArmor })
+      worker.postMessage({ rank, skills: requirements, fixedArmor, excludeFatalis })
     } catch {
       setError('Could not start build generation. Please try again.')
       cancel()
@@ -142,11 +145,19 @@ function BuildGeneratorPanel({ weapon, selectedArmor, fixedArmorSlots, onApply, 
           </select>
         </label>
       </div>
+      <label className="mt-3 flex items-center gap-2 text-sm text-hunter-text">
+        <input type="checkbox" checked={excludeFatalis} disabled={running} className="accent-hunter-gold" onChange={(event) => {
+          setExcludeFatalis(event.target.checked)
+          clearResult()
+        }} />
+        {t("Exclude Fatalis armor")}
+      </label>
       <p className="mt-2 text-xs text-hunter-muted">{' '}{t("Armor uses this rank. Weapon type only presets the manual weapon selector; weapon skills, slots and set bonuses are excluded. Charms and decorations use the full catalog, with unlimited decoration copies.")}{' '}</p>
       <p className="mt-1 text-xs text-hunter-muted">{' '}{t("Select armor in Equipment and check “Keep for generated builds” to hold those pieces fixed.")}{' '}</p>
       {!!fixedPieces.length && <p className="mt-1 text-xs text-hunter-gold">{' '}{t("Fixed armor:")}{' '}{fixedPieces.map(({ slot, piece }) => `${t(armorSlotNames[slot])} — ${t(piece.name)}`).join(' · ')}
       </p>}
       {!!rankMismatches.length && <p className="mt-2 text-sm text-red-300" role="alert">{t("Fixed armor must match {0}. Change the rank or uncheck the mismatched piece to generate builds.", [t("{0} rank", [rank])])}</p>}
+      {!!excludedFixedPieces.length && <p className="mt-2 text-sm text-red-300" role="alert">{t("A Fatalis armor piece is fixed. Uncheck “Keep for generated builds” for that piece or turn off “Exclude Fatalis armor”.")}</p>}
 
       <div className="mt-5">
         <h3 className="text-sm font-semibold">{t("2. Add required skills")}</h3>
@@ -196,7 +207,7 @@ function BuildGeneratorPanel({ weapon, selectedArmor, fixedArmorSlots, onApply, 
         </div>
       </div>
       <div className="mt-4 flex flex-wrap items-center gap-3">
-        <button type="button" disabled={!requirements.length || running || rankMismatches.length > 0} onClick={generate} className="rounded-md border border-hunter-gold px-4 py-2 text-sm font-semibold text-hunter-gold hover:bg-hunter-gold hover:text-hunter-ink disabled:cursor-not-allowed disabled:opacity-40">
+        <button type="button" disabled={!requirements.length || running || rankMismatches.length > 0 || excludedFixedPieces.length > 0} onClick={generate} className="rounded-md border border-hunter-gold px-4 py-2 text-sm font-semibold text-hunter-gold hover:bg-hunter-gold hover:text-hunter-ink disabled:cursor-not-allowed disabled:opacity-40">
           {running ? t("Generating...") : t("3. Generate Builds")}
         </button>
         {running && <button type="button" onClick={cancel} className={controlClass}>{t("Cancel")}</button>}

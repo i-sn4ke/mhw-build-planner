@@ -12,6 +12,7 @@ export interface BuildGeneratorRequest {
   rank: ArmorPiece['rank']
   skills: SkillRequirement[]
   fixedArmor?: Partial<Record<ArmorSlot, string>>
+  excludeFatalis?: boolean
 }
 
 export interface FixedWeaponBuildGeneratorRequest {
@@ -19,6 +20,7 @@ export interface FixedWeaponBuildGeneratorRequest {
   rank: ArmorPiece['rank']
   skills: SkillRequirement[]
   fixedArmor?: Partial<Record<ArmorSlot, string>>
+  excludeFatalis?: boolean
 }
 
 export interface GeneratedBuild {

@@ -18,6 +18,54 @@ function database(extra = {}) {
 }
 const request = (skills = [skill('attack', 1)], rank = 'master') => ({ weaponId: 'weapon', rank, skills })
 
+test('compares incidental jewel skills using the active Secret cap', () => {
+  const data = database({
+    armors: slots.map((slot) => armor(slot, slot === 'head'
+      ? { skills: [skill('extra', 3)], slots: [{ size: 4 }] } : {})),
+    skills: [definition('attack', 7), definition('extra', 5, { secret: 2 }), definition('other', 3)],
+    decorations: [
+      decoration('a-overcap', 4, [skill('attack', 1), skill('extra', 1)]),
+      decoration('b-useful', 4, [skill('attack', 1), skill('other', 1)]),
+    ],
+  })
+  const result = generateBuilds(request(), data)
+  assert.equal(result.builds.length, 1)
+  assert.equal(result.builds[0].build.decorations[0].decorationId, 'b-useful')
+  verify(result, request(), data)
+})
+
+test('accepts extra Secret levels unlocked by later armor pieces', () => {
+  const data = database({
+    armors: slots.map((slot) => armor(slot, {
+      skills: slot === 'head' ? [skill('attack', 1), skill('extra', 6)] : [],
+      ...(slot === 'waist' || slot === 'legs' ? { setBonusId: 'extra-set' } : {}),
+    })),
+    skills: [definition('attack', 7), definition('extra', 7, { secret: 2 }),
+      definition('extra-secret', 1, { unlocksSkillId: 'extra' })],
+    setBonuses: [{ id: 'extra-set', name: 'Extra set', thresholds: [{ pieces: 2, skillId: 'extra-secret' }] }],
+  })
+  const result = generateBuilds(request(), data)
+  assert.equal(result.builds.length, 1)
+  assert.equal(result.builds[0].skills.extra.level, 6)
+  assert.equal(result.builds[0].skills.extra.currentMaxLevel, 7)
+  verify(result, request(), data)
+})
+
+test('retains unavoidable extra overfill imposed by fixed armor', () => {
+  const data = database({
+    armors: slots.map((slot) => armor(slot, {
+      skills: slot === 'head' ? [skill('attack', 1), skill('extra', 3)]
+        : slot === 'chest' ? [skill('extra', 3)] : [],
+    })),
+    skills: [definition('attack', 7), definition('extra', 3)],
+  })
+  const input = { ...request(), fixedArmor: { head: 'head', chest: 'chest' } }
+  const result = generateBuilds(input, data)
+  assert.equal(result.builds.length, 1)
+  assert.equal(result.builds[0].skills.extra.level, 3)
+  verify(result, input, data)
+})
+
 function verify(result, input, data) {
   assert.ok(result.builds.length <= 3)
   for (const candidate of result.builds) {
@@ -68,6 +116,40 @@ test('rejects fixed armor from another slot or rank', () => {
 
   assert.throws(() => generateBuilds({ ...request(), fixedArmor: { head: 'chest' } }, data), /does not match its selected slot/)
   assert.throws(() => generateBuilds({ ...request(), fixedArmor: { head: 'high-head' } }, data), /must match the selected armor rank/)
+})
+
+test('Fatalis armor is available by default and can be excluded in every generation mode', () => {
+  const fatalisHead = armor('head', { id: 'fatalis-head', name: 'Test dragon armor', setBonusId: 'fatalis-legend', skills: [skill('attack', 1)] })
+  const data = database({ armors: [...slots.map((slot) => armor(slot)), fatalisHead] })
+  assert.equal(generateArmorBuilds({ rank: 'master', skills: [skill('attack', 1)] }, data).builds[0].build.armor.head, fatalisHead.id)
+  const armorRequest = { rank: 'master', skills: [skill('attack', 1)], excludeFatalis: true }
+  for (const result of [
+    generateArmorBuilds(armorRequest, data),
+    generateBuilds({ ...armorRequest, weaponId: 'weapon' }, data),
+    generateBuildsForWeaponType({ ...armorRequest, weaponType: 'long-sword' }, data),
+  ]) {
+    assert.equal(result.builds.length, 0)
+    assert.equal(result.status, 'exhausted')
+  }
+})
+
+test('excluding Fatalis rejects fixed Fatalis armor instead of silently ignoring either constraint', () => {
+  const fatalisHead = armor('head', { id: 'fatalis-head', setBonusId: 'fatalis-legend', skills: [skill('attack', 1)] })
+  const data = database({ armors: [fatalisHead, ...slots.filter((slot) => slot !== 'head').map((slot) => armor(slot))] })
+  const input = { rank: 'master', skills: [skill('attack', 1)], fixedArmor: { head: fatalisHead.id }, excludeFatalis: true }
+  assert.throws(() => generateArmorBuilds(input, data), /fixed Fatalis armor/)
+  assert.throws(() => generateBuilds({ ...input, weaponId: 'weapon' }, data), /fixed Fatalis armor/)
+  assert.throws(() => generateBuildsForWeaponType({ ...input, weaponType: 'long-sword' }, data), /fixed Fatalis armor/)
+})
+
+test('excluding Fatalis does not borrow Inheritance from its set bonus', () => {
+  const data = secretDatabase('inheritance')
+  data.setBonuses[0].id = 'fatalis-legend'
+  data.armors.push(...slots.map((slot) => armor(slot, { id: `fatalis-${slot}`, setBonusId: 'fatalis-legend' })))
+  data.armors.slice(0, 5).forEach((piece) => { delete piece.setBonusId })
+  const result = generateArmorBuilds({ rank: 'master', skills: [skill('attack', 7)], excludeFatalis: true }, data)
+  assert.equal(result.builds.length, 0)
+  assert.equal(result.status, 'exhausted')
 })
 
 test('fills mixed slots with unlimited copies and combined-skill decorations', () => {
@@ -158,6 +240,106 @@ test('returns at most three distinct builds, including equivalent armor alternat
   assert.equal(new Set(result.builds.map((entry) => JSON.stringify(entry.build))).size, 3)
   assert.equal(new Set(result.builds.map(({ build }) => slots.map((slot) => `${slot}:${slot}`).join('|'))).size, 1)
   verify(result, request(), data)
+})
+
+test('ranks builds that avoid duplicate requested skill levels ahead of overfilled builds', () => {
+  const data = database({
+    skills: [definition('health', 3)],
+    armors: slots.flatMap((slot) => slot === 'head'
+      ? [armor(slot, { id: 'head-health-3', skills: [skill('health', 3)] }), armor(slot, { id: 'head-health-1', skills: [skill('health', 1)] })]
+      : [armor(slot, { id: `${slot}-health-1`, skills: [skill('health', 1)] }), armor(slot, { id: slot })]),
+  })
+  const result = generateBuilds(request([skill('health', 3)]), data)
+  assert.ok(result.builds.length)
+  const first = deserializeBuild(result.builds[0].build, data)
+  const supplied = Object.values(first.selectedArmor).reduce((total, piece) =>
+    total + piece.skills.filter((entry) => entry.skillId === 'health').reduce((sum, entry) => sum + entry.level, 0), 0)
+  assert.equal(supplied, 3)
+})
+
+test('armor generation keeps the most efficient variant of the same armor layout', () => {
+  const data = database({
+    skills: [definition('health', 3)],
+    armors: slots.flatMap((slot) => [
+      armor(slot, { id: `${slot}-health`, name: `Family ${slot} α+`, skills: [skill('health', 3)] }),
+      armor(slot, { id: `${slot}-empty`, name: `Family ${slot} β+` }),
+    ]),
+  })
+  const input = { rank: 'master', skills: [skill('health', 3)] }
+  const result = generateArmorBuilds(input, data)
+  assert.equal(result.builds.length, 1)
+  const build = deserializeBuild(result.builds[0].build, data)
+  assert.equal(Object.values(build.selectedArmor).flatMap((piece) => piece.skills)
+    .reduce((sum, entry) => sum + entry.level, 0), 3)
+})
+
+test('real catalog: defensive skills stay exact with and without Fatalis armor', () => {
+  const data = catalog()
+  const input = { rank: 'master', skills: [
+    skill('blast-resistance', 3), skill('health-boost', 3),
+    skill('evade-extender', 3), skill('evade-window', 5),
+  ] }
+  const fixedHeadId = data.armors.find((piece) => piece.name === 'Uragaan Helm β+').id
+  for (const excludeFatalis of [false, true]) {
+    for (const fixedArmor of [undefined, { head: fixedHeadId }]) {
+      const result = generateArmorBuilds({ ...input, excludeFatalis, fixedArmor }, data)
+      assert.equal(result.builds.length, 3, result.status)
+      for (const candidate of result.builds) {
+        const build = deserializeBuild(candidate.build, data)
+        if (excludeFatalis) assert.ok(Object.values(build.selectedArmor).every((piece) => piece.setBonusId !== 'fatalis-legend'))
+        if (fixedArmor) assert.equal(build.selectedArmor.head.id, fixedHeadId)
+        const sources = [
+          ...Object.values(build.selectedArmor).map((piece) => piece.skills),
+          build.selectedCharm?.skills ?? [], ...build.decorations.map((entry) => entry.decoration.skills),
+        ]
+        for (const requirement of input.skills) {
+          const rawLevel = sources.flat().filter((entry) => entry.skillId === requirement.skillId)
+            .reduce((sum, entry) => sum + entry.level, 0)
+          assert.equal(rawLevel, requirement.level, `${requirement.skillId}: ${JSON.stringify(candidate.build.armor)}`)
+          assert.equal(candidate.skills[requirement.skillId].level, requirement.level)
+        }
+      }
+    }
+  }
+})
+
+test('keeps unavoidable overfill from fixed armor while avoiding additional duplicates', () => {
+  const data = database({
+    skills: [definition('health', 3)],
+    armors: slots.flatMap((slot) => [
+      armor(slot, { id: `${slot}-health`, skills: [skill('health', 3)] }), armor(slot),
+    ]),
+  })
+  const result = generateArmorBuilds({
+    rank: 'master', skills: [skill('health', 3)], fixedArmor: { head: 'head-health', chest: 'chest-health' },
+  }, data)
+  assert.ok(result.builds.length)
+  for (const candidate of result.builds) {
+    const build = deserializeBuild(candidate.build, data)
+    assert.equal(build.selectedArmor.head.id, 'head-health')
+    assert.equal(build.selectedArmor.chest.id, 'chest-health')
+    assert.equal(Object.values(build.selectedArmor).flatMap((piece) => piece.skills)
+      .reduce((sum, entry) => sum + entry.level, 0), 6)
+    assert.equal(candidate.skills.health.level, 3)
+  }
+})
+
+test('prefers exact decoration levels over jewels that repeat an already satisfied skill', () => {
+  const data = database({
+    skills: [definition('health', 3), definition('evasion', 5)],
+    armors: slots.map((slot) => armor(slot, {
+      skills: slot === 'head' ? [skill('health', 3)] : [],
+      slots: slot === 'head' ? [{ size: 4 }] : [],
+    })),
+    decorations: [
+      decoration('a-combined', 4, [skill('health', 1), skill('evasion', 1)]),
+      decoration('b-double', 2, [skill('evasion', 2)]),
+      decoration('c-single', 2, [skill('evasion', 1)]),
+    ],
+  })
+  const result = generateArmorBuilds({ rank: 'master', skills: [skill('health', 3), skill('evasion', 1)] }, data)
+  assert.equal(result.builds.length, 1)
+  assert.deepEqual(result.builds[0].build.decorations.map((entry) => entry.decorationId), ['c-single'])
 })
 test('does not return the same armor pieces in the same slots more than once', () => {
   const data = database({

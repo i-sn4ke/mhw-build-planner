@@ -1,4 +1,9 @@
 import type { ArmorSkill } from '../types/skill'
+import type { ArmorPiece } from '../types/armor'
+
+export function isFatalisArmor(armor: ArmorPiece): boolean {
+  return armor.setBonusId === 'fatalis-legend'
+}
 
 interface SearchableEquipment {
   name: string

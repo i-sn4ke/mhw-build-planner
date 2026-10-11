@@ -9,6 +9,7 @@ import type { BuildGeneratorRequest, BuildGeneratorResult, FixedWeaponBuildGener
 import { calculateBuildStats } from './buildCalculator'
 import { calculateSetBonuses, getActiveSetBonusSkills } from './setBonuses'
 import { serializeBuild } from './buildSerializer'
+import { isFatalisArmor } from './equipmentFilters'
 
 export interface GeneratorDatabase {
   armors: ArmorPiece[]
@@ -30,6 +31,13 @@ interface SearchSlot {
   location: DecorationLocation
 }
 
+interface RankedBuild {
+  layout: string[]
+  combination: string
+  build: BuildGeneratorResult['builds'][number]
+  excess: number
+}
+
 const armorSlots: ArmorSlot[] = ['head', 'chest', 'arms', 'waist', 'legs']
 const maxLayoutCandidates = 48
 
@@ -37,6 +45,7 @@ function validateFixedArmor(
   requested: Partial<Record<ArmorSlot, string>> | undefined,
   rank: ArmorPiece['rank'],
   database: GeneratorDatabase,
+  excludeFatalis = false,
 ): Partial<Record<ArmorSlot, string>> {
   const fixedArmor: Partial<Record<ArmorSlot, string>> = {}
   for (const [slotValue, id] of Object.entries(requested ?? {})) {
@@ -50,6 +59,9 @@ function validateFixedArmor(
     }
     if (piece.rank !== rank) {
       throw new Error('A fixed armor piece must match the selected armor rank.')
+    }
+    if (excludeFatalis && isFatalisArmor(piece)) {
+      throw new Error('A fixed Fatalis armor piece conflicts with excluding Fatalis armor.')
     }
     fixedArmor[slot] = piece.id
   }
@@ -67,16 +79,17 @@ export function generateBuilds(
   const maxTimeMs = limits.maxTimeMs ?? 10_000
   let visitedNodes = 0
   let limited = false
-  const layoutBuilds: { layout: string[]; build: BuildGeneratorResult['builds'][number] }[] = []
-  const fallbackBuilds: BuildGeneratorResult['builds'] = []
-  const seenArmorLayouts = new Set<string>()
-  const seenArmorCombinations = new Set<string>()
+  let bestExcess = Infinity
+  const layoutBuilds: RankedBuild[] = []
+  const fallbackBuilds: RankedBuild[] = []
+  const armorLayoutIndexes = new Map<string, number>()
+  const combinationExcess = new Map<string, number>()
   const weapon = request.weaponId === null ? null : database.weapons.find((entry) => entry.id === request.weaponId)
   const definitions = new Map(database.skills.map((entry) => [entry.id, entry]))
   if ((request.weaponId !== null && !weapon) || !['low', 'high', 'master'].includes(request.rank) || !request.skills.length) {
     throw new Error('Choose a weapon, armor rank and at least one required skill.')
   }
-  const fixedArmor = validateFixedArmor(request.fixedArmor, request.rank, database)
+  const fixedArmor = validateFixedArmor(request.fixedArmor, request.rank, database, request.excludeFatalis)
   const required = new Map<string, number>()
   for (const entry of request.skills) {
     const definition = definitions.get(entry.skillId)
@@ -118,6 +131,25 @@ export function generateBuilds(
     )
   }
   const signature = (values: number[]) => values.map((value, index) => Math.min(value, caps[index])).join(',')
+  const excessLevels = (values: number[]) => values.reduce((total, value, index) =>
+    total + (required.has(ids[index]) ? Math.max(0, value - caps[index]) : 0), 0)
+  const addRawSkills = (totals: Record<string, number>, skills: ArmorSkill[]) => {
+    const next = { ...totals }
+    for (const entry of skills) next[entry.skillId] = (next[entry.skillId] ?? 0) + entry.level
+    return next
+  }
+  const extraExcess = (totals: Record<string, number>, effectiveCaps = false) =>
+    Object.entries(totals).reduce((total, [id, level]) => {
+      if (required.has(id)) return total
+      const definition = definitions.get(id)
+      if (!definition) return total
+      let cap = definition.maxLevel
+      if (effectiveCaps && definition.secret && !(totals.inheritance > 0) &&
+        !((totals[secretIds.get(id) ?? ''] ?? 0) > 0)) cap -= definition.secret
+      return total + Math.max(0, level - cap)
+    }, 0)
+  const skillSignature = (skills: ArmorSkill[]) => skills
+    .map((entry) => `${entry.skillId}:${entry.level}`).sort().join(',')
   const visit = () => {
     if (limited || layoutBuilds.length >= maxLayoutCandidates) return false
     visitedNodes++
@@ -128,17 +160,24 @@ export function generateBuilds(
     return true
   }
   const finish = (): BuildGeneratorResult => {
-    const selected = layoutBuilds.length ? [layoutBuilds[0]] : []
-    const remaining = layoutBuilds.slice(1)
+    layoutBuilds.sort((a, b) => a.excess - b.excess)
+    const candidates = [...layoutBuilds, ...(limits.distinctArmorLayouts ? [] : fallbackBuilds)]
+      .filter((entry) => entry.excess === combinationExcess.get(entry.combination))
+      .sort((a, b) => a.excess - b.excess)
+    const selected = candidates.length ? [candidates[0]] : []
+    const remaining = candidates.slice(1)
     const distance = (a: string[], b: string[]) =>
       a.reduce((total, family, index) => total + Number(family !== b[index]), 0)
 
     while (selected.length < 3 && remaining.length) {
       let bestIndex = 0
       let bestDistance = -1
+      let candidateExcess = Infinity
       for (let index = 0; index < remaining.length; index++) {
         const minDistance = Math.min(...selected.map((entry) => distance(entry.layout, remaining[index].layout)))
-        if (minDistance > bestDistance) {
+        // A different set layout must not outweigh avoiding redundant points.
+        if (remaining[index].excess < candidateExcess || (remaining[index].excess === candidateExcess && minDistance > bestDistance)) {
+          candidateExcess = remaining[index].excess
           bestDistance = minDistance
           bestIndex = index
         }
@@ -148,7 +187,6 @@ export function generateBuilds(
 
     const builds = [
       ...selected.map((entry) => entry.build),
-      ...(limits.distinctArmorLayouts ? [] : fallbackBuilds.slice(0, 3 - selected.length)),
     ]
 
     return {
@@ -160,27 +198,70 @@ export function generateBuilds(
     }
   }
 
-  // Identical relevant skill vectors need only the smallest decoration slot.
+  // Extra skills matter too: jewels with identical requested gains can have
+  // different waste when their other skills are already at the cap.
   const decorationByVector = new Map<string, { decoration: Decoration; values: number[] }>()
   for (const decoration of database.decorations) {
     const values = vector(decoration.skills)
     if (!values.some((value) => value > 0)) continue
-    const key = signature(values)
+    const key = skillSignature(decoration.skills)
     const previous = decorationByVector.get(key)
     if (!previous || decoration.slotSize < previous.decoration.slotSize) {
       decorationByVector.set(key, { decoration, values })
     }
   }
-  const decorations = [...decorationByVector.values()]
+  const decorationGroups = new Map<string, { decoration: Decoration; values: number[] }[]>()
+  for (const entry of decorationByVector.values()) {
+    const key = entry.values.join(',')
+    const group = decorationGroups.get(key) ?? []
+    group.push(entry)
+    decorationGroups.set(key, group)
+  }
+  const decorations = [...decorationGroups.values()].flatMap((group) => {
+    const options = group.map((entry) => ({ ...entry, extraSkills: addRawSkills({},
+      entry.decoration.skills.filter((skill) => !indexes.has(skill.skillId))) }))
+    // With the same requested gains, a smaller jewel with fewer extra points
+    // cannot waste more. Keep alternatives whose extra skills differ.
+    const extraPoints = (entry: typeof options[number]) => Object.values(entry.extraSkills).reduce((sum, value) => sum + value, 0)
+    return options.filter((entry) => !options.some((other) => other !== entry &&
+      other.decoration.slotSize <= entry.decoration.slotSize &&
+      Object.entries(other.extraSkills).every(([id, level]) => (entry.extraSkills[id] ?? 0) >= level) &&
+      Object.entries(entry.extraSkills).every(([id, level]) =>
+        !(id === 'inheritance' || definitions.get(id)?.unlocksSkillId) || other.extraSkills[id] === level,
+      ) && (other.decoration.slotSize < entry.decoration.slotSize || extraPoints(other) < extraPoints(entry) ||
+        other.decoration.id.localeCompare(entry.decoration.id) < 0),
+    ))
+  })
   const maxDecoration = Array.from({ length: 5 }, (_, size) => ids.map((_, index) =>
     Math.max(0, ...decorations.filter((entry) => entry.decoration.slotSize <= size).map((entry) => entry.values[index])),
   ))
   const relevantSets = database.setBonuses.filter((set) => set.thresholds.some((threshold) => indexes.has(threshold.skillId)))
-  const relevantSetIds = new Set(relevantSets.map((set) => set.id))
+  const relevantSetsById = new Map(relevantSets.map((set) => [set.id, set]))
   const score = (values: number[]) => values.reduce((sum, value, index) => sum + Math.min(value, caps[index]) / caps[index], 0)
-  const equipmentScore = (armor: ArmorPiece) => score(vector(armor.skills)) +
-    armor.slots.reduce((sum, slot) => sum + score(maxDecoration[slot.size]) * 0.2, 0) +
-    (armor.setBonusId && relevantSetIds.has(armor.setBonusId) ? 1 : 0)
+  const armorVectors = new Map<ArmorPiece, number[]>()
+  const armorVector = (armor: ArmorPiece) => {
+    let values = armorVectors.get(armor)
+    if (!values) {
+      values = vector(armor.skills)
+      armorVectors.set(armor, values)
+    }
+    return values
+  }
+  const gain = (values: number[], added: number[]) => added.reduce((sum, value, index) =>
+    sum + Math.min(value, Math.max(0, caps[index] - values[index])) / caps[index], 0)
+  const equipmentScore = (armor: ArmorPiece, values = empty(), setCounts = new Map<string, number>(), rawSkills: Record<string, number> = {}) => {
+    const nextValues = add(values, armorVector(armor))
+    const set = armor.setBonusId ? relevantSetsById.get(armor.setBonusId) : undefined
+    const usefulSet = set?.thresholds.some((threshold) => {
+      const index = indexes.get(threshold.skillId)
+      return index !== undefined && values[index] < caps[index] &&
+        (setCounts.get(set.id) ?? 0) < threshold.pieces
+    })
+    return gain(values, armorVector(armor)) - (excessLevels(nextValues) - excessLevels(values)) -
+      (extraExcess(addRawSkills(rawSkills, armor.skills)) - extraExcess(rawSkills)) +
+      armor.slots.reduce((sum, slot) => sum + gain(nextValues, maxDecoration[slot.size]) * 0.2 + slot.size * 0.01, 0) +
+      (usefulSet ? 1 : 0)
+  }
   // Keep three representatives per equivalent constraint state, enough for three alternatives.
   function representatives<T>(entries: T[], key: (entry: T) => string): T[] {
     const counts = new Map<string, number>()
@@ -193,15 +274,17 @@ export function generateBuilds(
   }
   const groups = armorSlots.map((slot) => representatives(
     database.armors.filter((armor) => armor.rank === request.rank && armor.slot === slot &&
+      (!request.excludeFatalis || !isFatalisArmor(armor)) &&
       (!fixedArmor[slot] || armor.id === fixedArmor[slot]),
     )
       .sort((a, b) => equipmentScore(b) - equipmentScore(a) || a.id.localeCompare(b.id)),
-    (armor) => `${signature(vector(armor.skills))}|${armor.slots.map((slot) => slot.size).sort().join(',')}|${armor.setBonusId ?? armor.name.replace(/\s+[αβ](?:\+)?$/u, '')}`,
+    (armor) => `${skillSignature(armor.skills)}|${armor.slots.map((slot) => slot.size).sort().join(',')}|${armor.setBonusId ?? armor.name.replace(/\s+[αβ](?:\+)?$/u, '')}`,
   ))
   if (groups.some((group) => !group.length)) return finish()
   const charms: (Charm | null)[] = representatives(
-    [...database.charms].sort((a, b) => score(vector(b.skills)) - score(vector(a.skills)) || a.id.localeCompare(b.id)),
-    (charm) => signature(vector(charm.skills)),
+    [...database.charms].sort((a, b) => score(vector(b.skills)) - score(vector(a.skills)) ||
+      excessLevels(vector(a.skills)) - excessLevels(vector(b.skills)) || a.id.localeCompare(b.id)),
+    (charm) => skillSignature(charm.skills),
   )
   charms.push(null)
   const charmMax = ids.map((_, index) => Math.max(0, ...charms.map((charm) => vector(charm?.skills ?? [])[index])))
@@ -233,11 +316,14 @@ export function generateBuilds(
   if (!possible(0, add(weaponValues, charmMax), weaponSlots, initialSetCounts)) return finish()
 
   const failedDecorationStates = new Set<string>()
-  function fillDecorations(values: number[], slots: SearchSlot[], index = 0): EquippedDecoration[] | null {
+  function fillDecorations(values: number[], slots: SearchSlot[], rawSkills: Record<string, number>, index = 0): EquippedDecoration[] | null {
     if (!visit()) return null
-    if (meets(values)) return []
+    if (excessLevels(values) + extraExcess(rawSkills) > bestExcess) return null
+    if (meets(values)) return excessLevels(values) + extraExcess(rawSkills, true) <= bestExcess ? [] : null
     if (index === slots.length) return null
-    const key = `${signature(values)}|${slots.slice(index).map((slot) => slot.size).join(',')}`
+    const extraSignature = Object.entries(rawSkills).filter(([id]) => !required.has(id))
+      .map(([id, level]) => `${id}:${level}`).sort().join(',')
+    const key = `${signature(values)}|${excessLevels(values)}|${extraSignature}|${slots.slice(index).map((slot) => slot.size).join(',')}`
     if (failedDecorationStates.has(key)) return null
     let upper = [...values]
     for (const slot of slots.slice(index)) upper = add(upper, maxDecoration[slot.size])
@@ -246,21 +332,26 @@ export function generateBuilds(
     const candidates = decorations.filter((entry) => entry.decoration.slotSize <= slot.size &&
       entry.values.some((gain, i) => gain > 0 && values[i] < caps[i]),
     ).sort((a, b) => {
-      const gain = (entry: typeof a) => entry.values.reduce((sum, value, i) => sum + Math.min(value, Math.max(0, caps[i] - values[i])) / caps[i], 0)
-      return gain(b) - gain(a) || a.decoration.id.localeCompare(b.decoration.id)
+      const waste = (entry: typeof a) => excessLevels(add(values, entry.values)) +
+        extraExcess(addRawSkills(rawSkills, entry.decoration.skills), true)
+      return waste(a) - waste(b) ||
+        gain(values, b.values) - gain(values, a.values) || a.decoration.id.localeCompare(b.decoration.id)
     })
     for (const candidate of candidates) {
-      const rest = fillDecorations(add(values, candidate.values), slots, index + 1)
+      const rest = fillDecorations(add(values, candidate.values), slots, addRawSkills(rawSkills, candidate.decoration.skills), index + 1)
       if (rest) return [{ decoration: candidate.decoration, location: slot.location }, ...rest]
       if (limited) return null
     }
-    const withoutDecoration = fillDecorations(values, slots, index + 1)
+    const withoutDecoration = fillDecorations(values, slots, rawSkills, index + 1)
     if (withoutDecoration) return withoutDecoration
     if (!limited && failedDecorationStates.size < 50_000) failedDecorationStates.add(key)
     return null
   }
 
-  function searchArmor(depth: number, values: number[], slotCounts: number[], setCounts: Map<string, number>, pieces: ArmorPiece[], charm: Charm | null) {
+  function searchArmor(depth: number, values: number[], slotCounts: number[], setCounts: Map<string, number>, pieces: ArmorPiece[], charm: Charm | null, rawSkills: Record<string, number>) {
+    // Use absolute caps for this bound: a later Secret unlock can still make
+    // extra skill levels useful, but points above the absolute cap stay wasted.
+    if (excessLevels(values) + extraExcess(rawSkills) > bestExcess) return
     if (!visit() || !possible(depth, values, slotCounts, setCounts)) return
     const layoutsBeforeBranch = layoutBuilds.length
     if (depth === 5) {
@@ -269,7 +360,8 @@ export function generateBuilds(
         ...(weapon?.slots ?? []).map((slot, slotIndex) => ({ size: slot.size, location: { type: 'weapon' as const, slotIndex } })),
         ...pieces.flatMap((armor) => armor.slots.map((slot, slotIndex) => ({ size: slot.size, location: { type: 'armor' as const, slot: armor.slot, slotIndex } }))),
       ].sort((a, b) => a.size - b.size)
-      const equipped = fillDecorations(add(values, vector(bonusSkills)), slots)
+      const rawWithBonuses = addRawSkills(rawSkills, bonusSkills)
+      const equipped = fillDecorations(add(values, vector(bonusSkills)), slots, rawWithBonuses)
       if (!equipped) return
       const stats = calculateBuildStats(pieces, weapon ?? null, [
         weapon?.skills ?? [], ...pieces.map((armor) => armor.skills), charm?.skills ?? [],
@@ -281,8 +373,6 @@ export function generateBuilds(
       const armorCombination = armorSlots
         .map((slot) => pieces.find((piece) => piece.slot === slot)!.id)
         .join('|')
-      if (seenArmorCombinations.has(armorCombination)) return
-      seenArmorCombinations.add(armorCombination)
       const armorLayout = armorSlots.map((slot) => {
         const armor = pieces.find((piece) => piece.slot === slot)!
         const family = armor.setBonusId ?? armor.name.replace(/\s+[αβ](?:\+)?$/u, '')
@@ -292,29 +382,58 @@ export function generateBuilds(
         selectedArmor: Object.fromEntries(pieces.map((armor) => [armor.slot, armor])),
         selectedWeapon: weapon ?? null, selectedCharm: charm, decorations: equipped,
       }), skills: stats.skills }
+      const finalValues = equipped.reduce((totals, entry) => add(totals, vector(entry.decoration.skills)),
+        add(values, vector(bonusSkills)))
+      const finalRawSkills = equipped.reduce((totals, entry) => addRawSkills(totals, entry.decoration.skills), rawWithBonuses)
+      const excess = excessLevels(finalValues) + extraExcess(finalRawSkills, true)
+      if (excess > bestExcess) return
+      if (excess < bestExcess) {
+        bestExcess = excess
+        layoutBuilds.length = 0
+        fallbackBuilds.length = 0
+        armorLayoutIndexes.clear()
+        combinationExcess.clear()
+      }
+      if ((combinationExcess.get(armorCombination) ?? Infinity) <= excess) return
+      combinationExcess.set(armorCombination, excess)
+      const ranked: RankedBuild = { layout: armorLayout, combination: armorCombination, build: candidate, excess }
       const layoutKey = armorLayout.join('|')
-      if (seenArmorLayouts.has(layoutKey)) {
-        if (fallbackBuilds.length < 3) fallbackBuilds.push(candidate)
+      const layoutIndex = armorLayoutIndexes.get(layoutKey)
+      if (layoutIndex !== undefined) {
+        const previous = layoutBuilds[layoutIndex]
+        if (excess < previous.excess) {
+          layoutBuilds[layoutIndex] = ranked
+          fallbackBuilds.push(previous)
+        } else {
+          fallbackBuilds.push(ranked)
+        }
+        fallbackBuilds.sort((a, b) => a.excess - b.excess)
+        if (fallbackBuilds.length > maxLayoutCandidates) fallbackBuilds.pop()
         return
       }
-      seenArmorLayouts.add(layoutKey)
-      layoutBuilds.push({ layout: armorLayout, build: candidate })
+      armorLayoutIndexes.set(layoutKey, layoutBuilds.length)
+      layoutBuilds.push(ranked)
       return
     }
-    for (const armor of groups[depth]) {
+    // Re-evaluate pieces against the points already supplied by the charm and
+    // earlier armor. Fulfilled requirements no longer give a piece any merit.
+    const candidates = groups[depth].map((armor) => ({ armor, score: equipmentScore(armor, values, setCounts, rawSkills) }))
+      .sort((a, b) => b.score - a.score || a.armor.id.localeCompare(b.armor.id))
+    for (const { armor } of candidates) {
       const nextSlots = [...slotCounts]
       for (const slot of armor.slots) nextSlots[slot.size]++
       const nextSets = new Map(setCounts)
       if (armor.setBonusId) nextSets.set(armor.setBonusId, (nextSets.get(armor.setBonusId) ?? 0) + 1)
-      searchArmor(depth + 1, add(values, vector(armor.skills)), nextSlots, nextSets, [...pieces, armor], charm)
+      searchArmor(depth + 1, add(values, armorVector(armor)), nextSlots, nextSets, [...pieces, armor], charm, addRawSkills(rawSkills, armor.skills))
       if (limited || layoutBuilds.length >= maxLayoutCandidates) return
       // Reserve candidate space for earlier slots instead of filling the pool
       // with leg swaps under the first four armor pieces.
-      if (limits.distinctArmorLayouts && layoutBuilds.length - layoutsBeforeBranch >= Math.max(3, Math.floor(maxLayoutCandidates / 2 ** depth))) return
+      if (layoutBuilds.length - layoutsBeforeBranch >= Math.max(1, Math.floor(maxLayoutCandidates / 3 ** depth))) return
     }
   }
   for (const charm of charms) {
-    searchArmor(0, add(weaponValues, vector(charm?.skills ?? [])), weaponSlots, initialSetCounts, [], charm)
+    searchArmor(0, add(weaponValues, vector(charm?.skills ?? [])), weaponSlots, initialSetCounts, [], charm,
+      addRawSkills(addRawSkills({}, weapon?.skills ?? []), charm?.skills ?? []))
     if (limited || layoutBuilds.length >= maxLayoutCandidates) break
   }
   return finish()
@@ -347,7 +466,7 @@ export function generateBuildsForWeaponType(
   if (!ranks.includes(request.rank) || !types.includes(request.weaponType) || !request.skills.length) {
     throw new Error('Choose a weapon type, armor rank and at least one required skill.')
   }
-  const fixedArmor = validateFixedArmor(request.fixedArmor, request.rank, database)
+  const fixedArmor = validateFixedArmor(request.fixedArmor, request.rank, database, request.excludeFatalis)
 
   const [minRarity, maxRarity] = rarityByRank[request.rank]
   const candidates = database.weapons.filter((weapon) =>
@@ -382,7 +501,7 @@ export function generateBuildsForWeaponType(
 
     attemptedWeapons.add(weapon.id)
     const result = generateBuilds(
-      { weaponId: weapon.id, rank: request.rank, skills: request.skills, fixedArmor },
+      { weaponId: weapon.id, rank: request.rank, skills: request.skills, fixedArmor, excludeFatalis: request.excludeFatalis },
       database,
       { maxNodes: remainingNodes, maxTimeMs: remainingTime },
     )
