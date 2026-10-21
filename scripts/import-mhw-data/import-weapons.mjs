@@ -271,6 +271,21 @@ const weapons = baseWeapons.map((weapon) => {
   }
 })
 
+// Keep supplemental event/update weapons when regenerating the CSV catalog.
+const supplemental = JSON.parse(fs.readFileSync(path.join(__dirname, 'sources/kiranico-weapons.json'), 'utf8'))
+for (const { weapon } of supplemental.weapons) {
+  if (weapons.some((existing) => existing.id === weapon.id
+    || (existing.type === weapon.type && existing.name === weapon.name && existing.rarity === weapon.rarity))) {
+    throw new Error(`Duplicate supplemental weapon: ${weapon.name}`)
+  }
+  weapons.push(weapon)
+}
+for (const weapon of weapons) {
+  if (weapon.previousWeaponId && !weapons.some((previous) => previous.id === weapon.previousWeaponId)) {
+    throw new Error(`Missing previous weapon: ${weapon.name}`)
+  }
+}
+
 fs.mkdirSync(path.dirname(outputPath), {
   recursive: true,
 })

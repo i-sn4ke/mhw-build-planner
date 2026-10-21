@@ -72217,5 +72217,555 @@
       }
     ],
     "skills": []
+  },
+  {
+    "id": "kiranico-EAHYCM0",
+    "name": "Xeno Maliq+",
+    "type": "great-sword",
+    "rarity": 12,
+    "attack": 1344,
+    "affinity": 20,
+    "elements": [
+      {
+        "type": "Dragon",
+        "damage": 330,
+        "hidden": false
+      }
+    ],
+    "slots": [
+      {
+        "size": 4
+      },
+      {
+        "size": 4
+      }
+    ],
+    "skills": [],
+    "previousWeaponId": "86"
+  },
+  {
+    "id": "kiranico-q8HvWUwg",
+    "name": "Wyvern Impact \"Silver\"",
+    "type": "great-sword",
+    "rarity": 12,
+    "attack": 1296,
+    "affinity": -15,
+    "elements": [
+      {
+        "type": "Fire",
+        "damage": 690,
+        "hidden": true
+      }
+    ],
+    "slots": [
+      {
+        "size": 1
+      },
+      {
+        "size": 1
+      }
+    ],
+    "skills": [],
+    "previousWeaponId": "1189"
+  },
+  {
+    "id": "kiranico-OPikCrX",
+    "name": "Xeno Mabura+",
+    "type": "sword-and-shield",
+    "rarity": 12,
+    "attack": 392,
+    "affinity": 15,
+    "elements": [
+      {
+        "type": "Dragon",
+        "damage": 330,
+        "hidden": false
+      }
+    ],
+    "slots": [
+      {
+        "size": 4
+      },
+      {
+        "size": 4
+      }
+    ],
+    "skills": [],
+    "previousWeaponId": "261"
+  },
+  {
+    "id": "kiranico-akFBC9Z",
+    "name": "Xeno Raqs+",
+    "type": "dual-blades",
+    "rarity": 12,
+    "attack": 392,
+    "affinity": 15,
+    "elements": [
+      {
+        "type": "Dragon",
+        "damage": 240,
+        "hidden": false
+      }
+    ],
+    "slots": [
+      {
+        "size": 4
+      },
+      {
+        "size": 4
+      }
+    ],
+    "skills": [],
+    "previousWeaponId": "344"
+  },
+  {
+    "id": "kiranico-yJFoYt5D",
+    "name": "Strong Ale",
+    "type": "dual-blades",
+    "rarity": 10,
+    "attack": 392,
+    "affinity": -15,
+    "elements": [
+      {
+        "type": "Paralysis",
+        "damage": 120,
+        "hidden": false
+      },
+      {
+        "type": "Sleep",
+        "damage": 60,
+        "hidden": false
+      }
+    ],
+    "slots": [
+      {
+        "size": 4
+      },
+      {
+        "size": 4
+      }
+    ],
+    "skills": []
+  },
+  {
+    "id": "kiranico-ZxFg7t2P",
+    "name": "Master Ale",
+    "type": "dual-blades",
+    "rarity": 11,
+    "attack": 420,
+    "affinity": -15,
+    "elements": [
+      {
+        "type": "Paralysis",
+        "damage": 150,
+        "hidden": false
+      },
+      {
+        "type": "Sleep",
+        "damage": 90,
+        "hidden": false
+      }
+    ],
+    "slots": [
+      {
+        "size": 4
+      },
+      {
+        "size": 4
+      }
+    ],
+    "skills": [],
+    "previousWeaponId": "kiranico-yJFoYt5D"
+  },
+  {
+    "id": "kiranico-ovu4CXL",
+    "name": "Xeno Cypher+",
+    "type": "long-sword",
+    "rarity": 12,
+    "attack": 924,
+    "affinity": 15,
+    "elements": [
+      {
+        "type": "Dragon",
+        "damage": 270,
+        "hidden": false
+      }
+    ],
+    "slots": [
+      {
+        "size": 4
+      },
+      {
+        "size": 4
+      }
+    ],
+    "skills": [],
+    "previousWeaponId": "166"
+  },
+  {
+    "id": "kiranico-wWuONfbb",
+    "name": "Azure Star \"Dragon Dance\"+",
+    "type": "long-sword",
+    "rarity": 12,
+    "attack": 891,
+    "affinity": 30,
+    "elements": [
+      {
+        "type": "Water",
+        "damage": 240,
+        "hidden": false
+      }
+    ],
+    "slots": [
+      {
+        "size": 4
+      },
+      {
+        "size": 4
+      }
+    ],
+    "skills": [],
+    "previousWeaponId": "1187"
+  },
+  {
+    "id": "kiranico-OlCkCrN",
+    "name": "Xeno Maph'agarna+",
+    "type": "hammer",
+    "rarity": 12,
+    "attack": 1456,
+    "affinity": 15,
+    "elements": [
+      {
+        "type": "Dragon",
+        "damage": 270,
+        "hidden": false
+      }
+    ],
+    "slots": [
+      {
+        "size": 4
+      },
+      {
+        "size": 4
+      }
+    ],
+    "skills": [],
+    "previousWeaponId": "426"
+  },
+  {
+    "id": "kiranico-OofkCaK",
+    "name": "Xeno Manasheena+",
+    "type": "hunting-horn",
+    "rarity": 12,
+    "attack": 1176,
+    "affinity": 15,
+    "elements": [
+      {
+        "type": "Dragon",
+        "damage": 240,
+        "hidden": false
+      }
+    ],
+    "slots": [
+      {
+        "size": 4
+      },
+      {
+        "size": 4
+      }
+    ],
+    "skills": [],
+    "notes": "PBO",
+    "previousWeaponId": "513"
+  },
+  {
+    "id": "kiranico-eqcgCoL",
+    "name": "Xeno Zauta+",
+    "type": "lance",
+    "rarity": 12,
+    "attack": 644,
+    "affinity": 15,
+    "elements": [
+      {
+        "type": "Dragon",
+        "damage": 210,
+        "hidden": false
+      }
+    ],
+    "slots": [
+      {
+        "size": 4
+      },
+      {
+        "size": 4
+      }
+    ],
+    "skills": [],
+    "previousWeaponId": "595"
+  },
+  {
+    "id": "kiranico-aKSBCZE",
+    "name": "Xeno Hemta+",
+    "type": "gunlance",
+    "rarity": 12,
+    "attack": 644,
+    "affinity": 15,
+    "elements": [
+      {
+        "type": "Dragon",
+        "damage": 300,
+        "hidden": false
+      }
+    ],
+    "slots": [
+      {
+        "size": 4
+      },
+      {
+        "size": 4
+      }
+    ],
+    "skills": [],
+    "shelling": "long",
+    "shellingLevel": 6,
+    "previousWeaponId": "676"
+  },
+  {
+    "id": "kiranico-XxUPCKY",
+    "name": "Xeno Martshu+",
+    "type": "switch-axe",
+    "rarity": 12,
+    "attack": 980,
+    "affinity": 15,
+    "elements": [
+      {
+        "type": "Dragon",
+        "damage": 270,
+        "hidden": false
+      }
+    ],
+    "slots": [
+      {
+        "size": 4
+      },
+      {
+        "size": 4
+      }
+    ],
+    "skills": [],
+    "phial": "power",
+    "previousWeaponId": "755"
+  },
+  {
+    "id": "kiranico-l7TaCN4",
+    "name": "Xeno Ra'atz+",
+    "type": "charge-blade",
+    "rarity": 12,
+    "attack": 1008,
+    "affinity": 15,
+    "elements": [
+      {
+        "type": "Dragon",
+        "damage": 240,
+        "hidden": false
+      }
+    ],
+    "slots": [
+      {
+        "size": 4
+      },
+      {
+        "size": 4
+      }
+    ],
+    "skills": [],
+    "phial": "impact",
+    "previousWeaponId": "830"
+  },
+  {
+    "id": "kiranico-2DTb6ILk",
+    "name": "Black Eagle",
+    "type": "charge-blade",
+    "rarity": 10,
+    "attack": 756,
+    "affinity": 10,
+    "elements": [
+      {
+        "type": "Thunder",
+        "damage": 210,
+        "hidden": false
+      }
+    ],
+    "slots": [
+      {
+        "size": 1
+      },
+      {
+        "size": 1
+      }
+    ],
+    "skills": [],
+    "phial": "power element"
+  },
+  {
+    "id": "kiranico-MxTkxIak",
+    "name": "Black Lightning Eagle",
+    "type": "charge-blade",
+    "rarity": 12,
+    "attack": 864,
+    "affinity": 10,
+    "elements": [
+      {
+        "type": "Thunder",
+        "damage": 270,
+        "hidden": false
+      }
+    ],
+    "slots": [
+      {
+        "size": 1
+      },
+      {
+        "size": 1
+      }
+    ],
+    "skills": [],
+    "phial": "power element",
+    "previousWeaponId": "kiranico-2DTb6ILk"
+  },
+  {
+    "id": "kiranico-JRsbC3p",
+    "name": "Xeno Shmaena+",
+    "type": "insect-glaive",
+    "rarity": 12,
+    "attack": 868,
+    "affinity": 15,
+    "elements": [
+      {
+        "type": "Dragon",
+        "damage": 240,
+        "hidden": false
+      }
+    ],
+    "slots": [
+      {
+        "size": 4
+      },
+      {
+        "size": 4
+      }
+    ],
+    "skills": [],
+    "kinsectBonus": "stamina_health",
+    "previousWeaponId": "911"
+  },
+  {
+    "id": "kiranico-OehkCa4",
+    "name": "Xeno Metora+",
+    "type": "bow",
+    "rarity": 12,
+    "attack": 324,
+    "affinity": 15,
+    "elements": [
+      {
+        "type": "Dragon",
+        "damage": 210,
+        "hidden": false
+      }
+    ],
+    "slots": [
+      {
+        "size": 4
+      },
+      {
+        "size": 4
+      }
+    ],
+    "skills": [],
+    "previousWeaponId": "1147"
+  },
+  {
+    "id": "kiranico-G0hq7UM5",
+    "name": "Azure Era \"Soaring Dragon\"",
+    "type": "bow",
+    "rarity": 9,
+    "attack": 312,
+    "affinity": 30,
+    "elements": [
+      {
+        "type": "Water",
+        "damage": 180,
+        "hidden": false
+      }
+    ],
+    "slots": [
+      {
+        "size": 4
+      }
+    ],
+    "skills": []
+  },
+  {
+    "id": "kiranico-80hAxI63",
+    "name": "Azure Era \"Soaring Dragon\"+",
+    "type": "bow",
+    "rarity": 12,
+    "attack": 324,
+    "affinity": 30,
+    "elements": [
+      {
+        "type": "Water",
+        "damage": 330,
+        "hidden": false
+      }
+    ],
+    "slots": [
+      {
+        "size": 4
+      },
+      {
+        "size": 4
+      }
+    ],
+    "skills": [],
+    "previousWeaponId": "kiranico-G0hq7UM5"
+  },
+  {
+    "id": "kiranico-OAIkCaq",
+    "name": "Xeno Jiiqa+",
+    "type": "heavy-bowgun",
+    "rarity": 12,
+    "attack": 420,
+    "affinity": 0,
+    "elements": [],
+    "slots": [
+      {
+        "size": 4
+      },
+      {
+        "size": 4
+      }
+    ],
+    "skills": [],
+    "previousWeaponId": "1074"
+  },
+  {
+    "id": "kiranico-75t4C3D",
+    "name": "Xeno Neqiina+",
+    "type": "light-bowgun",
+    "rarity": 12,
+    "attack": 351,
+    "affinity": 0,
+    "elements": [],
+    "slots": [
+      {
+        "size": 4
+      },
+      {
+        "size": 4
+      }
+    ],
+    "skills": [],
+    "previousWeaponId": "993"
   }
 ]

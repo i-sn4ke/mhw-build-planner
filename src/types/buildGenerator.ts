@@ -26,6 +26,7 @@ export interface FixedWeaponBuildGeneratorRequest {
 export interface GeneratedBuild {
   build: SavedBuildData
   skills: CalculatedSkills
+  requiredSkillSources?: Record<string, { armor: number; charm: number; setBonus: number; decorations: number; weapon: number }>
 }
 
 export interface BuildGeneratorResult {
@@ -33,6 +34,8 @@ export interface BuildGeneratorResult {
   status: 'found' | 'exhausted' | 'limit'
   visitedNodes: number
   elapsedMs: number
+  /** False when limits or candidate sampling prevent a proof of optimality. */
+  optimizationComplete?: boolean
 }
 
 export type BuildGeneratorResponse =

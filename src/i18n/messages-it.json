@@ -344,5 +344,10 @@
   "Health": "Salute",
   "Stamina / Health": "Resistenza / Salute",
   "Stamina": "Resistenza",
-  "Unofficial fan project. Monster Hunter belongs to Capcom.": "Progetto fan non ufficiale. Monster Hunter appartiene a Capcom."
+  "Equipped": "Equipaggiato",
+  "Unofficial fan project. Monster Hunter belongs to Capcom.": "Progetto fan non ufficiale. Monster Hunter appartiene a Capcom.",
+  "Builds are valid. The search has not compared every possible combination.": "Le build sono valide. La ricerca non ha confrontato tutte le combinazioni possibili.",
+  "Armor": "Armatura",
+  "Set Bonus": "Bonus set",
+  "Decorations": "Gioielli"
 }

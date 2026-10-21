@@ -11,6 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
+/scripts/import-mhw-data/sources/.kiranico-audit/
 
 # Editor directories and files
 .vscode/*

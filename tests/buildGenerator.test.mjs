@@ -18,6 +18,146 @@ function database(extra = {}) {
 }
 const request = (skills = [skill('attack', 1)], rank = 'master') => ({ weaponId: 'weapon', rank, skills })
 
+const bariothRequirements = () => [
+  skill('agitator', 7), skill('punishing-draw', 1), skill('slugger', 3),
+  skill('health-boost', 3), skill('critical-eye', 5), skill('weakness-exploit', 3),
+]
+
+test('refines the Barioth request into three distinct builds with at most three jewels', () => {
+  const data = catalog()
+  const input = { rank: 'master', excludeFatalis: true, skills: bariothRequirements() }
+  const unrefined = generateArmorBuilds(input, data, { refine: false })
+  assert.ok(unrefined.builds.some(({ build }) => build.armor.chest === '1083' && build.decorations.length === 4))
+  const result = generateArmorBuilds(input, data)
+  assert.equal(result.builds.length, 3)
+  assert.ok(result.visitedNodes <= 200_000)
+  const layouts = new Set()
+  for (const candidate of result.builds) {
+    assert.ok(candidate.build.decorations.length <= 3)
+    const build = deserializeBuild(candidate.build, data)
+    const pieces = Object.values(build.selectedArmor)
+    assert.ok(pieces.every(piece => piece.rank === input.rank && piece.setBonusId !== 'fatalis-legend'))
+    assert.equal(build.selectedWeapon, null)
+    const stats = calculateBuildStats(pieces, null, [
+      ...pieces.map(piece => piece.skills), build.selectedCharm?.skills ?? [],
+      ...build.decorations.map(entry => entry.decoration.skills),
+    ], data.skills, data.setBonuses)
+    for (const requirement of input.skills) assert.ok(stats.skills[requirement.skillId].level >= requirement.level)
+    assert.ok(stats.skills.agitator.secretUnlocked)
+    assert.deepEqual(candidate.skills, stats.skills)
+    assert.deepEqual(serializeBuild(build), candidate.build)
+    for (const requirement of input.skills) {
+      const supplied = Object.values(candidate.requiredSkillSources[requirement.skillId]).reduce((sum, value) => sum + value, 0)
+      assert.ok(supplied >= requirement.level)
+    }
+    layouts.add(slots.map(slot => {
+      const piece = build.selectedArmor[slot]
+      return piece.setBonusId ?? piece.name.replace(/\s+[αβ](?:\+)?$/u, '')
+    }).join('|'))
+  }
+  assert.equal(layouts.size, 3)
+})
+
+test('keeps Barioth when every piece from the reported build is fixed', () => {
+  const data = catalog()
+  const fixedArmor = { waist: '1519', arms: '1548', legs: '1520', chest: '1083', head: '1222' }
+  const result = generateArmorBuilds({ rank: 'master', excludeFatalis: true, skills: bariothRequirements(), fixedArmor }, data)
+  assert.equal(result.builds.length, 1)
+  assert.deepEqual(result.builds[0].build.armor, fixedArmor)
+  assert.equal(result.builds[0].build.decorations.length, 4)
+})
+
+test('refinement cannot replace a piece that supplies a required set threshold', () => {
+  const data = database({
+    skills: [definition('attack', 7), definition('draw', 1)],
+    armors: slots.flatMap(slot => slot === 'chest' ? [
+      armor(slot, { id: 'set-chest', setBonusId: 'set' }),
+      armor(slot, { id: 'tempting-chest', skills: [skill('attack', 2)], slots: [{ size: 4 }] }),
+    ] : [armor(slot, { setBonusId: slot === 'head' ? 'set' : undefined, slots: slot === 'arms' ? [{ size: 4 }] : [] })]),
+    setBonuses: [{ id: 'set', name: 'Set', thresholds: [{ pieces: 2, skillId: 'draw' }] }],
+    decorations: [decoration('double', 4, [skill('attack', 2)])],
+  })
+  const input = { ...request([skill('attack', 2), skill('draw', 1)]), fixedArmor: { head: 'head' } }
+  const result = generateBuilds(input, data)
+  assert.equal(result.builds[0].build.armor.chest, 'set-chest')
+  verify(result, input, data)
+})
+
+test('skips a small slot when one larger jewel replaces two small jewels', () => {
+  const data = database({
+    armors: slots.map(slot => armor(slot, { slots: slot === 'head' ? [{ size: 1 }, { size: 4 }] : [] })),
+    decorations: [decoration('single', 1, [skill('attack', 1)]), decoration('double', 4, [skill('attack', 2)])],
+  })
+  const input = request([skill('attack', 2)])
+  const result = generateBuilds(input, data)
+  assert.equal(result.builds[0].build.decorations.length, 1)
+  assert.equal(result.builds[0].build.decorations[0].decorationId, 'double')
+  assert.equal(result.builds[0].build.decorations[0].location.slotIndex, 1)
+  assert.equal(result.optimizationComplete, true)
+  verify(result, input, data)
+})
+
+test('prefers no jewels even when armor has unavoidable excess requested points', () => {
+  const data = database({
+    armors: slots.flatMap(slot => slot === 'head' ? [
+      armor(slot, { id: 'armor-only', skills: [skill('attack', 3)] }),
+      armor(slot, { id: 'needs-jewel', skills: [skill('attack', 1)], slots: [{ size: 1 }] }),
+    ] : [armor(slot)]),
+    decorations: [decoration('single', 1, [skill('attack', 1)])],
+  })
+  const result = generateBuilds(request([skill('attack', 2)]), data)
+  assert.equal(result.builds[0].build.armor.head, 'armor-only')
+  assert.equal(result.builds[0].build.decorations.length, 0)
+  assert.equal(result.builds.length, 2)
+  assert.equal(result.builds[1].build.decorations.length, 1)
+})
+
+test('reports raw requested skill contributions from each source', () => {
+  const data = database({
+    armors: slots.map(slot => armor(slot, { skills: slot === 'head' ? [skill('attack', 1)] : [],
+      slots: slot === 'head' ? [{ size: 1 }] : [], setBonusId: slot === 'head' ? 'set' : undefined })),
+    charms: [{ id: 'charm', name: 'Charm', rarity: 1, skills: [skill('attack', 1)] }],
+    weapons: [weapon({ skills: [skill('attack', 1)] })],
+    decorations: [decoration('single', 1, [skill('attack', 1)])],
+    setBonuses: [{ id: 'set', name: 'Set', thresholds: [{ pieces: 1, skillId: 'attack' }] }],
+  })
+  const result = generateBuilds(request([skill('attack', 5)]), data)
+  assert.deepEqual(result.builds[0].requiredSkillSources.attack, { armor: 1, charm: 1, weapon: 1, setBonus: 1, decorations: 1 })
+})
+
+test('uses the larger free slots to rank equally efficient armor', () => {
+  const data = database({ armors: slots.flatMap(slot => slot === 'head' ? [
+    armor(slot, { id: 'small', skills: [skill('attack', 1)], slots: [{ size: 1 }] }),
+    armor(slot, { id: 'large', skills: [skill('attack', 1)], slots: [{ size: 4 }] }),
+  ] : [armor(slot)]) })
+  const result = generateBuilds(request(), data)
+  assert.equal(result.builds[0].build.armor.head, 'large')
+  assert.equal(result.builds[0].build.decorations.length, 0)
+})
+
+test('keeps a feasible build when excess above a skill cap cannot be avoided', () => {
+  const data = database({
+    skills: [definition('attack', 7), definition('extra', 1)],
+    armors: slots.map(slot => armor(slot, { skills: slot === 'head' ? [skill('attack', 1), skill('extra', 2)] : [] })),
+  })
+  const result = generateBuilds(request(), data)
+  assert.equal(result.builds.length, 1)
+  assert.equal(result.builds[0].skills.extra.level, 1)
+  assert.equal(result.builds[0].build.decorations.length, 0)
+  assert.equal(result.optimizationComplete, true)
+})
+
+test('does not label a search interrupted with valid results as complete', () => {
+  const data = database({ armors: slots.flatMap(slot => Array.from({ length: 3 }, (_, index) => armor(slot, {
+    id: `${slot}-${index}`, name: `Family ${slot} ${index}`, skills: slot === 'head' ? [skill('attack', 1)] : [],
+  }))) })
+  const result = generateBuilds(request(), data, { maxNodes: 10 })
+  assert.ok(result.builds.length > 0)
+  assert.equal(result.status, 'limit')
+  assert.equal(result.optimizationComplete, false)
+  assert.ok(result.visitedNodes <= 10)
+})
+
 test('compares incidental jewel skills using the active Secret cap', () => {
   const data = database({
     armors: slots.map((slot) => armor(slot, slot === 'head'

@@ -219,6 +219,7 @@ function BuildGeneratorPanel({ weapon, selectedArmor, fixedArmorSlots, onApply, 
           <>
             <p>{t(result.builds.length === 1 ? '{0} valid build found.' : '{0} valid builds found.', [result.builds.length])}</p>
             {result.status === 'limit' && <p className="mt-1 text-hunter-gold">{t("Search limit reached. More solutions may exist; this does not mean the request is impossible.")}</p>}
+            {result.optimizationComplete === false && !!result.builds.length && <p className="mt-1 text-xs">{t("Builds are valid. The search has not compared every possible combination.")}</p>}
             {result.status === 'exhausted' && !result.builds.length && <p className="mt-1">{t("No weapon-independent armor combination was found for these skills and rank.")}</p>}
             {!!result.builds.length && <p className="mt-1 text-xs">{t("All results meet every minimum without a weapon. Different armor families in each slot define a variant; alpha/beta changes alone do not. Results are not ranked by damage.")}</p>}
           </>
@@ -298,7 +299,16 @@ function BuildGeneratorPanel({ weapon, selectedArmor, fixedArmorSlots, onApply, 
                 </dl>
               </div>
               <ul className="mt-3 space-y-1 text-sm text-hunter-gold">
-                {requirements.map((entry) => <li key={entry.skillId}>{t(skillById.get(entry.skillId)?.name)}{t(": Lv")} {candidate.skills[entry.skillId]?.level ?? 0} / {entry.level} {t("required")}</li>)}
+                {requirements.map((entry) => {
+                  const sources = candidate.requiredSkillSources?.[entry.skillId]
+                  return <li key={entry.skillId}>
+                    {t(skillById.get(entry.skillId)?.name)}{t(": Lv")} {candidate.skills[entry.skillId]?.level ?? 0} / {entry.level} {t("required")}
+                    {sources && <p className="text-xs text-hunter-muted">{[
+                      [t("Armor"), sources.armor], [t("Charm"), sources.charm], [t("Set Bonus"), sources.setBonus],
+                      [t("Decorations"), sources.decorations], [t("Weapon"), sources.weapon],
+                    ].filter(([, points]) => Number(points) > 0).map(([label, points]) => `${label} +${points}`).join(' · ')}</p>}
+                  </li>
+                })}
               </ul>
               <div className="mt-3 border-t border-hunter-border pt-3">
                 <h4 className="text-xs font-semibold uppercase tracking-wider text-hunter-muted">{t("Extra Skills")}</h4>

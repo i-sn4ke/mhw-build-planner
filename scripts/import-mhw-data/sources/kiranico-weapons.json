@@ -1,0 +1,811 @@
+{
+  "checkedAt": "2026-10-22",
+  "weapons": [
+    {
+      "weapon": {
+        "id": "kiranico-EAHYCM0",
+        "name": "Xeno Maliq+",
+        "type": "great-sword",
+        "rarity": 12,
+        "attack": 1344,
+        "affinity": 20,
+        "elements": [
+          {
+            "type": "Dragon",
+            "damage": 330,
+            "hidden": false
+          }
+        ],
+        "slots": [
+          {
+            "size": 4
+          },
+          {
+            "size": 4
+          }
+        ],
+        "skills": [],
+        "previousWeaponId": "86"
+      },
+      "nameIt": "Maliq Xeno+",
+      "source": "https://mhworld.kiranico.com/en/weapons/EAHYCM0/xeno-maliq",
+      "sourceIt": "https://mhworld.kiranico.com/it/weapons/EAHYCM0/maliq-xeno"
+    },
+    {
+      "weapon": {
+        "id": "kiranico-q8HvWUwg",
+        "name": "Wyvern Impact \"Silver\"",
+        "type": "great-sword",
+        "rarity": 12,
+        "attack": 1296,
+        "affinity": -15,
+        "elements": [
+          {
+            "type": "Fire",
+            "damage": 690,
+            "hidden": true
+          }
+        ],
+        "slots": [
+          {
+            "size": 1
+          },
+          {
+            "size": 1
+          }
+        ],
+        "skills": [],
+        "previousWeaponId": "1189"
+      },
+      "nameIt": "Impatto wyvern \"argento\"",
+      "source": "https://mhworld.kiranico.com/en/weapons/q8HvWUwg/wyvern-impact-silver",
+      "sourceIt": "https://mhworld.kiranico.com/it/weapons/q8HvWUwg/impatto-wyvern-argento"
+    },
+    {
+      "weapon": {
+        "id": "kiranico-OPikCrX",
+        "name": "Xeno Mabura+",
+        "type": "sword-and-shield",
+        "rarity": 12,
+        "attack": 392,
+        "affinity": 15,
+        "elements": [
+          {
+            "type": "Dragon",
+            "damage": 330,
+            "hidden": false
+          }
+        ],
+        "slots": [
+          {
+            "size": 4
+          },
+          {
+            "size": 4
+          }
+        ],
+        "skills": [],
+        "previousWeaponId": "261"
+      },
+      "nameIt": "Mabura Xeno+",
+      "source": "https://mhworld.kiranico.com/en/weapons/OPikCrX/xeno-mabura",
+      "sourceIt": "https://mhworld.kiranico.com/it/weapons/OPikCrX/mabura-xeno"
+    },
+    {
+      "weapon": {
+        "id": "kiranico-akFBC9Z",
+        "name": "Xeno Raqs+",
+        "type": "dual-blades",
+        "rarity": 12,
+        "attack": 392,
+        "affinity": 15,
+        "elements": [
+          {
+            "type": "Dragon",
+            "damage": 240,
+            "hidden": false
+          }
+        ],
+        "slots": [
+          {
+            "size": 4
+          },
+          {
+            "size": 4
+          }
+        ],
+        "skills": [],
+        "previousWeaponId": "344"
+      },
+      "nameIt": "Raqs Xeno+",
+      "source": "https://mhworld.kiranico.com/en/weapons/akFBC9Z/xeno-raqs",
+      "sourceIt": "https://mhworld.kiranico.com/it/weapons/akFBC9Z/raqs-xeno"
+    },
+    {
+      "weapon": {
+        "id": "kiranico-yJFoYt5D",
+        "name": "Strong Ale",
+        "type": "dual-blades",
+        "rarity": 10,
+        "attack": 392,
+        "affinity": -15,
+        "elements": [
+          {
+            "type": "Paralysis",
+            "damage": 120,
+            "hidden": false
+          },
+          {
+            "type": "Sleep",
+            "damage": 60,
+            "hidden": false
+          }
+        ],
+        "slots": [
+          {
+            "size": 4
+          },
+          {
+            "size": 4
+          }
+        ],
+        "skills": []
+      },
+      "nameIt": "Strong Ale",
+      "source": "https://mhworld.kiranico.com/en/weapons/yJFoYt5D/strong-ale",
+      "sourceIt": "https://mhworld.kiranico.com/it/weapons/yJFoYt5D/strong-ale",
+      "normalization": "Dual status values converted from true status to displayed status (x10).",
+      "corroboratingSource": "https://mhw.poedb.tw/eng/weapon/Strong%20Ale"
+    },
+    {
+      "weapon": {
+        "id": "kiranico-ZxFg7t2P",
+        "name": "Master Ale",
+        "type": "dual-blades",
+        "rarity": 11,
+        "attack": 420,
+        "affinity": -15,
+        "elements": [
+          {
+            "type": "Paralysis",
+            "damage": 150,
+            "hidden": false
+          },
+          {
+            "type": "Sleep",
+            "damage": 90,
+            "hidden": false
+          }
+        ],
+        "slots": [
+          {
+            "size": 4
+          },
+          {
+            "size": 4
+          }
+        ],
+        "skills": [],
+        "previousWeaponId": "kiranico-yJFoYt5D"
+      },
+      "nameIt": "Master Ale",
+      "source": "https://mhworld.kiranico.com/en/weapons/ZxFg7t2P/master-ale",
+      "sourceIt": "https://mhworld.kiranico.com/it/weapons/ZxFg7t2P/master-ale",
+      "normalization": "Dual status values converted from true status to displayed status (x10).",
+      "corroboratingSource": "https://mhw.poedb.tw/eng/weapon/Master%20Ale"
+    },
+    {
+      "weapon": {
+        "id": "kiranico-ovu4CXL",
+        "name": "Xeno Cypher+",
+        "type": "long-sword",
+        "rarity": 12,
+        "attack": 924,
+        "affinity": 15,
+        "elements": [
+          {
+            "type": "Dragon",
+            "damage": 270,
+            "hidden": false
+          }
+        ],
+        "slots": [
+          {
+            "size": 4
+          },
+          {
+            "size": 4
+          }
+        ],
+        "skills": [],
+        "previousWeaponId": "166"
+      },
+      "nameIt": "Saifa Xeno+",
+      "source": "https://mhworld.kiranico.com/en/weapons/ovu4CXL/xeno-cypher",
+      "sourceIt": "https://mhworld.kiranico.com/it/weapons/ovu4CXL/saifa-xeno"
+    },
+    {
+      "weapon": {
+        "id": "kiranico-wWuONfbb",
+        "name": "Azure Star \"Dragon Dance\"+",
+        "type": "long-sword",
+        "rarity": 12,
+        "attack": 891,
+        "affinity": 30,
+        "elements": [
+          {
+            "type": "Water",
+            "damage": 240,
+            "hidden": false
+          }
+        ],
+        "slots": [
+          {
+            "size": 4
+          },
+          {
+            "size": 4
+          }
+        ],
+        "skills": [],
+        "previousWeaponId": "1187"
+      },
+      "nameIt": "Astro celeste \"Drago\"+",
+      "source": "https://mhworld.kiranico.com/en/weapons/wWuONfbb/azure-star-dragon-dance",
+      "sourceIt": "https://mhworld.kiranico.com/it/weapons/wWuONfbb/astro-celeste-drago"
+    },
+    {
+      "weapon": {
+        "id": "kiranico-OlCkCrN",
+        "name": "Xeno Maph'agarna+",
+        "type": "hammer",
+        "rarity": 12,
+        "attack": 1456,
+        "affinity": 15,
+        "elements": [
+          {
+            "type": "Dragon",
+            "damage": 270,
+            "hidden": false
+          }
+        ],
+        "slots": [
+          {
+            "size": 4
+          },
+          {
+            "size": 4
+          }
+        ],
+        "skills": [],
+        "previousWeaponId": "426"
+      },
+      "nameIt": "Maph'agarna Xeno+",
+      "source": "https://mhworld.kiranico.com/en/weapons/OlCkCrN/xeno-maph-agarna",
+      "sourceIt": "https://mhworld.kiranico.com/it/weapons/OlCkCrN/maph-agarna-xeno"
+    },
+    {
+      "weapon": {
+        "id": "kiranico-OofkCaK",
+        "name": "Xeno Manasheena+",
+        "type": "hunting-horn",
+        "rarity": 12,
+        "attack": 1176,
+        "affinity": 15,
+        "elements": [
+          {
+            "type": "Dragon",
+            "damage": 240,
+            "hidden": false
+          }
+        ],
+        "slots": [
+          {
+            "size": 4
+          },
+          {
+            "size": 4
+          }
+        ],
+        "skills": [],
+        "notes": "PBO",
+        "previousWeaponId": "513"
+      },
+      "nameIt": "Manasheena Xeno+",
+      "source": "https://mhworld.kiranico.com/en/weapons/OofkCaK/xeno-manasheena",
+      "sourceIt": "https://mhworld.kiranico.com/it/weapons/OofkCaK/manasheena-xeno"
+    },
+    {
+      "weapon": {
+        "id": "kiranico-eqcgCoL",
+        "name": "Xeno Zauta+",
+        "type": "lance",
+        "rarity": 12,
+        "attack": 644,
+        "affinity": 15,
+        "elements": [
+          {
+            "type": "Dragon",
+            "damage": 210,
+            "hidden": false
+          }
+        ],
+        "slots": [
+          {
+            "size": 4
+          },
+          {
+            "size": 4
+          }
+        ],
+        "skills": [],
+        "previousWeaponId": "595"
+      },
+      "nameIt": "Zauta Xeno+",
+      "source": "https://mhworld.kiranico.com/en/weapons/eqcgCoL/xeno-zauta",
+      "sourceIt": "https://mhworld.kiranico.com/it/weapons/eqcgCoL/zauta-xeno"
+    },
+    {
+      "weapon": {
+        "id": "kiranico-aKSBCZE",
+        "name": "Xeno Hemta+",
+        "type": "gunlance",
+        "rarity": 12,
+        "attack": 644,
+        "affinity": 15,
+        "elements": [
+          {
+            "type": "Dragon",
+            "damage": 300,
+            "hidden": false
+          }
+        ],
+        "slots": [
+          {
+            "size": 4
+          },
+          {
+            "size": 4
+          }
+        ],
+        "skills": [],
+        "shelling": "long",
+        "shellingLevel": 6,
+        "previousWeaponId": "676"
+      },
+      "nameIt": "Hemta Xeno+",
+      "source": "https://mhworld.kiranico.com/en/weapons/aKSBCZE/xeno-hemta",
+      "sourceIt": "https://mhworld.kiranico.com/it/weapons/aKSBCZE/hemta-xeno"
+    },
+    {
+      "weapon": {
+        "id": "kiranico-XxUPCKY",
+        "name": "Xeno Martshu+",
+        "type": "switch-axe",
+        "rarity": 12,
+        "attack": 980,
+        "affinity": 15,
+        "elements": [
+          {
+            "type": "Dragon",
+            "damage": 270,
+            "hidden": false
+          }
+        ],
+        "slots": [
+          {
+            "size": 4
+          },
+          {
+            "size": 4
+          }
+        ],
+        "skills": [],
+        "phial": "power",
+        "previousWeaponId": "755"
+      },
+      "nameIt": "Martojsz Xeno+",
+      "source": "https://mhworld.kiranico.com/en/weapons/XxUPCKY/xeno-martshu",
+      "sourceIt": "https://mhworld.kiranico.com/it/weapons/XxUPCKY/martojsz-xeno"
+    },
+    {
+      "weapon": {
+        "id": "kiranico-l7TaCN4",
+        "name": "Xeno Ra'atz+",
+        "type": "charge-blade",
+        "rarity": 12,
+        "attack": 1008,
+        "affinity": 15,
+        "elements": [
+          {
+            "type": "Dragon",
+            "damage": 240,
+            "hidden": false
+          }
+        ],
+        "slots": [
+          {
+            "size": 4
+          },
+          {
+            "size": 4
+          }
+        ],
+        "skills": [],
+        "phial": "impact",
+        "previousWeaponId": "830"
+      },
+      "nameIt": "Ra'atz Xeno+",
+      "source": "https://mhworld.kiranico.com/en/weapons/l7TaCN4/xeno-ra-atz",
+      "sourceIt": "https://mhworld.kiranico.com/it/weapons/l7TaCN4/ra-atz-xeno"
+    },
+    {
+      "weapon": {
+        "id": "kiranico-2DTb6ILk",
+        "name": "Black Eagle",
+        "type": "charge-blade",
+        "rarity": 10,
+        "attack": 756,
+        "affinity": 10,
+        "elements": [
+          {
+            "type": "Thunder",
+            "damage": 210,
+            "hidden": false
+          }
+        ],
+        "slots": [
+          {
+            "size": 1
+          },
+          {
+            "size": 1
+          }
+        ],
+        "skills": [],
+        "phial": "power element"
+      },
+      "nameIt": "Aquila nera",
+      "source": "https://mhworld.kiranico.com/en/weapons/2DTb6ILk/black-eagle",
+      "sourceIt": "https://mhworld.kiranico.com/it/weapons/2DTb6ILk/aquila-nera"
+    },
+    {
+      "weapon": {
+        "id": "kiranico-MxTkxIak",
+        "name": "Black Lightning Eagle",
+        "type": "charge-blade",
+        "rarity": 12,
+        "attack": 864,
+        "affinity": 10,
+        "elements": [
+          {
+            "type": "Thunder",
+            "damage": 270,
+            "hidden": false
+          }
+        ],
+        "slots": [
+          {
+            "size": 1
+          },
+          {
+            "size": 1
+          }
+        ],
+        "skills": [],
+        "phial": "power element",
+        "previousWeaponId": "kiranico-2DTb6ILk"
+      },
+      "nameIt": "Aquila nera fulminante",
+      "source": "https://mhworld.kiranico.com/en/weapons/MxTkxIak/black-lightning-eagle",
+      "sourceIt": "https://mhworld.kiranico.com/it/weapons/MxTkxIak/aquila-nera-fulminante"
+    },
+    {
+      "weapon": {
+        "id": "kiranico-JRsbC3p",
+        "name": "Xeno Shmaena+",
+        "type": "insect-glaive",
+        "rarity": 12,
+        "attack": 868,
+        "affinity": 15,
+        "elements": [
+          {
+            "type": "Dragon",
+            "damage": 240,
+            "hidden": false
+          }
+        ],
+        "slots": [
+          {
+            "size": 4
+          },
+          {
+            "size": 4
+          }
+        ],
+        "skills": [],
+        "kinsectBonus": "stamina_health",
+        "previousWeaponId": "911"
+      },
+      "nameIt": "Shmaena Xeno+",
+      "source": "https://mhworld.kiranico.com/en/weapons/JRsbC3p/xeno-shmaena",
+      "sourceIt": "https://mhworld.kiranico.com/it/weapons/JRsbC3p/shmaena-xeno"
+    },
+    {
+      "weapon": {
+        "id": "kiranico-OehkCa4",
+        "name": "Xeno Metora+",
+        "type": "bow",
+        "rarity": 12,
+        "attack": 324,
+        "affinity": 15,
+        "elements": [
+          {
+            "type": "Dragon",
+            "damage": 210,
+            "hidden": false
+          }
+        ],
+        "slots": [
+          {
+            "size": 4
+          },
+          {
+            "size": 4
+          }
+        ],
+        "skills": [],
+        "previousWeaponId": "1147"
+      },
+      "nameIt": "Metora Xeno+",
+      "source": "https://mhworld.kiranico.com/en/weapons/OehkCa4/xeno-metora",
+      "sourceIt": "https://mhworld.kiranico.com/it/weapons/OehkCa4/metora-xeno"
+    },
+    {
+      "weapon": {
+        "id": "kiranico-G0hq7UM5",
+        "name": "Azure Era \"Soaring Dragon\"",
+        "type": "bow",
+        "rarity": 9,
+        "attack": 312,
+        "affinity": 30,
+        "elements": [
+          {
+            "type": "Water",
+            "damage": 180,
+            "hidden": false
+          }
+        ],
+        "slots": [
+          {
+            "size": 4
+          }
+        ],
+        "skills": []
+      },
+      "nameIt": "Era azzurra \"Drago ruggente\"",
+      "source": "https://mhworld.kiranico.com/en/weapons/G0hq7UM5/azure-era-soaring-dragon",
+      "sourceIt": "https://mhworld.kiranico.com/it/weapons/G0hq7UM5/era-azzurra-drago-ruggente"
+    },
+    {
+      "weapon": {
+        "id": "kiranico-80hAxI63",
+        "name": "Azure Era \"Soaring Dragon\"+",
+        "type": "bow",
+        "rarity": 12,
+        "attack": 324,
+        "affinity": 30,
+        "elements": [
+          {
+            "type": "Water",
+            "damage": 330,
+            "hidden": false
+          }
+        ],
+        "slots": [
+          {
+            "size": 4
+          },
+          {
+            "size": 4
+          }
+        ],
+        "skills": [],
+        "previousWeaponId": "kiranico-G0hq7UM5"
+      },
+      "nameIt": "Era azzurra \"Drago ruggente\"+",
+      "source": "https://mhworld.kiranico.com/en/weapons/80hAxI63/azure-era-soaring-dragon",
+      "sourceIt": "https://mhworld.kiranico.com/it/weapons/80hAxI63/era-azzurra-drago-ruggente"
+    },
+    {
+      "weapon": {
+        "id": "kiranico-OAIkCaq",
+        "name": "Xeno Jiiqa+",
+        "type": "heavy-bowgun",
+        "rarity": 12,
+        "attack": 420,
+        "affinity": 0,
+        "elements": [],
+        "slots": [
+          {
+            "size": 4
+          },
+          {
+            "size": 4
+          }
+        ],
+        "skills": [],
+        "previousWeaponId": "1074"
+      },
+      "nameIt": "Jiiqa Xeno+",
+      "source": "https://mhworld.kiranico.com/en/weapons/OAIkCaq/xeno-jiiqa",
+      "sourceIt": "https://mhworld.kiranico.com/it/weapons/OAIkCaq/jiiqa-xeno"
+    },
+    {
+      "weapon": {
+        "id": "kiranico-75t4C3D",
+        "name": "Xeno Neqiina+",
+        "type": "light-bowgun",
+        "rarity": 12,
+        "attack": 351,
+        "affinity": 0,
+        "elements": [],
+        "slots": [
+          {
+            "size": 4
+          },
+          {
+            "size": 4
+          }
+        ],
+        "skills": [],
+        "previousWeaponId": "993"
+      },
+      "nameIt": "Neqiina Xeno+",
+      "source": "https://mhworld.kiranico.com/en/weapons/75t4C3D/xeno-neqiina",
+      "sourceIt": "https://mhworld.kiranico.com/it/weapons/75t4C3D/neqiina-xeno"
+    }
+  ],
+  "excluded": [
+    {
+      "key": "obH3H8O",
+      "type": "great-sword",
+      "name": "Giant Jawblade",
+      "rarity": 11,
+      "url": "https://mhworld.kiranico.com/en/weapons/obH3H8O/giant-jawblade",
+      "nameIt": "Mascellama gigante",
+      "urlIt": "https://mhworld.kiranico.com/it/weapons/obH3H8O/mascellama-gigante",
+      "reason": "No forge or upgrade recipe documented on Kiranico; special/preset entry, availability unverified."
+    },
+    {
+      "key": "aEibHaA",
+      "type": "sword-and-shield",
+      "name": "Hunter's Knife",
+      "rarity": 11,
+      "url": "https://mhworld.kiranico.com/en/weapons/aEibHaA/hunters-knife",
+      "nameIt": "Coltello da cacciatore",
+      "urlIt": "https://mhworld.kiranico.com/it/weapons/aEibHaA/coltello-da-cacciatore",
+      "reason": "No forge or upgrade recipe documented on Kiranico; special/preset entry, availability unverified."
+    },
+    {
+      "key": "J8FZHZz",
+      "type": "dual-blades",
+      "name": "Artemis's Dual Blades",
+      "rarity": 11,
+      "url": "https://mhworld.kiranico.com/en/weapons/J8FZHZz/artemiss-dual-blades",
+      "nameIt": "Doppie lame di Artemis",
+      "urlIt": "https://mhworld.kiranico.com/it/weapons/J8FZHZz/doppie-lame-di-artemis",
+      "reason": "No forge or upgrade recipe documented on Kiranico; special/preset entry, availability unverified."
+    },
+    {
+      "key": "N5uQH4E",
+      "type": "long-sword",
+      "name": "Bone Reaper",
+      "rarity": 11,
+      "url": "https://mhworld.kiranico.com/en/weapons/N5uQH4E/bone-reaper",
+      "nameIt": "Mietitore d'osso",
+      "urlIt": "https://mhworld.kiranico.com/it/weapons/N5uQH4E/mietitore-d-osso",
+      "reason": "No forge or upgrade recipe documented on Kiranico; special/preset entry, availability unverified."
+    },
+    {
+      "key": "DoCaHLW",
+      "type": "hammer",
+      "name": "Iron Hammer",
+      "rarity": 11,
+      "url": "https://mhworld.kiranico.com/en/weapons/DoCaHLW/iron-hammer",
+      "nameIt": "Martello di ferro",
+      "urlIt": "https://mhworld.kiranico.com/it/weapons/DoCaHLW/martello-di-ferro",
+      "reason": "No forge or upgrade recipe documented on Kiranico; special/preset entry, availability unverified."
+    },
+    {
+      "key": "J4fZHZG",
+      "type": "hunting-horn",
+      "name": "Bone Horn",
+      "rarity": 11,
+      "url": "https://mhworld.kiranico.com/en/weapons/J4fZHZG/bone-horn",
+      "nameIt": "Corno d'osso",
+      "urlIt": "https://mhworld.kiranico.com/it/weapons/J4fZHZG/corno-d-osso",
+      "reason": "No forge or upgrade recipe documented on Kiranico; special/preset entry, availability unverified."
+    },
+    {
+      "key": "YXcVHw2",
+      "type": "lance",
+      "name": "Iron Lance",
+      "rarity": 11,
+      "url": "https://mhworld.kiranico.com/en/weapons/YXcVHw2/iron-lance",
+      "nameIt": "Lancia di ferro",
+      "urlIt": "https://mhworld.kiranico.com/it/weapons/YXcVHw2/lancia-di-ferro",
+      "reason": "No forge or upgrade recipe documented on Kiranico; special/preset entry, availability unverified."
+    },
+    {
+      "key": "L8SDHva",
+      "type": "gunlance",
+      "name": "Bone Gunlance",
+      "rarity": 11,
+      "url": "https://mhworld.kiranico.com/en/weapons/L8SDHva/bone-gunlance",
+      "nameIt": "Lancia-fucile d'osso",
+      "urlIt": "https://mhworld.kiranico.com/it/weapons/L8SDHva/lancia-fucile-d-osso",
+      "reason": "No forge or upgrade recipe documented on Kiranico; special/preset entry, availability unverified."
+    },
+    {
+      "key": "7RUvHqb",
+      "type": "switch-axe",
+      "name": "Bone Axe",
+      "rarity": 11,
+      "url": "https://mhworld.kiranico.com/en/weapons/7RUvHqb/bone-axe",
+      "nameIt": "Ascia d'osso",
+      "urlIt": "https://mhworld.kiranico.com/it/weapons/7RUvHqb/ascia-d-osso",
+      "reason": "No forge or upgrade recipe documented on Kiranico; special/preset entry, availability unverified."
+    },
+    {
+      "key": "KOT6H34",
+      "type": "charge-blade",
+      "name": "Bone Strongarm",
+      "rarity": 11,
+      "url": "https://mhworld.kiranico.com/en/weapons/KOT6H34/bone-strongarm",
+      "nameIt": "Braccia d'osso",
+      "urlIt": "https://mhworld.kiranico.com/it/weapons/KOT6H34/braccia-d-osso",
+      "reason": "No forge or upgrade recipe documented on Kiranico; special/preset entry, availability unverified."
+    },
+    {
+      "key": "XgsDHD5",
+      "type": "insect-glaive",
+      "name": "Iron Blade",
+      "rarity": 11,
+      "url": "https://mhworld.kiranico.com/en/weapons/XgsDHD5/iron-blade",
+      "nameIt": "Lama di ferro",
+      "urlIt": "https://mhworld.kiranico.com/it/weapons/XgsDHD5/lama-di-ferro",
+      "reason": "No forge or upgrade recipe documented on Kiranico; special/preset entry, availability unverified."
+    },
+    {
+      "key": "AwhvH9Q",
+      "type": "bow",
+      "name": "Hunter's Bow",
+      "rarity": 11,
+      "url": "https://mhworld.kiranico.com/en/weapons/AwhvH9Q/hunters-bow",
+      "nameIt": "Arco da cacciatore",
+      "urlIt": "https://mhworld.kiranico.com/it/weapons/AwhvH9Q/arco-da-cacciatore",
+      "reason": "No forge or upgrade recipe documented on Kiranico; special/preset entry, availability unverified."
+    },
+    {
+      "key": "gGINHNA",
+      "type": "heavy-bowgun",
+      "name": "Bone Shooter",
+      "rarity": 11,
+      "url": "https://mhworld.kiranico.com/en/weapons/gGINHNA/bone-shooter",
+      "nameIt": "Tiratore d'osso",
+      "urlIt": "https://mhworld.kiranico.com/it/weapons/gGINHNA/tiratore-d-osso",
+      "reason": "No forge or upgrade recipe documented on Kiranico; special/preset entry, availability unverified."
+    },
+    {
+      "key": "9XtbH7g",
+      "type": "light-bowgun",
+      "name": "Chain Blitz",
+      "rarity": 11,
+      "url": "https://mhworld.kiranico.com/en/weapons/9XtbH7g/chain-blitz",
+      "nameIt": "Fulmine a catena",
+      "urlIt": "https://mhworld.kiranico.com/it/weapons/9XtbH7g/fulmine-a-catena",
+      "reason": "No forge or upgrade recipe documented on Kiranico; special/preset entry, availability unverified."
+    }
+  ]
+}

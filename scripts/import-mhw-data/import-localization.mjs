@@ -25,6 +25,10 @@ for (const [catalog, directory, filename] of catalogs) {
     return [[entry.id, { name: row.name_it, ...(row.description_it?.trim() ? { description: row.description_it } : {}) }]]
   }))
 }
+const supplemental = JSON.parse(fs.readFileSync(path.join(root, 'scripts/import-mhw-data/sources/kiranico-weapons.json'), 'utf8'))
+for (const { weapon, nameIt } of supplemental.weapons) {
+  output.weapons[weapon.id] = { name: nameIt }
+}
 const skills = JSON.parse(fs.readFileSync(path.join(root, 'src/data/generated/skills.json'), 'utf8'))
 const skillsByName = new Map(skills.map((entry) => [entry.name, entry]))
 for (const row of readCsv(path.join(source, 'skills'), 'skill_levels.csv')) {

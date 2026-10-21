@@ -18,6 +18,12 @@ Skill tooltips show what each skill does at the relevant level. The planner keep
 
 Pick an armor rank and the minimum skill levels you want. The generator looks for up to three armor, charm, and decoration combinations that meet those requirements, preferring different armor set layouts over small alpha/beta variations. You can compare changed pieces, extra skills, and unused slots before applying a result.
 
+The search first tries armor and charms without decorations, then progressively allows more jewels. It prefers setups without points lost above skill caps, fewer jewels, and fewer points above your requested levels. Equally efficient results favor different armor layouts and useful free slots. Each requested skill shows its raw contributions from armor, charms, set bonuses, and decorations; these can exceed the displayed effective level when capped.
+
+The search distributes its budget across armor choices and decoration counts. It may sample only part of the catalog: results explicitly say when not every combination was compared, so fewer jewels or less waste may still be possible. Unavoidable overlaps from fixed equipment are supported; if no setup without wasted cap levels is found, the search also allows overlapping points.
+
+Before displaying suggestions, a final refinement tries individual armor replacements and solves decorations again from scratch. It repeats swaps that reduce jewels or wasted points, or improve free slots at the same cost, while preserving fixed pieces, rank, exclusions, required set bonuses, and distinct alternatives. Refinement shares the overall search limits and does not guarantee a global optimum.
+
 Already have a few pieces in mind? Mark them with **Keep for generated builds** and the generator will fill the remaining armor slots. Fixed pieces must match the selected rank.
 
 Enable **Exclude Fatalis armor** to generate builds without any Fatalis armor pieces. If a Fatalis piece is fixed, remove its **Keep for generated builds** check or turn off the filter before generating.
@@ -88,6 +94,8 @@ The main code lives in:
 - `src/data/generated/` — imported game catalogs
 
 Generated JSON files should be updated through the importers in `scripts/import-mhw-data/`, not edited by hand or replaced with mock data. The importers use the local `../MHWorldData/source_data/` directory; you do not need it just to run or build the app.
+
+Weapons missing from the CSV source are maintained, with provenance and Italian names, in `scripts/import-mhw-data/sources/kiranico-weapons.json` and merged by the weapon and localization importers. Run `node scripts/import-mhw-data/audit-kiranico-weapons.mjs` for the offline coverage audit, or add `--refresh` to compare current public Kiranico indices. See [the audit report](docs/kiranico-weapon-audit.md) for additions and explicitly excluded special entries.
 
 Italian game text is imported separately with `node scripts/import-mhw-data/import-localization.mjs` into `src/i18n/generated/it.json`, using the existing catalog IDs. Interface translations live in `src/i18n/messages-it.json`. Language changes affect displayed text only; build calculations and shared links use the same catalog IDs.
 
