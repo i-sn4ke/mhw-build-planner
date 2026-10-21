@@ -1,15 +1,26 @@
+import SearchHighlight from './SearchHighlight'
 import { getSearchText } from '../i18n/catalog'
 import { useTranslation } from '../i18n/useTranslation'
 import EquipmentSkillList from './EquipmentSkillList'
 import EquipmentOption from './EquipmentOption'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import type { Weapon } from '../types/armor'
 import type { SkillDefinition } from '../types/skillDefinition'
 import { matchesEquipmentSearch } from '../engine/equipmentFilters'
 import { matchesWeaponElement } from '../engine/weaponFilters'
 
+export interface WeaponSelectorFilters {
+  search: string
+  typeFilter: string
+  rarityFilter: string
+  elementFilter: string
+}
+
 interface WeaponSelectorProps {
-  initialType?: Weapon['type']
+  filters: WeaponSelectorFilters
+  onFiltersChange: (filters: WeaponSelectorFilters) => void
+  selectedId?: string
+
   weapons: Weapon[]
   skills: SkillDefinition[]
   onSelect: (weapon: Weapon) => void
@@ -34,17 +45,23 @@ const weaponTypeNames: Record<Weapon['type'], string> = {
 }
 
 function WeaponSelector({
-  initialType,
+  filters,
+  onFiltersChange,
+  selectedId,
   weapons,
   skills,
   onSelect,
   onClose,
 }: WeaponSelectorProps) {
   const { t } = useTranslation()
-  const [search, setSearch] = useState('')
-  const [typeFilter, setTypeFilter] = useState<string>(initialType ?? 'all')
-  const [rarityFilter, setRarityFilter] = useState('all')
-  const [elementFilter, setElementFilter] = useState('all')
+  const search = filters.search
+  const setSearch = (search: string) => onFiltersChange({ ...filters, search })
+  const typeFilter = filters.typeFilter
+  const setTypeFilter = (typeFilter: string) => onFiltersChange({ ...filters, typeFilter })
+  const rarityFilter = filters.rarityFilter
+  const setRarityFilter = (rarityFilter: string) => onFiltersChange({ ...filters, rarityFilter })
+  const elementFilter = filters.elementFilter
+  const setElementFilter = (elementFilter: string) => onFiltersChange({ ...filters, elementFilter })
 
   const weaponTypes = useMemo(
     () =>
@@ -112,10 +129,7 @@ function WeaponSelector({
     rarityFilter !== 'all' || elementFilter !== 'all'
 
   const clearFilters = () => {
-    setSearch('')
-    setTypeFilter('all')
-    setRarityFilter('all')
-    setElementFilter('all')
+    onFiltersChange({ search: '', typeFilter: 'all', rarityFilter: 'all', elementFilter: 'all' })
   }
 
   return (
@@ -240,13 +254,14 @@ function WeaponSelector({
                 <EquipmentOption
                   key={weapon.id}
                   name={weapon.name}
+                  selected={weapon.id === selectedId}
                   onSelect={() => onSelect(weapon)}
                   className="w-full rounded-md border border-hunter-border bg-hunter-ink p-4 text-left transition hover:border-hunter-gold hover:bg-hunter-hover"
                 >
                   <div className="flex items-center justify-between gap-4">
                     <div className="min-w-0">
                       <div className="break-words font-medium text-hunter-text">
-                        {t(weapon.name)}
+                        <SearchHighlight name={weapon.name} query={search} />
                       </div>
 
                       <div className="mt-1 text-sm text-hunter-muted">
@@ -281,7 +296,7 @@ function WeaponSelector({
                     <p className="mt-3 text-xs text-hunter-muted">{t("Element / Status: None")}</p>
                   )}
 
-                  <EquipmentSkillList skills={weapon.skills} />
+                  <EquipmentSkillList skills={weapon.skills} search={search} />
 
                   {weapon.slots.length > 0 && (
                     <div className="mt-3 flex gap-1">

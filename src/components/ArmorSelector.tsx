@@ -1,13 +1,23 @@
+import SearchHighlight from './SearchHighlight'
 import { getSearchText } from '../i18n/catalog'
 import { useTranslation } from '../i18n/useTranslation'
 import EquipmentSkillList from './EquipmentSkillList'
 import EquipmentOption from './EquipmentOption'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import type { ArmorPiece, ArmorSlot } from '../types/armor'
 import type { SkillDefinition } from '../types/skillDefinition'
 import { matchesEquipmentSearch } from '../engine/equipmentFilters'
 
+export interface ArmorSelectorFilters {
+  search: string
+  rankFilter: string
+}
+
 interface ArmorSelectorProps {
+  filters: ArmorSelectorFilters
+  onFiltersChange: (filters: ArmorSelectorFilters) => void
+  selectedId?: string
+
   armors: ArmorPiece[]
   slot: ArmorSlot
   skills: SkillDefinition[]
@@ -24,6 +34,9 @@ const slotNames: Record<ArmorSlot, string> = {
 }
 
 function ArmorSelector({
+  filters,
+  onFiltersChange,
+  selectedId,
   armors,
   slot,
   skills,
@@ -31,8 +44,10 @@ function ArmorSelector({
   onClose,
 }: ArmorSelectorProps) {
   const { t } = useTranslation()
-  const [search, setSearch] = useState('')
-  const [rankFilter, setRankFilter] = useState('all')
+  const search = filters.search
+  const setSearch = (search: string) => onFiltersChange({ ...filters, search })
+  const rankFilter = filters.rankFilter
+  const setRankFilter = (rankFilter: string) => onFiltersChange({ ...filters, rankFilter })
 
   const skillNameById = useMemo(
     () => new Map(skills.map((skill) => [skill.id, getSearchText(skill.name)])),
@@ -107,6 +122,8 @@ function ArmorSelector({
           </select>
         </div>
 
+        {(search.trim() || rankFilter !== 'all') && <button type="button" onClick={() => onFiltersChange({ search: '', rankFilter: 'all' })} className="px-4 py-2 text-left text-sm text-hunter-gold">{t("Clear filters")}</button>}
+
         <div className="min-h-0 overflow-y-auto p-4">
           {filteredArmors.length === 0 ? (
             <div className="py-10 text-center">
@@ -115,8 +132,7 @@ function ArmorSelector({
               <button
                 type="button"
                 onClick={() => {
-                  setSearch('')
-                  setRankFilter('all')
+                  onFiltersChange({ search: '', rankFilter: 'all' })
                 }}
                 className="mt-3 text-sm text-hunter-gold transition hover:text-hunter-text"
               >{' '}{t("Clear filters")}{' '}</button>
@@ -127,13 +143,14 @@ function ArmorSelector({
                 <EquipmentOption
                   key={armor.id}
                   name={armor.name}
+                  selected={armor.id === selectedId}
                   onSelect={() => onSelect(armor)}
                   className="w-full rounded-md border border-hunter-border bg-hunter-ink p-4 text-left transition hover:border-hunter-gold hover:bg-hunter-hover"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <div className="font-medium text-hunter-text">
-                        {t(armor.name)}
+                        <SearchHighlight name={armor.name} query={search} />
                       </div>
 
                       <div className="mt-1 text-sm text-hunter-muted">{' '}{t("Rarity")}{' '}{armor.rarity} ·{' '}
@@ -157,7 +174,7 @@ function ArmorSelector({
                     )}
                   </div>
 
-                  <EquipmentSkillList skills={armor.skills} />
+                  <EquipmentSkillList skills={armor.skills} search={search} />
                 </EquipmentOption>
               ))}
             </div>

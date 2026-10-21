@@ -4,7 +4,7 @@ import type { Decoration } from './types/decoration'
 import { useEffect, useRef, useState } from 'react'
 import { useBuildStore } from './store/buildStore'
 
-import ArmorSelector from './components/ArmorSelector'
+import ArmorSelector, { type ArmorSelectorFilters } from './components/ArmorSelector'
 import ArmorSlot from './components/ArmorSlot'
 import SkillPanel from './components/SkillPanel'
 import StatsPanel from './components/StatsPanel'
@@ -13,11 +13,11 @@ import DamageSimulationPanel from './components/DamageSimulationPanel'
 import SimulationConditions from './components/SimulationConditions'
 import { defaultSimulationConditions } from './engine/skillEffects'
 import CharmStatsPanel from './components/CharmStatsPanel'
-import DecorationSelector from './components/DecorationSelector'
+import DecorationSelector, { type DecorationSelectorFilters } from './components/DecorationSelector'
 import WeaponStatsPanel from './components/WeaponStatsPanel'
 import SetBonusPanel from './components/SetBonusPanel'
-import CharmSelector from './components/CharmSelector'
-import WeaponSelector from './components/WeaponSelector'
+import CharmSelector, { type CharmSelectorFilters } from './components/CharmSelector'
+import WeaponSelector, { type WeaponSelectorFilters } from './components/WeaponSelector'
 import BuildGeneratorPanel from './components/BuildGeneratorPanel'
 import hunterLogo from './assets/hunter/monster-hunter-logo.png'
 import { HunterStatIcon } from './components/EquipmentIcon'
@@ -100,7 +100,10 @@ function App() {
   const [selectorSlot, setSelectorSlot] =
     useState<ArmorSlotType | null>(null)
 
-  const [manualWeaponType, setManualWeaponType] = useState<(typeof weaponDefinitions)[number]['type']>('great-sword')
+  const [weaponFilters, setWeaponFilters] = useState<WeaponSelectorFilters>({ search: '', typeFilter: 'great-sword', rarityFilter: 'all', elementFilter: 'all' })
+  const [armorFilters, setArmorFilters] = useState<Partial<Record<ArmorSlotType, ArmorSelectorFilters>>>({})
+  const [charmFilters, setCharmFilters] = useState<CharmSelectorFilters>({ search: '' })
+  const [decorationFilters, setDecorationFilters] = useState<Record<number, DecorationSelectorFilters>>({})
   const [isWeaponSelectorOpen, setIsWeaponSelectorOpen] =
     useState(false)
 
@@ -119,6 +122,14 @@ const [decorationTarget, setDecorationTarget] = useState<
     }
   | null
 >(null)
+
+  const decorationSlotSize = !decorationTarget ? 0 : decorationTarget.type === 'armor'
+    ? selectedArmor[decorationTarget.slot]?.slots[decorationTarget.slotIndex]?.size ?? 0
+    : selectedWeapon?.slots[decorationTarget.slotIndex]?.size ?? 0
+  const selectedDecoration = decorationTarget ? decorations.find((equipped) =>
+    equipped.location.type === decorationTarget.type && equipped.location.slotIndex === decorationTarget.slotIndex &&
+    (equipped.location.type !== 'armor' || (decorationTarget.type === 'armor' && equipped.location.slot === decorationTarget.slot)),
+  ) : undefined
 
   const [isCharmSelectorOpen, setIsCharmSelectorOpen] =
     useState(false)
@@ -335,7 +346,7 @@ const buildStats = calculateBuildStats(
         <details ref={generatorRef} id="build-generator" onToggle={(event) => setGeneratorOpen(event.currentTarget.open)} className="hunter-generator mb-5 rounded-lg border border-hunter-border bg-hunter-panel">
           <summary id="generator-title" className="cursor-pointer px-5 py-4 font-semibold">{t("Build Generator")} <span className="ml-2 text-xs font-normal text-hunter-muted">{t("Choose rank and required skills")}</span></summary>
         <BuildGeneratorPanel
-          onWeaponTypeChange={setManualWeaponType}
+          onWeaponTypeChange={(type) => setWeaponFilters((filters) => ({ ...filters, typeFilter: type }))}
           weapon={selectedWeapon}
           selectedArmor={selectedArmor}
           fixedArmorSlots={fixedArmorSlots}
@@ -531,6 +542,9 @@ const buildStats = calculateBuildStats(
       {selectorSlot && (
         <ArmorSelector
           slot={selectorSlot}
+          selectedId={selectedArmor[selectorSlot]?.id}
+          filters={armorFilters[selectorSlot] ?? { search: '', rankFilter: 'all' }}
+          onFiltersChange={(filters) => setArmorFilters((previous) => ({ ...previous, [selectorSlot]: filters }))}
           armors={armorDefinitions.filter(
             (armor) => armor.slot === selectorSlot,
           )}
@@ -543,45 +557,11 @@ const buildStats = calculateBuildStats(
   <DecorationSelector
   decorations={decorationDefinitions}
   skills={skills}
-  slotSize={
-    decorationTarget.type === 'armor'
-      ? selectedArmor[decorationTarget.slot]?.slots[
-          decorationTarget.slotIndex
-        ]?.size ?? 0
-      : selectedWeapon?.slots[
-          decorationTarget.slotIndex
-        ]?.size ?? 0
-    }
-  hasDecoration={
-    decorationTarget !== null &&
-    decorations.some((equipped) => {
-      if (equipped.location.type !== decorationTarget.type) {
-        return false
-      }
-
-      if (
-        decorationTarget.type === 'armor' &&
-        equipped.location.type === 'armor'
-      ) {
-        return (
-          equipped.location.slot === decorationTarget.slot &&
-          equipped.location.slotIndex ===
-            decorationTarget.slotIndex
-        )
-      }
-
-      if (
-        equipped.location.type === 'weapon' &&
-        decorationTarget.type === 'weapon'
-      ) {
-        return (
-          equipped.location.slotIndex ===
-          decorationTarget.slotIndex
-        )
-      }
-      return false
-    })
-  }
+  slotSize={decorationSlotSize}
+  selectedId={selectedDecoration?.decoration.id}
+  filters={decorationFilters[decorationSlotSize] ?? { search: '', slotFilter: 'all' }}
+  onFiltersChange={(filters) => setDecorationFilters((previous) => ({ ...previous, [decorationSlotSize]: filters }))}
+  hasDecoration={Boolean(selectedDecoration)}
   onSelect={handleSelectDecoration}
   onRemove={() => {
     if (!decorationTarget) return
@@ -600,6 +580,9 @@ const buildStats = calculateBuildStats(
 {isCharmSelectorOpen && (
   <CharmSelector
     charms={charmDefinitions}
+    selectedId={selectedCharm?.id}
+    filters={charmFilters}
+    onFiltersChange={setCharmFilters}
     skills={skills}
     onSelect={(charm) => {
       setCharm(charm)
@@ -611,7 +594,9 @@ const buildStats = calculateBuildStats(
 
 {isWeaponSelectorOpen && (
   <WeaponSelector
-    initialType={manualWeaponType}
+    selectedId={selectedWeapon?.id}
+    filters={weaponFilters}
+    onFiltersChange={setWeaponFilters}
     weapons={weaponDefinitions}
     skills={skills}
     onSelect={(weapon) => {

@@ -138,6 +138,23 @@
   background: linear-gradient(100deg, #17161370, #10100e99), url('./assets/hunter/ui-v3/dark-parchment-v1.png') center / 560px;
 }
 .hunter-equipment-option:focus-within { border-color: #dcc18c; }
+.hunter-equipment-option[data-equipped] {
+  border-color: #d0b17a;
+  box-shadow: inset 3px 0 #d0b17a;
+}
+.hunter-equipped-badge {
+  display: block;
+  margin-bottom: .375rem;
+  color: #e7c47f;
+  font-size: .625rem;
+  letter-spacing: .06em;
+}
+.hunter-search-match {
+  color: #ffe2a3;
+  background: #c5a36729;
+  border-bottom: 1px solid #bd985f;
+  border-radius: 2px;
+}
 .hunter-equipment-option > :not(.hunter-option-select) { position: relative; pointer-events: none; }
 .hunter-equipment-option .hunter-equipment-skills { pointer-events: auto; }
 .hunter-equipment-option .hunter-option-select { width: 100%; height: 100%; }

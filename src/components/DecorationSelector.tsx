@@ -1,12 +1,22 @@
+import SearchHighlight from './SearchHighlight'
 import { getSearchText } from '../i18n/catalog'
 import { useTranslation } from '../i18n/useTranslation'
 import EquipmentSkillList from './EquipmentSkillList'
 import EquipmentOption from './EquipmentOption'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import type { Decoration } from '../types/decoration'
 import type { SkillDefinition } from '../types/skillDefinition'
 
+export interface DecorationSelectorFilters {
+  search: string
+  slotFilter: number | 'all'
+}
+
 interface DecorationSelectorProps {
+  filters: DecorationSelectorFilters
+  onFiltersChange: (filters: DecorationSelectorFilters) => void
+  selectedId?: string
+
   decorations: Decoration[]
   skills: SkillDefinition[]
   slotSize: number
@@ -17,6 +27,9 @@ interface DecorationSelectorProps {
 }
 
 function DecorationSelector({
+  filters,
+  onFiltersChange,
+  selectedId,
   decorations,
   skills,
   slotSize,
@@ -26,8 +39,10 @@ function DecorationSelector({
   onClose,
 }: DecorationSelectorProps) {
   const { t } = useTranslation()
-  const [search, setSearch] = useState('')
-  const [slotFilter, setSlotFilter] = useState<number | 'all'>('all')
+  const search = filters.search
+  const setSearch = (search: string) => onFiltersChange({ ...filters, search })
+  const slotFilter = filters.slotFilter === 'all' || filters.slotFilter <= slotSize ? filters.slotFilter : 'all'
+  const setSlotFilter = (slotFilter: number | 'all') => onFiltersChange({ ...filters, slotFilter })
 
   const skillNameById = useMemo(
     () => new Map(skills.map((skill) => [skill.id, getSearchText(skill.name)])),
@@ -110,6 +125,8 @@ function DecorationSelector({
             {filteredDecorations.length}{' '}{t("decorations")}{' '}</p>
         </div>
 
+        {(search.trim() || slotFilter !== 'all') && <button type="button" onClick={() => onFiltersChange({ search: '', slotFilter: 'all' })} className="px-4 py-2 text-left text-sm text-hunter-gold">{t("Clear filters")}</button>}
+
         <div className="max-h-[60vh] overflow-y-auto p-4">
           {hasDecoration && (
             <button
@@ -127,13 +144,14 @@ function DecorationSelector({
                 <EquipmentOption
                   key={decoration.id}
                   name={decoration.name}
+                  selected={decoration.id === selectedId}
                   onSelect={() => onSelect(decoration)}
                   className="w-full rounded-lg border border-hunter-border bg-hunter-inset p-4 text-left transition hover:border-hunter-gold hover:bg-hunter-hover"
                 >
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="font-medium text-hunter-text">
-                        {t(decoration.name)}
+                        <SearchHighlight name={decoration.name} query={search} />
                       </p>
 
                       <p className="mt-1 text-xs text-hunter-muted">{' '}{t("Slot size")}{' '}{decoration.slotSize}
@@ -145,7 +163,7 @@ function DecorationSelector({
                     </span>
                   </div>
 
-                  <EquipmentSkillList skills={decoration.skills} />
+                  <EquipmentSkillList skills={decoration.skills} search={search} />
                 </EquipmentOption>
               ))}
             </div>

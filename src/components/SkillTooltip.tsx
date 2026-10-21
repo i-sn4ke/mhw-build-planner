@@ -3,14 +3,16 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import type { SkillDefinition } from '../types/skillDefinition'
 import { supportedOffensiveSkills } from '../engine/skillEffects'
+import SearchHighlight from './SearchHighlight'
 
 interface SkillTooltipProps {
   definition: SkillDefinition
   level: number
   className?: string
+  search?: string
 }
 
-function SkillTooltip({ definition, level, className = '' }: SkillTooltipProps) {
+function SkillTooltip({ definition, level, className = '', search = '' }: SkillTooltipProps) {
   const { t } = useTranslation()
   const id = useId()
   const [open, setOpen] = useState(false)
@@ -70,7 +72,7 @@ function SkillTooltip({ definition, level, className = '' }: SkillTooltipProps) 
         onKeyDown={(event) => { if (event.key === 'Escape') setOpen(false) }}
         className={`rounded text-left underline decoration-dotted underline-offset-4 outline-none hover:text-hunter-gold focus-visible:ring-1 focus-visible:ring-hunter-gold ${className}`}
       >
-        <span>{t(definition.name)}</span>
+        <span><SearchHighlight name={definition.name} query={search} /></span>
       </button>
       {open && createPortal(
         <span ref={tooltipRef} id={id} role="tooltip" style={position} className="hunter-skill-tooltip fixed z-[70] block w-80 max-w-[calc(100vw-2rem)] max-h-[70vh] overflow-y-auto rounded-md border border-hunter-trim bg-hunter-ink p-3 text-left text-xs font-normal leading-relaxed text-hunter-text shadow-xl">

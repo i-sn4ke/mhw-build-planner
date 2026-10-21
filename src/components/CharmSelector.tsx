@@ -1,12 +1,21 @@
+import SearchHighlight from './SearchHighlight'
 import { getSearchText } from '../i18n/catalog'
 import { useTranslation } from '../i18n/useTranslation'
 import EquipmentSkillList from './EquipmentSkillList'
 import EquipmentOption from './EquipmentOption'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import type { Charm } from '../types/charm'
 import type { SkillDefinition } from '../types/skillDefinition'
 
+export interface CharmSelectorFilters {
+  search: string
+}
+
 interface CharmSelectorProps {
+  filters: CharmSelectorFilters
+  onFiltersChange: (filters: CharmSelectorFilters) => void
+  selectedId?: string
+
   charms: Charm[]
   skills: SkillDefinition[]
   onSelect: (charm: Charm) => void
@@ -14,13 +23,17 @@ interface CharmSelectorProps {
 }
 
 function CharmSelector({
+  filters,
+  onFiltersChange,
+  selectedId,
   charms,
   skills,
   onSelect,
   onClose,
 }: CharmSelectorProps) {
   const { t } = useTranslation()
-  const [search, setSearch] = useState('')
+  const search = filters.search
+  const setSearch = (search: string) => onFiltersChange({ ...filters, search })
 
   const skillNames = useMemo(
     () =>
@@ -99,6 +112,8 @@ function CharmSelector({
           />
         </div>
 
+        {search.trim() && <button type="button" onClick={() => setSearch('')} className="px-4 py-2 text-left text-sm text-hunter-gold">{t("Clear search")}</button>}
+
         <div className="min-h-0 overflow-y-auto p-4">
           {filteredCharms.length === 0 ? (
             <div className="py-10 text-center">
@@ -116,13 +131,14 @@ function CharmSelector({
                 <EquipmentOption
                   key={charm.id}
                   name={charm.name}
+                  selected={charm.id === selectedId}
                   onSelect={() => onSelect(charm)}
                   className="w-full rounded-md border border-hunter-border bg-hunter-ink p-4 text-left transition hover:border-hunter-gold hover:bg-hunter-hover"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <div className="font-medium text-hunter-text">
-                        {t(charm.name)}
+                        <SearchHighlight name={charm.name} query={search} />
                       </div>
 
                       <div className="mt-1 text-sm text-hunter-muted">{' '}{t("Rarity")}{' '}{charm.rarity}
@@ -130,7 +146,7 @@ function CharmSelector({
                     </div>
                   </div>
 
-                  <EquipmentSkillList skills={charm.skills} />
+                  <EquipmentSkillList skills={charm.skills} search={search} />
                 </EquipmentOption>
               ))}
             </div>
